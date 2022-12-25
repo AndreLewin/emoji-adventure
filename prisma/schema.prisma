@@ -19,7 +19,7 @@ model Grid {
   name            String?
   message         String?
   backgroundImage String?
-  colors          String?
+  colors          String? // JSON.stringify(new Array(100).fill(""))
   emojis          String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @default(now()) @updatedAt
