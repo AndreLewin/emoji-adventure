@@ -14,6 +14,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Grid {
+  id              Int      @id @default(autoincrement())
+  name            String?
+  message         String?
+  backgroundImage String?
+  colors          String?
+  emojis          String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+}
+
 model Example {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
