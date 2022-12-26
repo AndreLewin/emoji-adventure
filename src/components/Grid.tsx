@@ -1,8 +1,9 @@
 import { Grid } from ".prisma/client"
 import { useMemo } from "react"
 import { trpc } from "../utils/trpc"
+import Cell from "./Cell"
 
-type Cell = {
+export type Cell = {
   color: string
   emoji: string
 }
@@ -31,9 +32,8 @@ const GridComponent: React.FC<{}> = ({ }) => {
   const grid = gridQuery.data ?? null
 
   const cells = grid === null ? (new Array(100)).fill("") : extractCells(grid)
-  console.log("cells | Grid.tsx l32", cells)
 
-
+  // TODO: update
   const updateGridM = trpc.grid.update.useMutation({
     // onMutate is for optimistic updated
     // for nonoptimistic updated: onSuccess (data = response from the back-end)
@@ -51,6 +51,7 @@ const GridComponent: React.FC<{}> = ({ }) => {
   });
 
 
+  // xxx to delete
   const cellColors = useMemo<string[]>(() => {
     const colorString = grid?.colors ?? null
     const colors = colorString === null ? (new Array(100)).fill("") : JSON.parse(colorString)
@@ -58,26 +59,12 @@ const GridComponent: React.FC<{}> = ({ }) => {
   }, [grid])
 
 
-  // todo: useMemo with trpc data???
-
   return (
     <div>
-      {JSON.stringify(grid)}
-      -----
+      {/* replace following line to use grid variable instead */}
       <div onClick={() => { updateGridM.mutate({ id: 1, data: { colors: JSON.stringify([...cellColors, "yellow"]) } }) }}>Edit grid</div>
       <div className="container">
-        {
-          cells.map((c, index) => {
-            return (
-              <div
-                key={`${index}`}
-                style={{ "backgroundColor": cellColors[index] }}
-              >
-                {index}
-              </div>
-            )
-          })
-        }
+        {cells.map((c, index) => { return <Cell cell={c} key={index} /> })}
         <style jsx>
           {`
           .container {
