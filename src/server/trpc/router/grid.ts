@@ -10,6 +10,19 @@ export const gridRouter = router({
         greeting: `Hello ${input?.text ?? "world"}`,
       };
     }),
+  findUnique: publicProcedure
+    .input(
+      z.object({
+        id: z.number()
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.grid.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
   findMany: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.grid.findMany({
       orderBy: [{ id: "desc" }]

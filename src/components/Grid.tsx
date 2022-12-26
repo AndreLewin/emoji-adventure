@@ -1,15 +1,38 @@
+import { Grid } from ".prisma/client"
 import { useMemo } from "react"
 import { trpc } from "../utils/trpc"
 
-const Grid: React.FC<{}> = ({ }) => {
+type Cell = {
+  color: string
+  emoji: string
+}
+
+const extractCells = (grid: Grid): Cell[] => {
+  const { colors, emojis } = grid
+  // TODO: check if colors and emojis respect the format (an array of 100 string stringified)
+  const colorsParsed = colors === null ? (new Array(100)).fill("") : JSON.parse(colors) as string[]
+  const emojisParsed = emojis === null ? (new Array(100)).fill("") : JSON.parse(emojis) as string[]
+
+  const cells: Cell[] = []
+  for (let i = 0; i < 100; i++) {
+    const cell = {
+      color: colorsParsed[i],
+      emoji: emojisParsed[i]
+    }
+    cells.push(cell)
+  }
+  return cells
+}
+
+const GridComponent: React.FC<{}> = ({ }) => {
   const utils = trpc.useContext()
 
-  const allGridsQuery = trpc.grid.findMany.useQuery()
-  console.log("allGridsQuery.data | Grid.tsx l6", allGridsQuery.data)
+  const gridQuery = trpc.grid.findUnique.useQuery({ id: 1 })
+  const grid = gridQuery.data ?? null
 
-  const allGrids = allGridsQuery.data ?? []
+  const cells = grid === null ? (new Array(100)).fill("") : extractCells(grid)
+  console.log("cells | Grid.tsx l32", cells)
 
-  const cells = (new Array(100)).fill("")
 
   const updateGridM = trpc.grid.update.useMutation({
     // onMutate is for optimistic updated
@@ -17,34 +40,30 @@ const Grid: React.FC<{}> = ({ }) => {
     async onMutate({ id, data }) {
       // if grid data is already fetched, update data locally
       // TODO: update code for only one (grid.find)
-      await utils.grid.findMany.cancel();
-      const allGrids = utils.grid.findMany.getData();
-      if (!allGrids) return
-      utils.grid.findMany.setData(
-        undefined,
-        allGrids.map((c) => c.id === id ? { ...c, ...data } : c)
+      await utils.grid.findUnique.cancel();
+      // const allGrids = utils.grid.findMany.getData();
+      if (!grid) return
+      utils.grid.findUnique.setData(
+        { id: 1 },
+        { ...grid, ...data }
       );
     }
   });
 
-  // todo: compute list of cells with local typing
-  type Cell = {
-    color: string
-    emoji: string
-  }
 
   const cellColors = useMemo<string[]>(() => {
-    const grid = allGrids?.[0] ?? null
     const colorString = grid?.colors ?? null
     const colors = colorString === null ? (new Array(100)).fill("") : JSON.parse(colorString)
     return colors
-  }, [allGrids])
+  }, [grid])
 
 
   // todo: useMemo with trpc data???
 
   return (
     <div>
+      {JSON.stringify(grid)}
+      -----
       <div onClick={() => { updateGridM.mutate({ id: 1, data: { colors: JSON.stringify([...cellColors, "yellow"]) } }) }}>Edit grid</div>
       <div className="container">
         {
@@ -81,4 +100,4 @@ const Grid: React.FC<{}> = ({ }) => {
   )
 }
 
-export default Grid
+export default GridComponent
