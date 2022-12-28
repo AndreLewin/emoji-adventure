@@ -33,7 +33,14 @@ export const gridRouter = router({
       z.object({
         id: z.number(),
         data: z.object({
-          colors: z.string()
+          colors: z.string().
+
+
+          name            String?
+          message         String?
+          backgroundImage String?
+          colors          String? // JSON.stringify(new Array(100).fill(""))
+          emojis          String?
         }),
       }),
     )
