@@ -1,4 +1,5 @@
 import { Grid } from ".prisma/client"
+import { Button } from "@mantine/core"
 import { useCallback, useMemo, useState } from "react"
 import { trpc } from "../utils/trpc"
 import Cell from "./Cell"
@@ -8,23 +9,25 @@ export type Cell = {
   emoji: string
 }
 
-export type LocalGrid = Omit<Grid, "createdAt" | "updatedAt" | "id">
+export type LocalGrid = Omit<Grid, "createdAt" | "updatedAt" | "id" | "colors" | "emojis"> & {
+  colors: string[] // array of 100 strings
+  emojis: string[]
+}
 
 const defaultLocalGridFactory = (): LocalGrid => {
   return {
     name: "name",
     message: "message",
     backgroundImage: "",
-    colors: JSON.stringify((new Array(100)).fill("")),
-    emojis: JSON.stringify((new Array(100)).fill(""))
+    colors: (new Array(100)).fill(""),
+    emojis: (new Array(100)).fill("")
   }
 }
 
 const extractCells = (grid: LocalGrid): Cell[] => {
   const { colors, emojis } = grid
-  // TODO: check if colors and emojis respect the format (an array of 100 string stringified)
-  const colorsParsed = colors === null ? (new Array(100)).fill("") : JSON.parse(colors) as string[]
-  const emojisParsed = emojis === null ? (new Array(100)).fill("") : JSON.parse(emojis) as string[]
+  const colorsParsed = colors === null ? (new Array(100)).fill("") : colors as string[]
+  const emojisParsed = emojis === null ? (new Array(100)).fill("") : emojis as string[]
 
   const cells: Cell[] = []
   for (let i = 0; i < 100; i++) {
@@ -46,7 +49,15 @@ const GridComponent: React.FC<{}> = ({ }) => {
   const gridQuery = trpc.grid.findUnique.useQuery({ id: 1 }, {
     onSuccess: (fetchedGrid) => {
       if (!isAlreadySynced) {
-        setLocalGrid(fetchedGrid ?? defaultLocalGridFactory())
+        if (fetchedGrid === null) {
+          setLocalGrid(defaultLocalGridFactory())
+        } else {
+          setLocalGrid({
+            ...fetchedGrid,
+            colors: JSON.parse(fetchedGrid!.colors as string) as string[],
+            emojis: JSON.parse(fetchedGrid!.emojis as string) as string[],
+          })
+        }
         setIsAlreadySynced(true)
       }
     }
@@ -60,27 +71,14 @@ const GridComponent: React.FC<{}> = ({ }) => {
 
   const updateLocalGrid = useCallback<any>((cellId: number) => {
     const newLocalGrid = JSON.parse(JSON.stringify(localGrid))
-    const colors = JSON.parse(newLocalGrid.colors ?? JSON.stringify((new Array(100)).fill("")))
-    colors[cellId] = colors[cellId] === "blue" ? "green" : "blue"
-    newLocalGrid.colors = JSON.stringify(colors)
+    newLocalGrid.colors[cellId] = newLocalGrid.colors[cellId] === "blue" ? "green" : "blue"
     setLocalGrid(newLocalGrid)
+    setIsChangedLocally(true)
   }, [localGrid])
 
-  const updateGridM = trpc.grid.update.useMutation({
-    // onMutate is for optimistic updated
-    // for nonoptimistic updated: onSuccess (data = response from the back-end)
-    async onMutate({ id, data }) {
-      // if grid data is already fetched, update data locally
-      // TODO: update code for only one (grid.find)
-      await utils.grid.findUnique.cancel();
-      // const allGrids = utils.grid.findMany.getData();
-      if (!remoteGrid) return
-      utils.grid.findUnique.setData(
-        { id: 1 },
-        { ...remoteGrid, ...data }
-      );
-    }
-  });
+  const updateGridM = trpc.grid.update.useMutation({});
+
+  const [isChangedLocally, setIsChangedLocally] = useState<boolean>(false)
 
   if (status !== "success") return <div>Loading...</div>
 
@@ -94,8 +92,14 @@ const GridComponent: React.FC<{}> = ({ }) => {
       {/* <div onClick={() => { updateGridM.mutate({ id: 1, data: { colors: JSON.stringify([...cellColors, "yellow"]) } }) }}>Edit grid</div> */}
       <div className="container">
         {cells.map((c, index) => { return <Cell cell={c} key={index} /> })}
-        <style jsx>
-          {`
+      </div>
+
+      <Button onClick={() => updateGridM.mutate({ id: 1, data: localGrid })} disabled={!isChangedLocally}>
+        Save
+      </Button>
+
+      <style jsx>
+        {`
           .container {
             display: grid;
             grid-template-columns: repeat(10, 40px);
@@ -110,8 +114,7 @@ const GridComponent: React.FC<{}> = ({ }) => {
             outline-color: rgba(50, 115, 220, 0.1);
           }
         `}
-        </style>
-      </div>
+      </style>
     </div>
   )
 }

@@ -33,14 +33,11 @@ export const gridRouter = router({
       z.object({
         id: z.number(),
         data: z.object({
-          colors: z.string().
-
-
-          name            String?
-          message         String?
-          backgroundImage String?
-          colors          String? // JSON.stringify(new Array(100).fill(""))
-          emojis          String?
+          name: z.string().optional().nullable(),
+          message: z.string().optional().nullable(),
+          backgroundImage: z.string().optional().nullable(),
+          colors: z.string().array().length(100).optional().nullable(),
+          emojis: z.string().array().length(100).optional().nullable()
         }),
       }),
     )
@@ -48,7 +45,11 @@ export const gridRouter = router({
       const { id, data } = input;
       const grid = await ctx.prisma.grid.update({
         where: { id },
-        data,
+        data: {
+          ...data,
+          colors: JSON.stringify(data.colors),
+          emojis: JSON.stringify(data.emojis)
+        },
       });
 
       return grid
