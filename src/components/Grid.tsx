@@ -59,11 +59,11 @@ const GridComponent: React.FC<{}> = ({ }) => {
   }, [localGrid])
 
   const updateLocalGrid = useCallback<any>((cellId: number) => {
-    console.log("hello")
-
-    const colors = JSON.parse(localGrid.colors ?? JSON.stringify((new Array(100)).fill("")))
+    const newLocalGrid = JSON.parse(JSON.stringify(localGrid))
+    const colors = JSON.parse(newLocalGrid.colors ?? JSON.stringify((new Array(100)).fill("")))
     colors[cellId] = colors[cellId] === "blue" ? "green" : "blue"
-    localGrid.colors = JSON.stringify(colors)
+    newLocalGrid.colors = JSON.stringify(colors)
+    setLocalGrid(newLocalGrid)
   }, [localGrid])
 
   const updateGridM = trpc.grid.update.useMutation({
