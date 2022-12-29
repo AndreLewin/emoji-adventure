@@ -76,7 +76,7 @@ const GridComponent: React.FC<{}> = ({ }) => {
     setIsChangedLocally(true)
   }, [localGrid])
 
-  const updateGridM = trpc.grid.update.useMutation({});
+  const upsertGridM = trpc.grid.upsert.useMutation({});
 
   const [isChangedLocally, setIsChangedLocally] = useState<boolean>(false)
 
@@ -94,7 +94,7 @@ const GridComponent: React.FC<{}> = ({ }) => {
         {cells.map((c, index) => { return <Cell cell={c} key={index} /> })}
       </div>
 
-      <Button onClick={() => updateGridM.mutate({ id: 1, data: localGrid })} disabled={!isChangedLocally}>
+      <Button onClick={() => upsertGridM.mutate({ id: 1, data: localGrid })} disabled={!isChangedLocally}>
         Save
       </Button>
 

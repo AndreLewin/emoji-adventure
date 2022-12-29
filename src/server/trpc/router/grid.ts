@@ -28,6 +28,38 @@ export const gridRouter = router({
       orderBy: [{ id: "desc" }]
     });
   }),
+  upsert: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        data: z.object({
+          name: z.string().optional().nullable(),
+          message: z.string().optional().nullable(),
+          backgroundImage: z.string().optional().nullable(),
+          colors: z.string().array().length(100).optional().nullable(),
+          emojis: z.string().array().length(100).optional().nullable()
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id, data } = input;
+      const grid = await ctx.prisma.grid.upsert({
+        where: { id },
+        update: {
+          ...data,
+          colors: JSON.stringify(data.colors),
+          emojis: JSON.stringify(data.emojis)
+        },
+        create: {
+          ...data,
+          id: id,
+          colors: JSON.stringify(data.colors),
+          emojis: JSON.stringify(data.emojis)
+        }
+      });
+
+      return grid
+    }),
   update: publicProcedure
     .input(
       z.object({
