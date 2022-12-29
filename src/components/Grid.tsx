@@ -94,7 +94,13 @@ const GridComponent: React.FC<{}> = ({ }) => {
         {cells.map((c, index) => { return <Cell cell={c} key={index} /> })}
       </div>
 
-      <Button onClick={() => upsertGridM.mutate({ id: 1, data: localGrid })} disabled={!isChangedLocally}>
+      <Button
+        onClick={() => {
+          upsertGridM.mutate({ id: 1, data: localGrid })
+          setIsChangedLocally(false)
+        }}
+        disabled={!isChangedLocally}
+      >
         Save
       </Button>
 
