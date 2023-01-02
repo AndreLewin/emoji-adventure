@@ -7,32 +7,40 @@ import { MantineProvider } from '@mantine/core';
 import { trpc } from "../utils/trpc";
 
 import "../styles/globals.css";
+import { useEffect, useState } from "react";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const [isClientSide, setIsClientSide] = useState<boolean>(false)
+
+  useEffect(() => {
+    setIsClientSide(true)
+  }, [isClientSide])
+
   return (
     <>
-
       <Head>
         <title>Page title</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
 
-      <SessionProvider session={session}>
-        <MantineProvider
-          withGlobalStyles
-          withNormalizeCSS
-          theme={{
-            /** Put your mantine theme override here */
-            colorScheme: 'light',
-          }}
-        >
+      {!isClientSide ? null :
+        <SessionProvider session={session}>
+          <MantineProvider
+            withGlobalStyles
+            withNormalizeCSS
+            theme={{
+              /** Put your mantine theme override here */
+              colorScheme: 'light',
+            }}
+          >
 
-          <Component {...pageProps} />
-        </MantineProvider>
-      </SessionProvider>
+            <Component {...pageProps} />
+          </MantineProvider>
+        </SessionProvider>
+      }
 
       <style jsx global>
         {`

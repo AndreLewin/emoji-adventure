@@ -1,6 +1,5 @@
 import { useCallback } from "react"
-import store from "../store"
-import { Cell } from "./Grid"
+import store, { Cell } from "../store"
 
 const CellComponent: React.FC<{ cell: Cell }> = ({ cell }) => {
   const selectedTool = store(state => state.selectedTool)
