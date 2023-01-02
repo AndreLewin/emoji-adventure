@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useCallback, useMemo } from "react"
 import store from "../../../store"
 
 const ColorSquare: React.FC<{ color: string }> = ({ color }) => {
@@ -10,12 +10,22 @@ const ColorSquare: React.FC<{ color: string }> = ({ color }) => {
 
   const set = store(state => state.set)
 
+  const handleClick = useCallback<any>(() => {
+    // // unselect
+    // if (selectedColor === color) {
+    //   set({ selectedColor: "" })
+    //   return
+    // }
+
+    set({ selectedColor: color })
+  }, [color, selectedColor])
+
   return (
     <>
       <div
         className={`colorChoice ${isColorSelected ? "selected" : ""}`}
         style={{ backgroundColor: color }}
-        onClick={() => set({ selectedColor: color })}
+        onClick={() => handleClick()}
       />
       <style jsx>
         {`
