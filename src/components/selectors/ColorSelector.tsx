@@ -1,3 +1,5 @@
+import ColorSquare from "./colorSelector/ColorSquare"
+
 const colors: string[] = [
   "rgb(0,0,0)",
   "rgb(127,127,127)",
@@ -26,7 +28,7 @@ const ColorSelector: React.FC<{}> = ({ }) => {
   return (
     <>
       <div className="container">
-        {colors.map((c) => { return <div className="colorChoice" style={{ backgroundColor: c }} /> })}
+        {colors.map((c, i) => { return <ColorSquare color={c} key={i} /> })}
       </div>
       <style jsx>
         {`
@@ -36,17 +38,6 @@ const ColorSelector: React.FC<{}> = ({ }) => {
             display: grid;
             gap: 2px 2px;
             grid-template-columns: repeat(10, 1fr)
-          }
-
-          .colorChoice {
-            width: 30px;
-            height: 30px;
-            border: 1px solid rgba(160,160,160,1);
-            padding: 2px 2px 2px 2px;
-            /* make the effect of background-color begin only at after margin */
-            /* https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip */
-            background-clip: content-box;
-            background-color: rgba(0,0,0,1);
           }
         `}
       </style>
