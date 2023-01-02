@@ -1,8 +1,22 @@
+import { useMemo } from "react"
+import store from "../../../store"
+
 const ColorSquare: React.FC<{ color: string }> = ({ color }) => {
+
+  const selectedColor = store(state => state.selectedColor)
+  const isColorSelected = useMemo<boolean>(() => {
+    return color === selectedColor
+  }, [selectedColor])
+
+  const set = store(state => state.set)
 
   return (
     <>
-      <div className="colorChoice" style={{ backgroundColor: color }} />
+      <div
+        className={`colorChoice ${isColorSelected ? "selected" : ""}`}
+        style={{ backgroundColor: color }}
+        onClick={() => set({ selectedColor: color })}
+      />
       <style jsx>
         {`
           .colorChoice {
@@ -13,7 +27,11 @@ const ColorSquare: React.FC<{ color: string }> = ({ color }) => {
               /* make the effect of background-color begin only at after margin */
               /* https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip */
               background-clip: content-box;
-              background-color: rgba(0,0,0,1);
+              cursor: pointer;
+          }
+          .colorChoice.selected {
+            border: 3px solid var(--highlighter-blue);
+            padding: 2px 2px 2px 2px;
           }
         `}
       </style>

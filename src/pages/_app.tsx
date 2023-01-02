@@ -34,6 +34,13 @@ const MyApp: AppType<{ session: Session | null }> = ({
         </MantineProvider>
       </SessionProvider>
 
+      <style jsx global>
+        {`
+          :root {
+            --highlighter-blue: rgb(0, 120, 215) 
+          }
+        `}
+      </style>
     </>
   );
 };
