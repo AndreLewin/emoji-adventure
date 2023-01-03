@@ -27,6 +27,7 @@ const getDefaultStoreValues: () => any = () => ({
 type Store = {
   set: SetState<Store>
   reset: () => void
+  undo: () => void
   activeGrid: number
   grids: Grid[]
   selectedColor: string
@@ -50,7 +51,13 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     pushToHistory(currentStore)
   },
   reset: () => set(getDefaultStoreValues()),
-  ...getDefaultStoreValues()
+  ...getDefaultStoreValues(),
+  undo: () => {
+    if (history.length > 1) {
+      history.pop()
+      set(history[history.length - 1]!)
+    }
+  }
 }))
 
 export default store;
