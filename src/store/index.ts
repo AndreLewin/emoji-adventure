@@ -33,13 +33,34 @@ type Store = {
   selectedTool: string
 }
 
+const history: Store[] = []
+
+const pushToHistory = (store: Store) => {
+  history.push(store)
+  if (history.length > 20) {
+    history.shift()
+  }
+}
+
 const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
   set: (partial) => {
     set(partial)
-    localStorage.setItem("store", JSON.stringify(get()))
+    const currentStore = get()
+    localStorage.setItem("store", JSON.stringify(currentStore))
+    pushToHistory(currentStore)
   },
   reset: () => set(getDefaultStoreValues()),
   ...getDefaultStoreValues()
 }))
 
 export default store;
+
+// easier debugging from the browser
+if (typeof window !== 'undefined') {
+  // @ts-ignore
+  window._history = history
+  // @ts-ignore
+  window._store = store
+  // @ts-ignore
+  window._s = () => store.getState()
+}
