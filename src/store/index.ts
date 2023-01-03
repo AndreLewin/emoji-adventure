@@ -34,7 +34,10 @@ type Store = {
 }
 
 const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
-  set: (partial) => set(partial),
+  set: (partial) => {
+    set(partial)
+    localStorage.setItem("store", JSON.stringify(get()))
+  },
   reset: () => set(getDefaultStoreValues()),
   ...getDefaultStoreValues()
 }))

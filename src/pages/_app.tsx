@@ -8,6 +8,7 @@ import { trpc } from "../utils/trpc";
 
 import "../styles/globals.css";
 import { useEffect, useState } from "react";
+import store from "../store";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -15,9 +16,16 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   const [isClientSide, setIsClientSide] = useState<boolean>(false)
 
+  const set = store(state => state.set)
+
   useEffect(() => {
+    const stringifiedStore = localStorage.getItem("store")
+    if (stringifiedStore !== null) {
+      // @ts-ignore
+      set(JSON.parse(stringifiedStore))
+    }
     setIsClientSide(true)
-  }, [isClientSide])
+  }, [])
 
   return (
     <>
