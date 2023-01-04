@@ -1,4 +1,6 @@
+import { number } from 'prop-types'
 import create, { GetState, SetState } from 'zustand'
+import { twoIndexesIntoIndexesOfSquare } from '../utils/math'
 
 export type Cell = {
   color: string
@@ -17,11 +19,12 @@ export const defaultGridFactory = (): Grid => {
   }
 }
 
-const getDefaultStoreValues: () => any = () => ({
+const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   activeGrid: 0,
   grids: [defaultGridFactory()],
   selectedColor: "",
-  selectedTool: ""
+  selectedTool: "",
+  mouseDownCellIndex: null
 })
 
 type Store = {
@@ -29,10 +32,16 @@ type Store = {
   reset: () => void
   undo: () => void
   changeCell: (cellIndex: number, { color, emoji }: { color?: string, emoji?: string }) => void
+  changeCellsLikeSquare: (
+    { index1, index2 }: { index1: number, index2: number },
+    { color, emoji }: { color?: string, emoji?: string }
+  ) => void
   activeGrid: number
   grids: Grid[]
   selectedColor: string
   selectedTool: "pencil" | "square" | "eraser" | "undo" | ""
+  // used by the square tool to compute which cells should be colored
+  mouseDownCellIndex: number | null
 }
 
 const history: Store[] = []
@@ -70,6 +79,31 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
         if (typeof emoji === "string") {
           cell.emoji = emoji
         }
+      }
+      return g
+    })
+    get().set({ grids: newGrids })
+  },
+  changeCellsLikeSquare: (
+    { index1, index2 }: { index1: number, index2: number },
+    { color, emoji }: { color?: string, emoji?: string }
+  ) => {
+    const ITEMS_PER_LINE = 10
+    const ITEMS_PER_COLUMN = 10
+    const indexesToChange = twoIndexesIntoIndexesOfSquare(index1, index2, ITEMS_PER_LINE, ITEMS_PER_COLUMN)
+
+    const { activeGrid, grids } = get()
+    const newGrids = grids.map((g, index) => {
+      if (index === activeGrid) {
+        indexesToChange.forEach((index) => {
+          const cell = g.cells[index]!
+          if (typeof color === "string") {
+            cell.color = color
+          }
+          if (typeof emoji === "string") {
+            cell.emoji = emoji
+          }
+        })
       }
       return g
     })

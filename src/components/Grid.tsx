@@ -3,33 +3,32 @@ import store, { defaultGridFactory, Grid } from "../store"
 import Cell from "./Cell"
 
 const GridComponent: React.FC<{}> = ({ }) => {
-  const set = store(state => state.set)
   const grids = store(state => state.grids)
   const grid = useMemo<Grid>(() => {
     return grids?.[0] ?? defaultGridFactory()
   }, [grids])
-
-  const updateGrid = useCallback<any>((cellId: number) => {
-    const newGrid = JSON.parse(JSON.stringify(grid))
-    newGrid.cells[cellId].color = newGrid.cells[cellId].color === "blue" ? "green" : "blue"
-    const [firstElement, ...rest] = grids
-
-    set({ grids: [newGrid, ...rest] })
-    setIsChangedLocally(true)
-  }, [grid])
 
   const selectedTool = store(state => state.selectedTool)
 
   // TODO: activate button to save to remote
   const [isChangedLocally, setIsChangedLocally] = useState<boolean>(false)
 
+  const set = store(state => state.set)
+  // avoid painting with the square tool from an outdated click
+  const handleMouseLeave = useCallback<any>(() => {
+    set({ mouseDownCellIndex: null })
+  }, [])
+
   return (
     <div>
       grid
       {JSON.stringify(grid)}
       ---
-      <div onClick={() => { updateGrid(1) }}>Edit grid</div>
-      <div className="container" style={{ "cursor": selectedTool !== '' ? "pointer" : "default" }}>
+      <div
+        className="container"
+        style={{ "cursor": selectedTool !== '' ? "pointer" : "default" }}
+        onMouseLeave={() => handleMouseLeave()}
+      >
         {grid.cells.map((c, index) => { return <Cell cell={c} key={index} index={index} /> })}
       </div>
 
