@@ -28,6 +28,7 @@ type Store = {
   set: SetState<Store>
   reset: () => void
   undo: () => void
+  changeCell: (cellIndex: number, { color, emoji }: { color?: string, emoji?: string }) => void
   activeGrid: number
   grids: Grid[]
   selectedColor: string
@@ -57,6 +58,22 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       history.pop()
       set(history[history.length - 1]!)
     }
+  },
+  changeCell: (cellIndex: number, { color, emoji }: { color?: string, emoji?: string }) => {
+    const { activeGrid, grids } = get()
+    const newGrids = grids.map((g, index) => {
+      if (index === activeGrid) {
+        const cell = g.cells[cellIndex]!
+        if (typeof color === "string") {
+          cell.color = color
+        }
+        if (typeof emoji === "string") {
+          cell.emoji = emoji
+        }
+      }
+      return g
+    })
+    set({ grids: newGrids })
   }
 }))
 

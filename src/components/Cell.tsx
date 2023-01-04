@@ -1,9 +1,10 @@
 import { useCallback } from "react"
 import store, { Cell } from "../store"
 
-const CellComponent: React.FC<{ cell: Cell }> = ({ cell }) => {
+const CellComponent: React.FC<{ cell: Cell, index: number }> = ({ cell, index }) => {
   const selectedTool = store(state => state.selectedTool)
   const selectedColor = store(state => state.selectedColor)
+  const changeCell = store(state => state.changeCell)
 
   const handleMouseOver = useCallback<any>((event: MouseEvent) => {
     if (selectedTool === "pencil") {
@@ -11,7 +12,7 @@ const CellComponent: React.FC<{ cell: Cell }> = ({ cell }) => {
       // 1 === the left button was held
       if (buttons === 1) {
         if (cell.color !== selectedColor) {
-          console.log("color that cell")
+          changeCell(index, { color: selectedColor })
         }
       }
     }
@@ -20,7 +21,7 @@ const CellComponent: React.FC<{ cell: Cell }> = ({ cell }) => {
   const handleMouseDown = useCallback<any>((event: MouseEvent) => {
     if (selectedTool === "pencil") {
       if (cell.color !== selectedColor) {
-        console.log("color that cell")
+        changeCell(index, { color: selectedColor })
       }
     }
   }, [cell, selectedTool, selectedColor])

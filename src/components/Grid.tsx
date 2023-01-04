@@ -28,7 +28,7 @@ const GridComponent: React.FC<{}> = ({ }) => {
       ---
       <div onClick={() => { updateGrid(1) }}>Edit grid</div>
       <div className="container">
-        {grid.cells.map((c, index) => { return <Cell cell={c} key={index} /> })}
+        {grid.cells.map((c, index) => { return <Cell cell={c} key={index} index={index} /> })}
       </div>
 
       <style jsx>
