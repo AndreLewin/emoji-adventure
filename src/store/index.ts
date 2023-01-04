@@ -32,7 +32,7 @@ type Store = {
   activeGrid: number
   grids: Grid[]
   selectedColor: string
-  selectedTool: "pencil" | "square" | "eraser" | "undo"
+  selectedTool: "pencil" | "square" | "eraser" | "undo" | ""
 }
 
 const history: Store[] = []

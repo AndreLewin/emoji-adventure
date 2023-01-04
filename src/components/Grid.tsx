@@ -18,6 +18,8 @@ const GridComponent: React.FC<{}> = ({ }) => {
     setIsChangedLocally(true)
   }, [grid])
 
+  const selectedTool = store(state => state.selectedTool)
+
   // TODO: activate button to save to remote
   const [isChangedLocally, setIsChangedLocally] = useState<boolean>(false)
 
@@ -27,7 +29,7 @@ const GridComponent: React.FC<{}> = ({ }) => {
       {JSON.stringify(grid)}
       ---
       <div onClick={() => { updateGrid(1) }}>Edit grid</div>
-      <div className="container">
+      <div className="container" style={{ "cursor": selectedTool !== '' ? "pointer" : "default" }}>
         {grid.cells.map((c, index) => { return <Cell cell={c} key={index} index={index} /> })}
       </div>
 
