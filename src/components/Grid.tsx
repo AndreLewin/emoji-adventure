@@ -21,9 +21,6 @@ const GridComponent: React.FC<{}> = ({ }) => {
 
   return (
     <div>
-      grid
-      {JSON.stringify(grid)}
-      ---
       <div
         className="container"
         style={{ "cursor": selectedTool !== '' ? "pointer" : "default" }}

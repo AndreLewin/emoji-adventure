@@ -22,8 +22,9 @@ export const defaultGridFactory = (): Grid => {
 const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   activeGrid: 0,
   grids: [defaultGridFactory()],
-  selectedColor: "",
   selectedTool: "",
+  selectedColor: "",
+  selectedEmoji: "",
   mouseDownCellIndex: null
 })
 
@@ -38,8 +39,9 @@ type Store = {
   ) => void
   activeGrid: number
   grids: Grid[]
-  selectedColor: string
   selectedTool: "pencil" | "square" | "eraser" | "undo" | ""
+  selectedColor: string
+  selectedEmoji: string
   // used by the square tool to compute which cells should be colored
   mouseDownCellIndex: number | null
 }
