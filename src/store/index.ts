@@ -32,7 +32,7 @@ type Store = {
   activeGrid: number
   grids: Grid[]
   selectedColor: string
-  selectedTool: string
+  selectedTool: "pencil" | "square" | "eraser" | "undo"
 }
 
 const history: Store[] = []
@@ -73,7 +73,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       }
       return g
     })
-    set({ grids: newGrids })
+    get().set({ grids: newGrids })
   }
 }))
 

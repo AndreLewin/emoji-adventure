@@ -15,6 +15,11 @@ const CellComponent: React.FC<{ cell: Cell, index: number }> = ({ cell, index })
           changeCell(index, { color: selectedColor })
         }
       }
+    } else if (selectedTool === "eraser") {
+      const { buttons } = event
+      if (buttons === 1) {
+        changeCell(index, { color: "" })
+      }
     }
   }, [cell, selectedTool, selectedColor])
 
@@ -23,6 +28,8 @@ const CellComponent: React.FC<{ cell: Cell, index: number }> = ({ cell, index })
       if (cell.color !== selectedColor) {
         changeCell(index, { color: selectedColor })
       }
+    } else if (selectedTool === "eraser") {
+      changeCell(index, { color: "" })
     }
   }, [cell, selectedTool, selectedColor])
 
