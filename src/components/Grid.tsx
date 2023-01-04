@@ -40,6 +40,7 @@ const GridComponent: React.FC<{}> = ({ }) => {
             outline: 0.5px solid;
             outline-color: rgba(50, 115, 220, 0.1);
             width: fit-content;
+            user-select: none; {/* disable selecting text when click held */}
           }
 
           .container > * {
