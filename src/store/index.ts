@@ -39,6 +39,7 @@ export type Store = {
   ) => void
   pickEmoji: (pickedEmoji: string) => void
   changeGridText: (text: string) => void
+  addGrid: () => void
   activeGrid: number
   grids: Grid[]
   selectedTool: "pencil" | "square" | "colorPicker" | "emojiPicker" | "eraser" | "undo" | ""
@@ -139,6 +140,12 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       return g
     })
     get().set({ grids: newGrids })
+    pushToGridHistory(get())
+  },
+  addGrid: () => {
+    const { grids } = get()
+    const newGrids = [...grids, defaultGridFactory()]
+    get().set({ grids: newGrids, activeGrid: newGrids.length })
     pushToGridHistory(get())
   }
 }))

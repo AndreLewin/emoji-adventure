@@ -1,4 +1,4 @@
-import { SegmentedControl, SegmentedControlItem } from "@mantine/core"
+import { Button, SegmentedControl, SegmentedControlItem } from "@mantine/core"
 import { useCallback, useMemo } from "react"
 import store from "../../store"
 
@@ -6,6 +6,7 @@ const GridSelector: React.FC<{}> = ({ }) => {
   const activeGrid = store(state => state.activeGrid)
   const grids = store(state => state.grids)
   const set = store(state => state.set)
+  const addGrid = store(state => state.addGrid)
 
   const choices = useMemo<SegmentedControlItem[]>(() => {
     return grids.map((g, index) => {
@@ -29,6 +30,9 @@ const GridSelector: React.FC<{}> = ({ }) => {
           onChange={handleChange}
           data={choices}
         />
+        <Button onClick={addGrid}>
+          New Grid
+        </Button>
       </div>
       <style jsx>
         {`
