@@ -4,6 +4,7 @@ import ColorSelector from "../components/selectors/ColorSelector";
 import EmojiSelector from "../components/selectors/EmojiSelector";
 import Grid from "../components/Grid";
 import EmojiPicker from "../components/selectors/EmojiPicker";
+import GridInfo from "../components/GridInfo";
 
 const Home: NextPage = () => {
 
@@ -18,6 +19,7 @@ const Home: NextPage = () => {
         <Grid />
         <EmojiPicker />
       </div>
+      <GridInfo />
     </>
   );
 };

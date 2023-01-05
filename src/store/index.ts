@@ -38,6 +38,7 @@ export type Store = {
     { color, emoji }: { color?: string, emoji?: string }
   ) => void
   pickEmoji: (pickedEmoji: string) => void
+  changeGridText: (text: string) => void
   activeGrid: number
   grids: Grid[]
   selectedTool: "pencil" | "square" | "colorPicker" | "emojiPicker" | "eraser" | "undo" | ""
@@ -128,6 +129,17 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       if (lastEmojis.length > 20) lastEmojis.length = 20
       get().set({ lastEmojis })
     }
+  },
+  changeGridText: (text: string) => {
+    const { activeGrid, grids } = get()
+    const newGrids = grids.map((g, index) => {
+      if (index === activeGrid) {
+        return { ...g, text }
+      }
+      return g
+    })
+    get().set({ grids: newGrids })
+    pushToGridHistory(get())
   }
 }))
 
