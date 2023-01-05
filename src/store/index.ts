@@ -14,7 +14,7 @@ export type Grid = {
 export const defaultGridFactory = (): Grid => {
   return {
     text: "",
-    cells: (new Array(100)).fill({ color: "", emoji: "" })
+    cells: (new Array(100)).fill({}).map(() => ({ color: "", emoji: "" }))
   }
 }
 
