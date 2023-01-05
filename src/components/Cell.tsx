@@ -12,35 +12,35 @@ const CellComponent: React.FC<{ cell: Cell, index: number }> = ({ cell, index })
   const changeCellsLikeSquare = store(state => state.changeCellsLikeSquare)
 
   const handleMouseOver = useCallback<any>((event: MouseEvent) => {
-    if (selectedTool === "pencil") {
-      const { buttons } = event
-      // 1 === the left button was held
-      if (buttons === 1) {
+    const { buttons } = event
+    // left click
+    if (buttons === 1) {
+      if (selectedTool === "pencil") {
         if (selectedColor !== null && cell.color !== selectedColor) {
           changeCell(index, { color: selectedColor })
         } else if (selectedEmoji !== null && cell.emoji !== selectedEmoji) {
           changeCell(index, { emoji: selectedEmoji })
         }
-      }
-    } else if (selectedTool === "eraser") {
-      const { buttons } = event
-      if (buttons === 1) {
+      } else if (selectedTool === "eraser") {
         changeCell(index, { color: "", emoji: "" })
       }
     }
   }, [cell, selectedTool, selectedColor, selectedEmoji])
 
   const handleMouseDown = useCallback<any>((event: MouseEvent) => {
-    if (selectedTool === "pencil") {
-      if (selectedColor !== null && cell.color !== selectedColor) {
-        changeCell(index, { color: selectedColor })
-      } else if (selectedEmoji !== null && cell.emoji !== selectedEmoji) {
-        changeCell(index, { emoji: selectedEmoji })
+    const { buttons } = event
+    if (buttons === 1) {
+      if (selectedTool === "pencil") {
+        if (selectedColor !== null && cell.color !== selectedColor) {
+          changeCell(index, { color: selectedColor })
+        } else if (selectedEmoji !== null && cell.emoji !== selectedEmoji) {
+          changeCell(index, { emoji: selectedEmoji })
+        }
+      } else if (selectedTool === "square") {
+        set({ mouseDownCellIndex: index })
+      } else if (selectedTool === "eraser") {
+        changeCell(index, { color: "", emoji: "" })
       }
-    } else if (selectedTool === "square") {
-      set({ mouseDownCellIndex: index })
-    } else if (selectedTool === "eraser") {
-      changeCell(index, { color: "", emoji: "" })
     }
   }, [cell, selectedTool, selectedColor, selectedEmoji])
 
