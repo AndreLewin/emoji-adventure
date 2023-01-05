@@ -38,6 +38,10 @@ const CellComponent: React.FC<{ cell: Cell, index: number }> = ({ cell, index })
         }
       } else if (selectedTool === "square") {
         set({ mouseDownCellIndex: index })
+      } else if (selectedTool === "colorPicker") {
+        set({ selectedColor: cell.color, selectedTool: "pencil", selectedEmoji: null })
+      } else if (selectedTool === "emojiPicker") {
+        set({ selectedEmoji: cell.emoji, selectedTool: "pencil", selectedColor: null })
       } else if (selectedTool === "eraser") {
         changeCell(index, { color: "", emoji: "" })
       }

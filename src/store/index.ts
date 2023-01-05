@@ -40,7 +40,7 @@ export type Store = {
   pickEmoji: (pickedEmoji: string) => void
   activeGrid: number
   grids: Grid[]
-  selectedTool: "pencil" | "square" | "eraser" | "undo" | ""
+  selectedTool: "pencil" | "square" | "colorPicker" | "emojiPicker" | "eraser" | "undo" | ""
   // "blue": the color is selected with the color blue
   // "": the eraser of color is selected
   // null: something else is selected (ex: emoji)
