@@ -11,7 +11,6 @@ const colors: string[] = [
   "rgb(0,162,232)",
   "rgb(63,72,204)",
   "rgb(163,73,164)",
-  "",
   "rgb(255,255,255)",
   "rgb(195,195,195)",
   "rgb(185,122,87)",
@@ -29,16 +28,27 @@ const ColorSelector: React.FC<{}> = ({ }) => {
   return (
     <>
       <div className="container">
-        {colors.map((c, i) => { return <ColorSquare color={c} key={i} /> })}
+        <div className="presetColorsContainer">
+          {colors.map((c, i) => { return <ColorSquare color={c} key={i} /> })}
+        </div>
+        <div className="extraSquares">
+          <ColorSquare color={""} />
+        </div>
       </div>
       <style jsx>
         {`
           .container {
-            width: 350px;
+            display: flex;
+          }
+          .presetColorsContainer {
+            width: 328px;
             height: 64px;
             display: grid;
             gap: 2px 2px;
-            grid-template-columns: repeat(11, 1fr)
+            grid-template-columns: repeat(10, 1fr)
+          }
+          .extraSquares {
+            margin-left: 2px;
           }
         `}
       </style>
