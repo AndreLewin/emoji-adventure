@@ -11,7 +11,7 @@ const EmojiSquare: React.FC<{ emoji: string }> = ({ emoji }) => {
   const set = store(state => state.set)
 
   const handleClick = useCallback<any>(() => {
-    set({ selectedEmoji: emoji, selectedColor: "" })
+    set({ selectedEmoji: emoji, selectedColor: null })
   }, [emoji, selectedEmoji])
 
   return (

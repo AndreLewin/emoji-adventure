@@ -4,6 +4,7 @@ import store, { Cell } from "../store"
 const CellComponent: React.FC<{ cell: Cell, index: number }> = ({ cell, index }) => {
   const selectedTool = store(state => state.selectedTool)
   const selectedColor = store(state => state.selectedColor)
+  const selectedEmoji = store(state => state.selectedEmoji)
   const set = store(state => state.set)
   const mouseDownCellIndex = store(state => state.mouseDownCellIndex)
 
@@ -15,40 +16,48 @@ const CellComponent: React.FC<{ cell: Cell, index: number }> = ({ cell, index })
       const { buttons } = event
       // 1 === the left button was held
       if (buttons === 1) {
-        if (cell.color !== selectedColor) {
+        if (selectedColor !== null && cell.color !== selectedColor) {
           changeCell(index, { color: selectedColor })
+        } else if (selectedEmoji !== null && cell.emoji !== selectedEmoji) {
+          changeCell(index, { emoji: selectedEmoji })
         }
       }
     } else if (selectedTool === "eraser") {
       const { buttons } = event
       if (buttons === 1) {
-        changeCell(index, { color: "" })
+        changeCell(index, { color: "", emoji: "" })
       }
     }
-  }, [cell, selectedTool, selectedColor])
+  }, [cell, selectedTool, selectedColor, selectedEmoji])
 
   const handleMouseDown = useCallback<any>((event: MouseEvent) => {
     if (selectedTool === "pencil") {
-      if (cell.color !== selectedColor) {
+      if (selectedColor !== null && cell.color !== selectedColor) {
         changeCell(index, { color: selectedColor })
+      } else if (selectedEmoji !== null && cell.emoji !== selectedEmoji) {
+        changeCell(index, { emoji: selectedEmoji })
       }
     } else if (selectedTool === "square") {
       set({ mouseDownCellIndex: index })
     } else if (selectedTool === "eraser") {
-      changeCell(index, { color: "" })
+      changeCell(index, { color: "", emoji: "" })
     }
-  }, [cell, selectedTool, selectedColor])
+  }, [cell, selectedTool, selectedColor, selectedEmoji])
 
   const handleMouseUp = useCallback<any>((event: MouseEvent) => {
     if (selectedTool === "square") {
       const startCellIndex = mouseDownCellIndex
       const endCellIndex = index
       if (startCellIndex !== null && endCellIndex !== null) {
-        changeCellsLikeSquare({ index1: startCellIndex, index2: endCellIndex }, { color: selectedColor })
+        if (selectedColor !== null && cell.color !== selectedColor) {
+          changeCellsLikeSquare({ index1: startCellIndex, index2: endCellIndex }, { color: selectedColor })
+        } else if (selectedEmoji !== null && cell.emoji !== selectedEmoji) {
+          changeCellsLikeSquare({ index1: startCellIndex, index2: endCellIndex }, { emoji: selectedEmoji })
+        }
       }
       set({ mouseDownCellIndex: null })
     }
-  }, [cell, selectedTool, selectedColor, mouseDownCellIndex])
+  }, [cell, selectedTool, selectedColor, mouseDownCellIndex, selectedEmoji])
 
   return (
     <>
@@ -59,12 +68,16 @@ const CellComponent: React.FC<{ cell: Cell, index: number }> = ({ cell, index })
         onMouseDown={(e) => handleMouseDown(e)}
         onMouseUp={(e) => handleMouseUp(e)}
       >
-        WIP
+        {cell.emoji}
       </div>
       <style jsx>
         {`
           .container {
-            border: dashed 0.5px rgba(0,0,0,0.5)
+            border: dashed 0.5px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
           }
         `}
       </style>

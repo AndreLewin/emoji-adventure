@@ -17,7 +17,7 @@ const ColorSquare: React.FC<{ color: string }> = ({ color }) => {
     //   return
     // }
 
-    set({ selectedColor: color, selectedEmoji: "" })
+    set({ selectedColor: color, selectedEmoji: null })
   }, [color, selectedColor])
 
   return (

@@ -22,8 +22,8 @@ const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   activeGrid: 0,
   grids: [defaultGridFactory()],
   selectedTool: "",
-  selectedColor: "",
-  selectedEmoji: "",
+  selectedColor: null,
+  selectedEmoji: null,
   mouseDownCellIndex: null,
   lastEmojis: []
 })
@@ -41,8 +41,11 @@ export type Store = {
   activeGrid: number
   grids: Grid[]
   selectedTool: "pencil" | "square" | "eraser" | "undo" | ""
-  selectedColor: string
-  selectedEmoji: string
+  // "blue": the color is selected with the color blue
+  // "": the eraser of color is selected
+  // null: something else is selected (ex: emoji)
+  selectedColor: string | null
+  selectedEmoji: string | null
   // used by the square tool to compute which cells should be colored
   mouseDownCellIndex: number | null
   // used by the selector to quickly use last used emojis
@@ -118,7 +121,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     pushToGridHistory(get())
   },
   pickEmoji: (pickedEmoji: string) => {
-    get().set({ selectedEmoji: pickedEmoji, selectedColor: "" })
+    get().set({ selectedEmoji: pickedEmoji, selectedColor: null })
     const oldLastEmojis = get().lastEmojis
     if (!oldLastEmojis.includes(pickedEmoji)) {
       const lastEmojis = [pickedEmoji, ...oldLastEmojis]
