@@ -1,5 +1,5 @@
 import { createPicker } from 'picmo'
-import { TwemojiRenderer } from '@picmo/renderer-twemoji';
+// import { TwemojiRenderer } from '@picmo/renderer-twemoji';
 import { useEffect } from 'react';
 import store from '../../store';
 
@@ -14,9 +14,10 @@ const EmojiPicker: React.FC<{}> = ({ }) => {
     const picker = createPicker({
       // @ts-ignore
       rootElement,
-      renderer: new TwemojiRenderer(),
+      // renderer: new TwemojiRenderer(),
       emojiSize: "1.7rem",
-      showPreview: false
+      showPreview: false,
+      showRecents: false
     });
 
     picker.addEventListener('emoji:select', event => {
@@ -26,12 +27,12 @@ const EmojiPicker: React.FC<{}> = ({ }) => {
 
   return (
     <>
-      <div id="pickerContainer">
-        aaa
-      </div>
-      <style jsx>
+      <div id="pickerContainer" />
+      <style jsx global>
         {`
-          
+          h3.categoryName {
+            display: none !important;
+          }
         `}
       </style>
     </>
