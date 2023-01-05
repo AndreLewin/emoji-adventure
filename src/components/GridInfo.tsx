@@ -1,5 +1,5 @@
-import { Button, TextInput } from "@mantine/core";
-import { ChangeEvent, useCallback, useMemo } from "react";
+import { Button, Modal, TextInput } from "@mantine/core";
+import { ChangeEvent, useCallback, useMemo, useState } from "react";
 import store from "../store";
 
 const GridInfo: React.FC<{}> = ({ }) => {
@@ -16,6 +16,8 @@ const GridInfo: React.FC<{}> = ({ }) => {
     changeGridText(event.target.value)
   }, [])
 
+  const [isDeleteConfirmModalOpened, setIsDeleteConfirmModalOpened] = useState<boolean>(false)
+
   return (
     <>
       <div className='container'>
@@ -27,11 +29,25 @@ const GridInfo: React.FC<{}> = ({ }) => {
         <Button
           color="red"
           disabled={grids.length <= 1}
-          onClick={() => deleteGrid(activeGrid)}
+          onClick={() => setIsDeleteConfirmModalOpened(true)}
         >
           Delete Grid
         </Button>
       </div>
+
+      <Modal
+        opened={isDeleteConfirmModalOpened}
+        onClose={() => setIsDeleteConfirmModalOpened(false)}
+        title={`Are you sure to delete the grid ${activeGrid}: ${gridText}?`}
+      >
+        <Button
+          color="red"
+          disabled={grids.length <= 1}
+          onClick={() => { deleteGrid(activeGrid), setIsDeleteConfirmModalOpened(false) }}
+        >
+          Delete Grid
+        </Button>
+      </Modal>
 
       <style jsx>
         {`
