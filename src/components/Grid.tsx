@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react"
-import store, { defaultGridFactory, Grid } from "../store"
+import store, { Grid } from "../store"
 import Cell from "./Cell"
 
 const GridComponent: React.FC<{}> = ({ }) => {

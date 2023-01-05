@@ -39,7 +39,8 @@ export type Store = {
   ) => void
   pickEmoji: (pickedEmoji: string) => void
   changeGridText: (text: string) => void
-  addGrid: () => void
+  createGrid: () => void
+  deleteGrid: (index: number) => void
   activeGrid: number
   grids: Grid[]
   selectedTool: "pencil" | "square" | "colorPicker" | "emojiPicker" | "eraser" | "undo" | ""
@@ -142,10 +143,20 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     get().set({ grids: newGrids })
     pushToGridHistory(get())
   },
-  addGrid: () => {
+  createGrid: () => {
     const { grids } = get()
     const newGrids = [...grids, defaultGridFactory()]
-    get().set({ grids: newGrids, activeGrid: newGrids.length })
+    get().set({ grids: newGrids, activeGrid: newGrids.length - 1 })
+    pushToGridHistory(get())
+  },
+  deleteGrid: (index: number) => {
+    const { grids, activeGrid } = get()
+    // can't delete the last grid
+    if (grids.length <= 1) return
+    const isRemovingActiveGrid = index === activeGrid
+    const newGrids = grids.filter((_g, i) => i !== index)
+    get().set({ activeGrid: isRemovingActiveGrid ? (newGrids.length - 1) : activeGrid })
+    get().set({ grids: newGrids })
     pushToGridHistory(get())
   }
 }))

@@ -6,7 +6,7 @@ const GridSelector: React.FC<{}> = ({ }) => {
   const activeGrid = store(state => state.activeGrid)
   const grids = store(state => state.grids)
   const set = store(state => state.set)
-  const addGrid = store(state => state.addGrid)
+  const createGrid = store(state => state.createGrid)
 
   const choices = useMemo<SegmentedControlItem[]>(() => {
     return grids.map((g, index) => {
@@ -30,8 +30,8 @@ const GridSelector: React.FC<{}> = ({ }) => {
           onChange={handleChange}
           data={choices}
         />
-        <Button onClick={addGrid}>
-          New Grid
+        <Button onClick={createGrid}>
+          Create Grid
         </Button>
       </div>
       <style jsx>
