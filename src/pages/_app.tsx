@@ -8,7 +8,7 @@ import { trpc } from "../utils/trpc";
 
 import "../styles/globals.css";
 import { useEffect, useState } from "react";
-import store from "../store";
+import store, { pushToGridHistory } from "../store";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -23,6 +23,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
     if (stringifiedStore !== null) {
       // @ts-ignore
       set(JSON.parse(stringifiedStore))
+      // so the first change can be undone
+      pushToGridHistory(store.getState())
     }
     setIsClientSide(true)
   }, [])

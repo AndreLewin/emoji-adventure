@@ -46,13 +46,14 @@ type Store = {
   mouseDownCellIndex: number | null
 }
 
-const history: Store[] = []
+const gridHistory: Pick<Store, "activeGrid" | "grids">[] = []
 
-const pushToHistory = (store: Store) => {
-  history.push(store)
-  if (history.length > 20) {
-    history.shift()
+export const pushToGridHistory = (store: Store) => {
+  gridHistory.push(JSON.parse(JSON.stringify({ activeGrid: store.activeGrid, grids: store.grids })))
+  if (gridHistory.length > 20) {
+    gridHistory.shift()
   }
+  // console.log("history | index.ts l56", gridHistory)
 }
 
 const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
@@ -60,14 +61,14 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     set(partial)
     const currentStore = get()
     localStorage.setItem("store", JSON.stringify(currentStore))
-    pushToHistory(currentStore)
   },
   reset: () => set(getDefaultStoreValues()),
   ...getDefaultStoreValues(),
   undo: () => {
-    if (history.length > 1) {
-      history.pop()
-      set(history[history.length - 1]!)
+    if (gridHistory.length > 1) {
+      gridHistory.pop()
+      const oldGridToUse = gridHistory[gridHistory.length - 1]!
+      get().set(oldGridToUse)
     }
   },
   changeCell: (cellIndex: number, { color, emoji }: { color?: string, emoji?: string }) => {
@@ -85,6 +86,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       return g
     })
     get().set({ grids: newGrids })
+    pushToGridHistory(get())
   },
   changeCellsLikeSquare: (
     { index1, index2 }: { index1: number, index2: number },
@@ -110,6 +112,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       return g
     })
     get().set({ grids: newGrids })
+    pushToGridHistory(get())
   }
 }))
 
@@ -118,7 +121,7 @@ export default store;
 // easier debugging from the browser
 if (typeof window !== 'undefined') {
   // @ts-ignore
-  window._history = history
+  window._history = gridHistory
   // @ts-ignore
   window._store = store
   // @ts-ignore
