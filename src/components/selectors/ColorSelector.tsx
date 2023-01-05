@@ -11,6 +11,7 @@ const colors: string[] = [
   "rgb(0,162,232)",
   "rgb(63,72,204)",
   "rgb(163,73,164)",
+  "",
   "rgb(255,255,255)",
   "rgb(195,195,195)",
   "rgb(185,122,87)",
@@ -33,11 +34,11 @@ const ColorSelector: React.FC<{}> = ({ }) => {
       <style jsx>
         {`
           .container {
-            width: 328px;
+            width: 350px;
             height: 64px;
             display: grid;
             gap: 2px 2px;
-            grid-template-columns: repeat(10, 1fr)
+            grid-template-columns: repeat(11, 1fr)
           }
         `}
       </style>
