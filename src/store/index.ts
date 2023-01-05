@@ -1,4 +1,3 @@
-import { number } from 'prop-types'
 import create, { GetState, SetState } from 'zustand'
 import { twoIndexesIntoIndexesOfSquare } from '../utils/math'
 
@@ -25,10 +24,11 @@ const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   selectedTool: "",
   selectedColor: "",
   selectedEmoji: "",
-  mouseDownCellIndex: null
+  mouseDownCellIndex: null,
+  lastEmojis: []
 })
 
-type Store = {
+export type Store = {
   set: SetState<Store>
   reset: () => void
   undo: () => void
@@ -37,6 +37,7 @@ type Store = {
     { index1, index2 }: { index1: number, index2: number },
     { color, emoji }: { color?: string, emoji?: string }
   ) => void
+  pickEmoji: (pickedEmoji: string) => void
   activeGrid: number
   grids: Grid[]
   selectedTool: "pencil" | "square" | "eraser" | "undo" | ""
@@ -44,6 +45,8 @@ type Store = {
   selectedEmoji: string
   // used by the square tool to compute which cells should be colored
   mouseDownCellIndex: number | null
+  // used by the selector to quickly use last used emojis
+  lastEmojis: string[]
 }
 
 const gridHistory: Pick<Store, "activeGrid" | "grids">[] = []
@@ -113,6 +116,15 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     })
     get().set({ grids: newGrids })
     pushToGridHistory(get())
+  },
+  pickEmoji: (pickedEmoji: string) => {
+    get().set({ selectedEmoji: pickedEmoji, selectedColor: "" })
+    const oldLastEmojis = get().lastEmojis
+    if (!oldLastEmojis.includes(pickedEmoji)) {
+      const lastEmojis = [pickedEmoji, ...oldLastEmojis]
+      if (lastEmojis.length > 20) lastEmojis.length = 20
+      get().set({ lastEmojis })
+    }
   }
 }))
 

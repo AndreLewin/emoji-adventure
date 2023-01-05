@@ -1,7 +1,8 @@
+import { Store } from "../../store"
 import ToolSquare from "./toolSelector/ToolSquare"
 
 export type Tool = {
-  toolName: string,
+  toolName: Store["selectedTool"],
   svgIcon: JSX.Element
 }
 
