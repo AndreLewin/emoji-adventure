@@ -166,9 +166,9 @@ export default store;
 // easier debugging from the browser
 if (typeof window !== 'undefined') {
   // @ts-ignore
-  window.$h = gridHistory
+  window._h = gridHistory
   // @ts-ignore
-  window.$s = store
+  window._s = store
   // @ts-ignore
-  window.$ss = () => store.getState()
+  window._ss = () => store.getState()
 }

@@ -34,8 +34,10 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
           }}
         />
 
+        <div style={{ marginTop: "10px" }} />
+
         <Button onClick={() => eval(code)}>
-          Run code
+          Try Script
         </Button>
       </div>
       <style jsx>
