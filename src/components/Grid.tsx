@@ -28,7 +28,9 @@ const GridComponent: React.FC<{}> = ({ }) => {
         onMouseLeave={() => handleMouseLeave()}
         onContextMenu={(e) => { e.preventDefault() }}
       >
-        {grid.cells.map((c, index) => { return <Cell cell={c} key={index} index={index} /> })}
+        {grid.cells.map((c, index) => {
+          return <Cell cell={c} key={index} index={index} gridId={grid.id} />
+        })}
       </div>
 
       <style jsx>

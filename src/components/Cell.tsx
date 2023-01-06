@@ -2,7 +2,7 @@ import { useCallback, useState } from "react"
 import store, { Cell } from "../store"
 import CellDrawer from "./CellDrawer"
 
-const CellComponent: React.FC<{ cell: Cell, index: number }> = ({ cell, index }) => {
+const CellComponent: React.FC<{ cell: Cell, index: number, gridId: number }> = ({ cell, index, gridId }) => {
   const selectedTool = store(state => state.selectedTool)
   const selectedColor = store(state => state.selectedColor)
   const selectedEmoji = store(state => state.selectedEmoji)
@@ -81,7 +81,13 @@ const CellComponent: React.FC<{ cell: Cell, index: number }> = ({ cell, index })
         {cell.emoji}
       </div>
 
-      <CellDrawer isDrawerOpened={isDrawerOpened} setIsDrawerOpened={setIsDrawerOpened} cell={cell} index={index} />
+      <CellDrawer
+        isDrawerOpened={isDrawerOpened}
+        setIsDrawerOpened={setIsDrawerOpened}
+        cell={cell}
+        index={index}
+        key={`grid${gridId}-cell${index}`}
+      />
 
       <style jsx>
         {`
