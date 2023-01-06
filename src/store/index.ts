@@ -49,7 +49,6 @@ export type Store = {
       script?: string
     }
   }) => void
-  changeCell: (cellIndex: number, { color, emoji }: { color?: string, emoji?: string }) => void
   changeCellsLikeSquare: (
     { index1, index2 }: { index1: number, index2: number },
     { color, emoji }: { color?: string, emoji?: string }
@@ -119,26 +118,16 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       ...grid.cells[cellIndex]!,
       ...cellUpdate
     }
-    console.log("la cellule a été changée")
-    // grids reference must be changed to recalculate component Grid and their children
     get().set({ grids: [...grids] })
-  },
-  changeCell: (cellIndex: number, { color, emoji }: { color?: string, emoji?: string }) => {
-    const { activeGridId, grids } = get()
-    const newGrids = grids.map((g, index) => {
-      if (index === activeGridId) {
-        const cell = g.cells[cellIndex]!
-        if (typeof color === "string") {
-          cell.color = color
-        }
-        if (typeof emoji === "string") {
-          cell.emoji = emoji
-        }
-      }
-      return g
-    })
-    get().set({ grids: newGrids })
-    pushToGridHistory(get())
+    // const newGrids = grids.map(g => {
+    //   if (g.id === gridId) {
+    //     grid.cells[cellIndex]! = { ...grid.cells[cellIndex]!, ...cellUpdate }
+    //     return g
+    //   }
+    //   return g
+    // })
+    // // grids reference must be changed to recalculate component Grid and their children
+    // get().set({ grids: newGrids })
   },
   changeCellsLikeSquare: (
     { index1, index2 }: { index1: number, index2: number },

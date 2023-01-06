@@ -9,7 +9,8 @@ const CellComponent: React.FC<{ cell: Cell, index: number, gridId: number }> = (
   const set = store(state => state.set)
   const mouseDownCellIndex = store(state => state.mouseDownCellIndex)
 
-  const changeCell = store(state => state.changeCell)
+  const updateCell = store(state => state.updateCell)
+
   const changeCellsLikeSquare = store(state => state.changeCellsLikeSquare)
 
   const handleMouseOver = useCallback<any>((event: MouseEvent) => {
@@ -18,12 +19,24 @@ const CellComponent: React.FC<{ cell: Cell, index: number, gridId: number }> = (
     if (buttons === 1) {
       if (selectedTool === "pencil") {
         if (selectedColor !== null && cell.color !== selectedColor) {
-          changeCell(index, { color: selectedColor })
+          updateCell({
+            gridId,
+            cellIndex: index,
+            cellUpdate: { color: selectedColor }
+          })
         } else if (selectedEmoji !== null && cell.emoji !== selectedEmoji) {
-          changeCell(index, { emoji: selectedEmoji })
+          updateCell({
+            gridId,
+            cellIndex: index,
+            cellUpdate: { emoji: selectedEmoji }
+          })
         }
       } else if (selectedTool === "eraser") {
-        changeCell(index, { color: "", emoji: "" })
+        updateCell({
+          gridId,
+          cellIndex: index,
+          cellUpdate: { color: "", emoji: "" }
+        })
       }
     }
   }, [cell, selectedTool, selectedColor, selectedEmoji])
@@ -33,9 +46,17 @@ const CellComponent: React.FC<{ cell: Cell, index: number, gridId: number }> = (
     if (buttons === 1) {
       if (selectedTool === "pencil") {
         if (selectedColor !== null && cell.color !== selectedColor) {
-          changeCell(index, { color: selectedColor })
+          updateCell({
+            gridId,
+            cellIndex: index,
+            cellUpdate: { color: selectedColor }
+          })
         } else if (selectedEmoji !== null && cell.emoji !== selectedEmoji) {
-          changeCell(index, { emoji: selectedEmoji })
+          updateCell({
+            gridId,
+            cellIndex: index,
+            cellUpdate: { emoji: selectedEmoji }
+          })
         }
       } else if (selectedTool === "square") {
         set({ mouseDownCellIndex: index })
@@ -44,7 +65,11 @@ const CellComponent: React.FC<{ cell: Cell, index: number, gridId: number }> = (
       } else if (selectedTool === "emojiPicker") {
         set({ selectedEmoji: cell.emoji, selectedTool: "pencil", selectedColor: null })
       } else if (selectedTool === "eraser") {
-        changeCell(index, { color: "", emoji: "" })
+        updateCell({
+          gridId,
+          cellIndex: index,
+          cellUpdate: { color: "", emoji: "" }
+        })
       }
     } else if (buttons === 2 || buttons === 3) {
       setIsDrawerOpened(true)
@@ -69,8 +94,6 @@ const CellComponent: React.FC<{ cell: Cell, index: number, gridId: number }> = (
   const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(false)
 
   const hasAScript = useMemo<boolean>(() => {
-    console.log("script has been changed!")
-
     return cell.script !== ""
   }, [cell.script])
 
