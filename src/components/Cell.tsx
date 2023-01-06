@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import store, { Cell } from "../store"
 import CellDrawer from "./CellDrawer"
 
@@ -68,10 +68,16 @@ const CellComponent: React.FC<{ cell: Cell, index: number, gridId: number }> = (
 
   const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(false)
 
+  const hasAScript = useMemo<boolean>(() => {
+    console.log("script has been changed!")
+
+    return cell.script !== ""
+  }, [cell.script])
+
   return (
     <>
       <div
-        className={`container ${isDrawerOpened ? "highlight-outline" : ""}`}
+        className={`container ${hasAScript ? "dashed-outline" : ""} ${isDrawerOpened ? "highlight-outline" : ""}`}
         style={{ "backgroundColor": cell.color }}
         onMouseOver={(e) => handleMouseOver(e)}
         onMouseDown={(e) => handleMouseDown(e)}
@@ -85,7 +91,8 @@ const CellComponent: React.FC<{ cell: Cell, index: number, gridId: number }> = (
         isDrawerOpened={isDrawerOpened}
         setIsDrawerOpened={setIsDrawerOpened}
         cell={cell}
-        index={index}
+        gridId={gridId}
+        cellIndex={index}
         key={`grid${gridId}-cell${index}`}
       />
 
@@ -97,6 +104,10 @@ const CellComponent: React.FC<{ cell: Cell, index: number, gridId: number }> = (
             justify-content: center;
             align-items: center;
             font-size: 1.5em;
+          }
+
+          .dashed-outline {
+            border: 2px dashed var(--highlighter-blue);
           }
 
           .highlight-outline {

@@ -4,6 +4,7 @@ import { twoIndexesIntoIndexesOfSquare } from '../utils/math'
 export type Cell = {
   color: string
   emoji: string
+  script: string
 }
 
 export type Grid = {
@@ -16,7 +17,7 @@ export type Grid = {
 export const defaultGridFactory = (): Omit<Grid, "id"> => {
   return {
     text: "",
-    cells: (new Array(100)).fill({}).map(() => ({ color: "", emoji: "" }))
+    cells: (new Array(100)).fill({}).map(() => ({ color: "", emoji: "", script: "" }))
   }
 }
 
@@ -35,6 +36,7 @@ export type Store = {
   set: SetState<Store>
   reset: () => void
   undo: () => void
+  changeScript: (gridId: number, cellIndex: number, script: string) => void
   changeCell: (cellIndex: number, { color, emoji }: { color?: string, emoji?: string }) => void
   changeCellsLikeSquare: (
     { index1, index2 }: { index1: number, index2: number },
@@ -83,6 +85,15 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       const oldGridToUse = gridHistory[gridHistory.length - 1]!
       get().set(oldGridToUse)
     }
+  },
+  changeScript: (gridId: number, cellIndex: number, script: string) => {
+    const { grids } = get()
+    const grid = grids.find(g => g.id === gridId)
+    if (typeof grid === "undefined") return console.error(`grid ${gridId} not found in the store`)
+    if (cellIndex >= 100) return console.error(`cellIndex ${cellIndex} does not exist (must be 0-100)`)
+    grid.cells[cellIndex]!.script = script
+    get().set({ grids: JSON.parse(JSON.stringify(grids)) })
+    pushToGridHistory(get())
   },
   changeCell: (cellIndex: number, { color, emoji }: { color?: string, emoji?: string }) => {
     const { activeGridId, grids } = get()

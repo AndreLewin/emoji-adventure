@@ -1,33 +1,33 @@
 import { Dispatch, SetStateAction, useState } from "react"
 import { Button, Drawer } from "@mantine/core"
-import { Cell } from "../store"
+import store, { Cell } from "../store"
 
-// https://github.com/react-simple-code-editor/react-simple-code-editor
+// https://github.com/react-simple-script-editor/react-simple-script-editor
 import Editor from 'react-simple-code-editor';
 // @ts-ignore
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
-import 'prismjs/themes/prism.css'; //Example style, you can use another
+import 'prismjs/themes/prism.css';
 
-const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatch<SetStateAction<boolean>>, cell: Cell, index: number }> = (
-  { isDrawerOpened, setIsDrawerOpened, cell, index }
+const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatch<SetStateAction<boolean>>, cell: Cell, gridId: number, cellIndex: number }> = (
+  { isDrawerOpened, setIsDrawerOpened, cell, gridId, cellIndex }
 ) => {
 
-  const [code, setCode] = useState(
-    `console.log(window.$ss())`
-  );
+  const [script, setScript] = useState<string>(cell.script)
+
+  const changeScript = store(state => state.changeScript)
 
   return (
     <Drawer opened={isDrawerOpened} onClose={() => setIsDrawerOpened(false)} position="right" transitionDuration={0} overlayOpacity={0.2} size="xl" styles={{ header: { display: 'none' } }}>
       <div className="container">
         <Editor
-          value={code}
-          onValueChange={code => setCode(code)}
-          highlight={code => highlight(code, languages.js)}
+          value={script}
+          onValueChange={script => setScript(script)}
+          highlight={script => highlight(script, languages.js)}
           padding={10}
           style={{
-            fontFamily: '"Fira code", "Fira Mono", monospace',
+            fontFamily: '"Fira script", "Fira Mono", monospace',
             fontSize: 14,
             border: "1px solid black",
             backgroundColor: "#ededf0"
@@ -36,7 +36,14 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
 
         <div style={{ marginTop: "10px" }} />
 
-        <Button onClick={() => eval(code)}>
+        <Button
+          disabled={script === cell.script}
+          onClick={() => changeScript(gridId, cellIndex, script)}
+        >
+          Save script
+        </Button>
+
+        <Button onClick={() => eval(script)}>
           Try Script
         </Button>
       </div>
