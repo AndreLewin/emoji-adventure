@@ -15,33 +15,33 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
 ) => {
 
   const [code, setCode] = useState(
-    `console.log(window._s())`
+    `console.log(window.$ss())`
   );
 
   return (
-    <Drawer opened={isDrawerOpened} onClose={() => setIsDrawerOpened(false)} title={`Cell ${index}`} position="right" transitionDuration={0} overlayOpacity={0.2} size="xl">
-      CONTENT
+    <Drawer opened={isDrawerOpened} onClose={() => setIsDrawerOpened(false)} position="right" transitionDuration={0} overlayOpacity={0.2} size="xl" styles={{ header: { display: 'none' } }}>
+      <div className="container">
+        <Editor
+          value={code}
+          onValueChange={code => setCode(code)}
+          highlight={code => highlight(code, languages.js)}
+          padding={10}
+          style={{
+            fontFamily: '"Fira code", "Fira Mono", monospace',
+            fontSize: 14,
+            border: "1px solid black",
+            backgroundColor: "#ededf0"
+          }}
+        />
 
-      <Editor
-        value={code}
-        onValueChange={code => setCode(code)}
-        highlight={code => highlight(code, languages.js)}
-        padding={10}
-        style={{
-          fontFamily: '"Fira code", "Fira Mono", monospace',
-          fontSize: 14,
-        }}
-      />
-
-      <Button onClick={() => eval(code)}>
-        Run code
-      </Button>
-
-
+        <Button onClick={() => eval(code)}>
+          Run code
+        </Button>
+      </div>
       <style jsx>
         {`
           .container {
-            
+            padding: 10px;
           }
         `}
       </style>
