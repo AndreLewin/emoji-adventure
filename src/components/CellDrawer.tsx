@@ -16,7 +16,7 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
 
   const [script, setScript] = useState<string>(cell.script)
 
-  const changeScript = store(state => state.changeScript)
+  const updateCell = store(state => state.updateCell)
 
   return (
     <Drawer opened={isDrawerOpened} onClose={() => setIsDrawerOpened(false)} position="right" transitionDuration={0} overlayOpacity={0.2} size="xl" styles={{ header: { display: 'none' } }}>
@@ -38,7 +38,7 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
 
         <Button
           disabled={script === cell.script}
-          onClick={() => changeScript(gridId, cellIndex, script)}
+          onClick={() => updateCell({ gridId, cellIndex, cellUpdate: { script } })}
         >
           Save script
         </Button>

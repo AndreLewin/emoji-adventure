@@ -36,7 +36,19 @@ export type Store = {
   set: SetState<Store>
   reset: () => void
   undo: () => void
-  changeScript: (gridId: number, cellIndex: number, script: string) => void
+  updateCell: ({
+    gridId,
+    cellIndex,
+    cellUpdate
+  }: {
+    gridId: number,
+    cellIndex: number,
+    cellUpdate: {
+      color?: string,
+      emoji?: string,
+      script?: string
+    }
+  }) => void
   changeCell: (cellIndex: number, { color, emoji }: { color?: string, emoji?: string }) => void
   changeCellsLikeSquare: (
     { index1, index2 }: { index1: number, index2: number },
@@ -86,14 +98,30 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       get().set(oldGridToUse)
     }
   },
-  changeScript: (gridId: number, cellIndex: number, script: string) => {
+  updateCell({
+    gridId,
+    cellIndex,
+    cellUpdate
+  }: {
+    gridId: number,
+    cellIndex: number,
+    cellUpdate: {
+      color?: string,
+      emoji?: string,
+      script?: string
+    }
+  }) {
     const { grids } = get()
     const grid = grids.find(g => g.id === gridId)
     if (typeof grid === "undefined") return console.error(`grid ${gridId} not found in the store`)
     if (cellIndex >= 100) return console.error(`cellIndex ${cellIndex} does not exist (must be 0-100)`)
-    grid.cells[cellIndex]!.script = script
-    get().set({ grids: JSON.parse(JSON.stringify(grids)) })
-    pushToGridHistory(get())
+    grid.cells[cellIndex]! = {
+      ...grid.cells[cellIndex]!,
+      ...cellUpdate
+    }
+    console.log("la cellule a été changée")
+    // grids reference must be changed to recalculate component Grid and their children
+    get().set({ grids: [...grids] })
   },
   changeCell: (cellIndex: number, { color, emoji }: { color?: string, emoji?: string }) => {
     const { activeGridId, grids } = get()
