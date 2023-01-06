@@ -4,10 +4,10 @@ import Cell from "./Cell"
 
 const GridComponent: React.FC<{}> = ({ }) => {
   const grids = store(state => state.grids)
-  const activeGrid = store(state => state.activeGrid)
+  const activeGridId = store(state => state.activeGridId)
   const grid = useMemo<Grid>(() => {
-    return grids[activeGrid]!
-  }, [grids, activeGrid])
+    return grids.find(g => g.id === activeGridId)!
+  }, [grids, activeGridId])
 
   const selectedTool = store(state => state.selectedTool)
 

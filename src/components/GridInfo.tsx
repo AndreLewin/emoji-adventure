@@ -4,13 +4,13 @@ import store from "../store";
 
 const GridInfo: React.FC<{}> = ({ }) => {
   const grids = store(state => state.grids)
-  const activeGrid = store(state => state.activeGrid)
+  const activeGridId = store(state => state.activeGridId)
   const changeGridText = store(state => state.changeGridText)
   const deleteGrid = store(state => state.deleteGrid)
 
   const gridText = useMemo<string>(() => {
-    return grids[activeGrid]?.text ?? ""
-  }, [grids, activeGrid])
+    return grids.find(g => g.id === activeGridId)?.text ?? ""
+  }, [grids, activeGridId])
 
   const handleTextChange = useCallback<any>((event: ChangeEvent<HTMLInputElement>) => {
     changeGridText(event.target.value)
@@ -38,12 +38,12 @@ const GridInfo: React.FC<{}> = ({ }) => {
       <Modal
         opened={isDeleteConfirmModalOpened}
         onClose={() => setIsDeleteConfirmModalOpened(false)}
-        title={`Are you sure to delete the grid ${activeGrid}: ${gridText}?`}
+        title={`Are you sure to delete the grid ${activeGridId}: ${gridText}?`}
       >
         <Button
           color="red"
           disabled={grids.length <= 1}
-          onClick={() => { deleteGrid(activeGrid), setIsDeleteConfirmModalOpened(false) }}
+          onClick={() => { deleteGrid(activeGridId), setIsDeleteConfirmModalOpened(false) }}
         >
           Delete Grid
         </Button>

@@ -7,11 +7,13 @@ export type Cell = {
 }
 
 export type Grid = {
+  // an id is necessary so it can be referenced from scripts
+  id: number
   text: string
   cells: Cell[]
 }
 
-export const defaultGridFactory = (): Grid => {
+export const defaultGridFactory = (): Omit<Grid, "id"> => {
   return {
     text: "",
     cells: (new Array(100)).fill({}).map(() => ({ color: "", emoji: "" }))
@@ -19,8 +21,9 @@ export const defaultGridFactory = (): Grid => {
 }
 
 const getDefaultStoreValues: () => any = (): Partial<Store> => ({
-  activeGrid: 0,
-  grids: [defaultGridFactory()],
+  activeGridId: 0,
+  gridIdCounter: 0,
+  grids: [{ id: 0, ...defaultGridFactory() }],
   selectedTool: "",
   selectedColor: null,
   selectedEmoji: null,
@@ -41,7 +44,8 @@ export type Store = {
   changeGridText: (text: string) => void
   createGrid: () => void
   deleteGrid: (index: number) => void
-  activeGrid: number
+  activeGridId: number
+  gridIdCounter: number
   grids: Grid[]
   selectedTool: "pencil" | "square" | "colorPicker" | "emojiPicker" | "eraser" | "undo" | ""
   // "blue": the color is selected with the color blue
@@ -55,10 +59,10 @@ export type Store = {
   lastEmojis: string[]
 }
 
-const gridHistory: Pick<Store, "activeGrid" | "grids">[] = []
+const gridHistory: Pick<Store, "activeGridId" | "grids">[] = []
 
 export const pushToGridHistory = (store: Store) => {
-  gridHistory.push(JSON.parse(JSON.stringify({ activeGrid: store.activeGrid, grids: store.grids })))
+  gridHistory.push(JSON.parse(JSON.stringify({ activeGridId: store.activeGridId, grids: store.grids })))
   if (gridHistory.length > 20) {
     gridHistory.shift()
   }
@@ -81,9 +85,9 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     }
   },
   changeCell: (cellIndex: number, { color, emoji }: { color?: string, emoji?: string }) => {
-    const { activeGrid, grids } = get()
+    const { activeGridId, grids } = get()
     const newGrids = grids.map((g, index) => {
-      if (index === activeGrid) {
+      if (index === activeGridId) {
         const cell = g.cells[cellIndex]!
         if (typeof color === "string") {
           cell.color = color
@@ -105,9 +109,9 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     const ITEMS_PER_COLUMN = 10
     const indexesToChange = twoIndexesIntoIndexesOfSquare(index1, index2, ITEMS_PER_LINE, ITEMS_PER_COLUMN)
 
-    const { activeGrid, grids } = get()
+    const { activeGridId, grids } = get()
     const newGrids = grids.map((g, index) => {
-      if (index === activeGrid) {
+      if (index === activeGridId) {
         indexesToChange.forEach((index) => {
           const cell = g.cells[index]!
           if (typeof color === "string") {
@@ -133,9 +137,9 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     }
   },
   changeGridText: (text: string) => {
-    const { activeGrid, grids } = get()
+    const { activeGridId, grids } = get()
     const newGrids = grids.map((g, index) => {
-      if (index === activeGrid) {
+      if (index === activeGridId) {
         return { ...g, text }
       }
       return g
@@ -144,18 +148,18 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     pushToGridHistory(get())
   },
   createGrid: () => {
-    const { grids } = get()
-    const newGrids = [...grids, defaultGridFactory()]
-    get().set({ grids: newGrids, activeGrid: newGrids.length - 1 })
+    const { grids, gridIdCounter } = get()
+    const newGrids = [...grids, { id: gridIdCounter + 1, ...defaultGridFactory() }]
+    get().set({ grids: newGrids, activeGridId: newGrids.length - 1, gridIdCounter: gridIdCounter + 1 })
     pushToGridHistory(get())
   },
-  deleteGrid: (index: number) => {
-    const { grids, activeGrid } = get()
+  deleteGrid: (gridIdToDelete: number) => {
+    const { grids, activeGridId } = get()
     // can't delete the last grid
     if (grids.length <= 1) return
-    const isRemovingActiveGrid = index === activeGrid
-    const newGrids = grids.filter((_g, i) => i !== index)
-    get().set({ activeGrid: isRemovingActiveGrid ? (newGrids.length - 1) : activeGrid })
+    const isRemovingActiveGridId = gridIdToDelete === activeGridId
+    const newGrids = grids.filter(g => g.id !== gridIdToDelete)
+    get().set({ activeGridId: isRemovingActiveGridId ? newGrids[newGrids.length - 1]!.id : activeGridId })
     get().set({ grids: newGrids })
     pushToGridHistory(get())
   }
