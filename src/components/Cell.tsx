@@ -1,4 +1,5 @@
-import { useCallback } from "react"
+import { Drawer, Menu } from "@mantine/core"
+import { useCallback, useState } from "react"
 import store, { Cell } from "../store"
 
 const CellComponent: React.FC<{ cell: Cell, index: number }> = ({ cell, index }) => {
@@ -45,6 +46,8 @@ const CellComponent: React.FC<{ cell: Cell, index: number }> = ({ cell, index })
       } else if (selectedTool === "eraser") {
         changeCell(index, { color: "", emoji: "" })
       }
+    } else if (buttons === 2 || buttons === 3) {
+      setIsDrawerOpened(true)
     }
   }, [cell, selectedTool, selectedColor, selectedEmoji])
 
@@ -63,17 +66,33 @@ const CellComponent: React.FC<{ cell: Cell, index: number }> = ({ cell, index })
     }
   }, [cell, selectedTool, selectedColor, mouseDownCellIndex, selectedEmoji])
 
+  const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(false)
+
   return (
     <>
       <div
-        className="container"
+        className={`container ${isDrawerOpened ? "highlight-outline" : ""}`}
         style={{ "backgroundColor": cell.color }}
         onMouseOver={(e) => handleMouseOver(e)}
         onMouseDown={(e) => handleMouseDown(e)}
         onMouseUp={(e) => handleMouseUp(e)}
+        onContextMenu={(e) => setIsDrawerOpened(true)}
       >
         {cell.emoji}
       </div>
+
+      <Drawer
+        opened={isDrawerOpened}
+        onClose={() => setIsDrawerOpened(false)}
+        title={`Cell ${index}`}
+        position="right"
+        transitionDuration={0}
+        overlayOpacity={0.2}
+        size="xl"
+      >
+        CONTENT
+      </Drawer>
+
       <style jsx>
         {`
           .container {
@@ -82,6 +101,10 @@ const CellComponent: React.FC<{ cell: Cell, index: number }> = ({ cell, index })
             justify-content: center;
             align-items: center;
             font-size: 1.5em;
+          }
+
+          .highlight-outline {
+            border: 3px solid var(--highlighter-blue);
           }
         `}
       </style>
