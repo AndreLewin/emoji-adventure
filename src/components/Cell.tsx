@@ -1,6 +1,6 @@
-import { Drawer, Menu } from "@mantine/core"
 import { useCallback, useState } from "react"
 import store, { Cell } from "../store"
+import CellDrawer from "./CellDrawer"
 
 const CellComponent: React.FC<{ cell: Cell, index: number }> = ({ cell, index }) => {
   const selectedTool = store(state => state.selectedTool)
@@ -81,17 +81,7 @@ const CellComponent: React.FC<{ cell: Cell, index: number }> = ({ cell, index })
         {cell.emoji}
       </div>
 
-      <Drawer
-        opened={isDrawerOpened}
-        onClose={() => setIsDrawerOpened(false)}
-        title={`Cell ${index}`}
-        position="right"
-        transitionDuration={0}
-        overlayOpacity={0.2}
-        size="xl"
-      >
-        CONTENT
-      </Drawer>
+      <CellDrawer isDrawerOpened={isDrawerOpened} setIsDrawerOpened={setIsDrawerOpened} cell={cell} index={index} />
 
       <style jsx>
         {`
