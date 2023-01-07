@@ -110,14 +110,16 @@ const CellComponent: React.FC<{ cell: Cell, index: number, gridId: number }> = (
         {cell.emoji}
       </div>
 
-      <CellDrawer
-        isDrawerOpened={isDrawerOpened}
-        setIsDrawerOpened={setIsDrawerOpened}
-        cell={cell}
-        gridId={gridId}
-        cellIndex={index}
-        key={`grid${gridId}-cell${index}`}
-      />
+      {isDrawerOpened &&
+        <CellDrawer
+          isDrawerOpened={isDrawerOpened}
+          setIsDrawerOpened={setIsDrawerOpened}
+          cell={cell}
+          gridId={gridId}
+          cellIndex={index}
+          key={`grid${gridId}-cell${index}`}
+        />
+      }
 
       <style jsx>
         {`
