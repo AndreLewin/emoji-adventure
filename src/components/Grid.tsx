@@ -29,7 +29,7 @@ const GridComponent: React.FC<{}> = ({ }) => {
         onContextMenu={(e) => { e.preventDefault() }}
       >
         {grid.cells.map((c, index) => {
-          return <Cell cell={c} key={index} index={index} gridId={grid.id} />
+          return <Cell cell={c} key={index} cellIndex={index} gridId={grid.id} />
         })}
       </div>
 

@@ -50,10 +50,21 @@ export type Store = {
       script?: string
     }
   }) => void
-  changeCellsLikeSquare: (
-    { index1, index2 }: { index1: number, index2: number },
-    { color, emoji }: { color?: string, emoji?: string }
-  ) => void
+  updateSquare: ({
+    gridId,
+    cellIndex1,
+    cellIndex2,
+    cellUpdate
+  }: {
+    gridId: number,
+    cellIndex1: number,
+    cellIndex2: number,
+    cellUpdate: {
+      color?: string,
+      emoji?: string,
+      script?: string
+    }
+  }) => void
   pickEmoji: (pickedEmoji: string) => void
   updateGrid: ({
     gridId
@@ -128,40 +139,41 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       ...cellUpdate
     }
     get().set({ grids: [...grids] })
-    // const newGrids = grids.map(g => {
-    //   if (g.id === gridId) {
-    //     grid.cells[cellIndex]! = { ...grid.cells[cellIndex]!, ...cellUpdate }
-    //     return g
-    //   }
-    //   return g
-    // })
-    // // grids reference must be changed to recalculate component Grid and their children
-    // get().set({ grids: newGrids })
+    pushToGridHistory(get())
   },
-  changeCellsLikeSquare: (
-    { index1, index2 }: { index1: number, index2: number },
-    { color, emoji }: { color?: string, emoji?: string }
-  ) => {
+  updateSquare: ({
+    gridId,
+    cellIndex1,
+    cellIndex2,
+    cellUpdate
+  }: {
+    gridId: number,
+    cellIndex1: number,
+    cellIndex2: number,
+    cellUpdate: {
+      color?: string,
+      emoji?: string,
+      script?: string
+    }
+  }) => {
+    const { grids } = get()
+    const grid = grids.find(g => g.id === gridId)
+    if (typeof grid === "undefined") return console.error(`grid ${gridId} not found in the store`)
+    if (cellIndex1 >= 100 || cellIndex1 < 0) return console.error(`cellIndex ${cellIndex1} does not exist (must be 0-100)`)
+    if (cellIndex2 >= 100 || cellIndex2 < 0) return console.error(`cellIndex ${cellIndex2} does not exist (must be 0-100)`)
+
     const ITEMS_PER_LINE = 10
     const ITEMS_PER_COLUMN = 10
-    const indexesToChange = twoIndexesIntoIndexesOfSquare(index1, index2, ITEMS_PER_LINE, ITEMS_PER_COLUMN)
+    const cellIndexesToChange = twoIndexesIntoIndexesOfSquare(cellIndex1, cellIndex2, ITEMS_PER_LINE, ITEMS_PER_COLUMN)
 
-    const { activeGridId, grids } = get()
-    const newGrids = grids.map((g, index) => {
-      if (index === activeGridId) {
-        indexesToChange.forEach((index) => {
-          const cell = g.cells[index]!
-          if (typeof color === "string") {
-            cell.color = color
-          }
-          if (typeof emoji === "string") {
-            cell.emoji = emoji
-          }
-        })
+    cellIndexesToChange.forEach((cellIndex) => {
+      grid.cells[cellIndex]! = {
+        ...grid.cells[cellIndex]!,
+        ...cellUpdate
       }
-      return g
     })
-    get().set({ grids: newGrids })
+
+    get().set({ grids: [...grids] })
     pushToGridHistory(get())
   },
   pickEmoji: (pickedEmoji: string) => {
