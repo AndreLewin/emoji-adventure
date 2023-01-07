@@ -7,18 +7,21 @@ const ColorSquare: React.FC<{ color: string }> = ({ color }) => {
   const isColorSelected = useMemo<boolean>(() => {
     return color === selectedColor
   }, [selectedColor])
+  const selectedTool = store(state => state.selectedTool)
 
   const set = store(state => state.set)
 
   const handleClick = useCallback<any>(() => {
-    // // unselect
-    // if (selectedColor === color) {
-    //   set({ selectedColor: "" })
-    //   return
-    // }
-
-    set({ selectedColor: color, selectedEmoji: null })
-  }, [color, selectedColor])
+    // ??? for some reason, TS does not like the conditional parameter ...((selectedTool !== "pencil" && selectedTool !== "square") && { selectedTool: "pencil" })
+    // ??? Error: '{ selectedTool?: "pencil" | undefined; selectedColor: string; selectedEmoji: null; }' is not assignable to parameter of type 'PartialState<Store, "selectedTool" | "selectedColor" | "selectedEmoji", "selectedTool" | "selectedColor" | "selectedEmoji", "selectedTool" | "selectedColor" | "selectedEmoji", "selectedTool" | ... 1 more ... | "selectedEmoji">'.
+    set({
+      selectedColor: color,
+      selectedEmoji: null
+    })
+    if (selectedTool !== "pencil" && selectedTool !== "square") {
+      set({ selectedTool: "pencil" })
+    }
+  }, [color, selectedColor, selectedTool])
 
   return (
     <>

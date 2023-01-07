@@ -1,3 +1,4 @@
+import { number } from 'prop-types'
 import create, { GetState, SetState } from 'zustand'
 import { twoIndexesIntoIndexesOfSquare } from '../utils/math'
 
@@ -156,6 +157,11 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     pushToGridHistory(get())
   },
   pickEmoji: (pickedEmoji: string) => {
+    // for better UX, automatically switch to a drawing tool (if it was not already the case)
+    const selectedTool = get().selectedTool
+    if (selectedTool !== "pencil" && selectedTool !== "square") {
+      get().set({ selectedTool: "pencil" })
+    }
     get().set({ selectedEmoji: pickedEmoji, selectedColor: null })
     const oldLastEmojis = get().lastEmojis
     if (!oldLastEmojis.includes(pickedEmoji)) {

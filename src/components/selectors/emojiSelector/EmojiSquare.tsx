@@ -7,12 +7,19 @@ const EmojiSquare: React.FC<{ emoji: string }> = ({ emoji }) => {
   const isEmojiSelected = useMemo<boolean>(() => {
     return emoji === selectedEmoji
   }, [selectedEmoji])
+  const selectedTool = store(state => state.selectedTool)
 
   const set = store(state => state.set)
 
   const handleClick = useCallback<any>(() => {
-    set({ selectedEmoji: emoji, selectedColor: null })
-  }, [emoji, selectedEmoji])
+    set({
+      selectedEmoji: emoji,
+      selectedColor: null
+    })
+    if (selectedTool !== "pencil" && selectedTool !== "square") {
+      set({ selectedTool: "pencil" })
+    }
+  }, [emoji, selectedEmoji, selectedTool])
 
   return (
     <>
