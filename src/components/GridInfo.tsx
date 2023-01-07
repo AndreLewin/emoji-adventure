@@ -1,19 +1,24 @@
 import { Button, Modal, TextInput } from "@mantine/core";
 import { ChangeEvent, useCallback, useMemo, useState } from "react";
-import store from "../store";
+import store, { Grid } from "../store";
 
 const GridInfo: React.FC<{}> = ({ }) => {
   const grids = store(state => state.grids)
   const activeGridId = store(state => state.activeGridId)
-  const changeGridText = store(state => state.changeGridText)
+  const updateGrid = store(state => state.updateGrid)
   const deleteGrid = store(state => state.deleteGrid)
 
-  const gridText = useMemo<string>(() => {
-    return grids.find(g => g.id === activeGridId)?.text ?? ""
+  const grid = useMemo<Grid>(() => {
+    return grids.find(g => g.id === activeGridId)!
   }, [grids, activeGridId])
 
   const handleTextChange = useCallback<any>((event: ChangeEvent<HTMLInputElement>) => {
-    changeGridText(event.target.value)
+    updateGrid({
+      gridId: grid.id,
+      gridUpdate: {
+        text: event.target.value
+      }
+    })
   }, [])
 
   const [isDeleteConfirmModalOpened, setIsDeleteConfirmModalOpened] = useState<boolean>(false)
@@ -22,7 +27,7 @@ const GridInfo: React.FC<{}> = ({ }) => {
     <>
       <div className='container'>
         <TextInput
-          value={gridText}
+          value={grid.text}
           onChange={handleTextChange}
           placeholder="Grid text"
         />
@@ -38,7 +43,7 @@ const GridInfo: React.FC<{}> = ({ }) => {
       <Modal
         opened={isDeleteConfirmModalOpened}
         onClose={() => setIsDeleteConfirmModalOpened(false)}
-        title={`Are you sure to delete the grid ${activeGridId}: ${gridText}?`}
+        title={`Are you sure to delete the grid ${activeGridId}: ${grid.text}?`}
       >
         <Button
           color="red"

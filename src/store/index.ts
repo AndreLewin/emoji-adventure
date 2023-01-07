@@ -55,9 +55,16 @@ export type Store = {
     { color, emoji }: { color?: string, emoji?: string }
   ) => void
   pickEmoji: (pickedEmoji: string) => void
-  changeGridText: (text: string) => void
+  updateGrid: ({
+    gridId
+  }: {
+    gridId: number
+    gridUpdate: {
+      text?: string
+    }
+  }) => void
   createGrid: () => void
-  deleteGrid: (index: number) => void
+  deleteGrid: (gridIdToDelete: number) => void
   activeGridId: number
   gridIdCounter: number
   grids: Grid[]
@@ -84,6 +91,7 @@ export const pushToGridHistory = (store: Store) => {
 }
 
 const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
+  // call get().set() instead of set() to add the new store state to the localStorage
   set: (partial) => {
     set(partial)
     const currentStore = get()
@@ -170,15 +178,23 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       get().set({ lastEmojis })
     }
   },
-  changeGridText: (text: string) => {
-    const { activeGridId, grids } = get()
-    const newGrids = grids.map((g, index) => {
-      if (index === activeGridId) {
-        return { ...g, text }
-      }
-      return g
-    })
-    get().set({ grids: newGrids })
+  updateGrid: ({
+    gridId,
+    gridUpdate
+  }: {
+    gridId: number
+    gridUpdate: {
+      text?: string
+    }
+  }) => {
+    const { grids } = get()
+    const gridIndex = grids.findIndex(g => g.id === gridId)
+    if (gridIndex === -1) return console.error(`grid ${gridId} not found in the store`)
+    grids[gridIndex]! = {
+      ...grids[gridIndex]!,
+      ...gridUpdate
+    }
+    get().set({ grids: [...grids] })
     pushToGridHistory(get())
   },
   createGrid: () => {
