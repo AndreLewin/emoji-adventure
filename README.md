@@ -1,4 +1,11 @@
-## Rule of hooks with useQuery
+# Important
+
+## This is a work in progress. The project is public only so that I can consult the code without being logged into Github.
+
+
+---
+
+## Rule of hooks with useQuery (trpc)
 
 You can not use useQuery inside useCallback or useMutation
 Instead of doing:
