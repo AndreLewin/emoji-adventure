@@ -9,6 +9,7 @@ import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
+import CodeGenerationButtons from "./cellDrawer/CodeGenerationButtons";
 
 const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatch<SetStateAction<boolean>>, cell: Cell, gridId: number, cellIndex: number }> = (
   { isDrawerOpened, setIsDrawerOpened, cell, gridId, cellIndex }
@@ -21,6 +22,11 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
   return (
     <Drawer opened={isDrawerOpened} onClose={() => setIsDrawerOpened(false)} position="right" transitionDuration={0} overlayOpacity={0.2} size="xl" styles={{ header: { display: 'none' } }}>
       <div className="container">
+
+        <CodeGenerationButtons setScript={setScript} />
+
+        <div style={{ marginTop: "10px" }} />
+
         <Editor
           value={script}
           onValueChange={script => setScript(script)}
