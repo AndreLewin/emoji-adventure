@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction, useCallback, useState } from "react"
 import { Button, Drawer } from "@mantine/core"
 import store, { Cell } from "../store"
 
@@ -10,6 +10,7 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
 import CodeGenerationButtons from "./cellDrawer/CodeGenerationButtons";
+import ShorthandsInfo from "./cellDrawer/ShorthandsInfo";
 
 const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatch<SetStateAction<boolean>>, cell: Cell, gridId: number, cellIndex: number }> = (
   { isDrawerOpened, setIsDrawerOpened, cell, gridId, cellIndex }
@@ -24,6 +25,7 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
       <div className="container">
 
         <CodeGenerationButtons setScript={setScript} />
+        <ShorthandsInfo />
 
         <div style={{ marginTop: "10px" }} />
 
