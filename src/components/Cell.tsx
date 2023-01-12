@@ -105,7 +105,7 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
   return (
     <>
       <div
-        className={`container ${hasAScript ? "dashed-outline" : ""} ${isDrawerOpened ? "highlight-outline" : ""}`}
+        className={`container ${hasAScript ? "gradient-border" : ""} ${isDrawerOpened ? "selected-border" : ""}`}
         style={{ "backgroundColor": cell.color }}
         onMouseOver={(e) => handleMouseOver(e)}
         onMouseDown={(e) => handleMouseDown(e)}
@@ -136,12 +136,15 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
             font-size: 1.5em;
           }
 
-          .dashed-outline {
-            border: 2px dashed var(--highlighter-blue);
+          .gradient-border {
+            border: 3px dashed;
+            border-image-slice: 1;
+            border-width: 3px;
+            border-image-source: linear-gradient(to right, #d53a9d, #3593f7);
           }
 
-          .highlight-outline {
-            border: 3px solid var(--highlighter-blue);
+          .selected-border {
+            border: 6px solid var(--highlighter-blue);
           }
         `}
       </style>
