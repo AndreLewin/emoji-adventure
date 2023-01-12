@@ -1,27 +1,39 @@
+import { Button } from "@mantine/core";
 import { type NextPage } from "next";
-import ToolSelector from "../components/selectors/ToolSelector";
-import ColorSelector from "../components/selectors/ColorSelector";
-import EmojiSelector from "../components/selectors/EmojiSelector";
-import Grid from "../components/Grid";
-import EmojiPicker from "../components/selectors/EmojiPicker";
-import GridSelector from "../components/selectors/GridSelector";
-import GridInfo from "../components/GridInfo";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+
 const Home: NextPage = () => {
+  const { data: sessionData } = useSession()
+  const router = useRouter()
 
   return (
-    <>
-      <ToolSelector />
-      <div style={{ display: "flex" }}>
-        <ColorSelector />
-        <EmojiSelector />
+    <div className="container">
+      <div>
+        TODO: list of published adventures
       </div>
-      <div style={{ display: "flex" }}>
-        <Grid />
-        <EmojiPicker />
-      </div>
-      <GridSelector />
-      <GridInfo />
-    </>
+
+      {sessionData !== undefined &&
+        <Button onClick={sessionData ? () => signOut() : () => signIn()}>
+          {sessionData ? "Sign out" : "Sign in"}
+        </Button>
+      }
+
+      {!!sessionData &&
+        <Button
+          onClick={() => router.push("/editor")}
+        >
+          Go to the editor
+        </Button>
+      }
+      <style jsx>
+        {`
+          .container {
+
+          }
+        `}
+      </style>
+    </div>
   );
 };
 
