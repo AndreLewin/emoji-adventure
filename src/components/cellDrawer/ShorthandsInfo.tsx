@@ -36,7 +36,7 @@ const ShorthandsInfo: React.FC<{}> = ({ }) => {
               <tr>
                 <td>$m(n)</td>
                 <td>Move to the grid n</td>
-                <td>{`window._s.setState({ activeGrid: n })`}</td>
+                <td>{`window._s.setState({ activeGridId: n })`}</td>
               </tr>
               <tr>
                 <td>$d(n1, n2)</td>

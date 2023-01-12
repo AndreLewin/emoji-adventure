@@ -1,5 +1,7 @@
 import { useRouter } from "next/router"
 import { useEffect } from "react"
+import GridInfoViewer from "../components/viewers/GridInfoViewer"
+import GridViewer from "../components/viewers/GridViewer"
 
 export default function AdventurePage() {
   const router = useRouter()
@@ -17,7 +19,8 @@ export default function AdventurePage() {
 
   return (
     <div className="container">
-      <div>TODO</div>
+      <GridViewer />
+      <GridInfoViewer />
 
       <style jsx>
         {`

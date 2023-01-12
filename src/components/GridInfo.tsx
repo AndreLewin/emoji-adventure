@@ -19,7 +19,7 @@ const GridInfo: React.FC<{}> = ({ }) => {
         text: event.target.value
       }
     })
-  }, [])
+  }, [grid])
 
   const [isDeleteConfirmModalOpened, setIsDeleteConfirmModalOpened] = useState<boolean>(false)
 
