@@ -1,4 +1,3 @@
-import { number } from 'prop-types'
 import create, { GetState, SetState } from 'zustand'
 import { twoIndexesIntoIndexesOfSquare } from '../utils/math'
 
@@ -13,12 +12,14 @@ export type Grid = {
   id: number
   text: string
   cells: Cell[]
+  script: string
 }
 
 export const defaultGridFactory = (): Omit<Grid, "id"> => {
   return {
     text: "",
-    cells: (new Array(100)).fill({}).map(() => ({ color: "", emoji: "", script: "" }))
+    cells: (new Array(100)).fill({}).map(() => ({ color: "", emoji: "", script: "" })),
+    script: ""
   }
 }
 
@@ -30,7 +31,9 @@ const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   selectedColor: null,
   selectedEmoji: null,
   mouseDownCellIndex: null,
-  lastEmojis: []
+  lastEmojis: [],
+  firstGridId: 0,
+  initialScript: ""
 })
 
 export type Store = {
@@ -89,6 +92,10 @@ export type Store = {
   mouseDownCellIndex: number | null
   // used by the selector to quickly use last used emojis
   lastEmojis: string[]
+  // the first grid where the player will play
+  firstGridId: number
+  // eval when the adventure is loaded
+  initialScript: string
 }
 
 const gridHistory: Pick<Store, "activeGridId" | "grids">[] = []

@@ -14,6 +14,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Adventure {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  name         String
+  description  String
+  data         String
+  isAccessible Boolean  @default(false)
+  isPublished  Boolean  @default(false)
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model Grid {
   id              Int      @id @default(autoincrement())
   name            String?
@@ -59,13 +72,14 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?     @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Adventure     Adventure[]
 }
 
 model VerificationToken {
