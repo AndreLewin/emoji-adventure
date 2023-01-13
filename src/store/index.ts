@@ -1,3 +1,4 @@
+import { Adventure } from '.prisma/client'
 import create, { GetState, SetState } from 'zustand'
 import { twoIndexesIntoIndexesOfSquare } from '../utils/math'
 
@@ -20,6 +21,20 @@ export const defaultGridFactory = (): Omit<Grid, "id"> => {
     text: "",
     cells: (new Array(100)).fill({}).map(() => ({ color: "", emoji: "", script: "" })),
     script: ""
+  }
+}
+
+export const defaultAdventureFactory = (): Omit<Adventure, "id" | "createdAt" | "updatedAt" | "userId"> => {
+  return {
+    name: "",
+    description: "",
+    data: JSON.stringify({
+      grids: [defaultGridFactory()],
+      firstGridId: 0,
+      initialScript: ""
+    }),
+    isAccessible: false,
+    isPublished: false
   }
 }
 

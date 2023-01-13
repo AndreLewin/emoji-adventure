@@ -21,6 +21,7 @@ model Adventure {
   name         String
   description  String
   data         String
+  // other users can play the adventure using the link adventure/xxxx
   isAccessible Boolean  @default(false)
   isPublished  Boolean  @default(false)
   userId       String
