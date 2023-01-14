@@ -27,7 +27,12 @@ export default async function handler(
               isAccessible: true
             },
           ]
-        }
+        },
+        select: {
+          id: true,
+          name: true,
+          description: true
+        },
       });
       res.status(200).json(adventure)
       break

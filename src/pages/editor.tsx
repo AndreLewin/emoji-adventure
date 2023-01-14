@@ -14,23 +14,24 @@ const Editor: NextPage = () => {
   }, [])
 
   if (!isClientSide || sessionData === undefined) return <div />
-
   if (sessionData === null) {
-    return (
-      <>
-        <div>You are not connected</div>
-        <Button
-          onClick={() => router.push("/")}
-        >
-          Take me back home
-        </Button>
-      </>
-    )
+    router.push("/")
+    return <div />
   }
 
   return (
     <div className="container">
       This is the editor page
+
+      <Button>
+        Create a new adventure
+      </Button>
+
+      <hr />
+      Your adventures:
+      {
+
+      }
       <style jsx>
         {`
           .container {
