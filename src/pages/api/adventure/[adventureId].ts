@@ -4,10 +4,6 @@ import { Adventure } from '@prisma/client'
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 
-const isDefined = (x: unknown): boolean => {
-  return x !== null && x !== undefined
-}
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -21,10 +17,20 @@ export default async function handler(
 
   switch (method) {
     case 'GET':
-      const adventure = await prisma.adventure.findUnique({
-        where: { id: adventureId }
+      const adventure = await prisma.adventure.findMany({
+        where: {
+          OR: [
+            {
+              id: adventureId,
+              userId: userId ?? ""
+            },
+            {
+              id: adventureId,
+              isAccessible: true
+            },
+          ]
+        }
       });
-
       if (adventure) {
         res.status(200).json(adventure)
       } else {
@@ -32,16 +38,32 @@ export default async function handler(
       }
       break
     case 'PUT':
-      const updatedAdventure = await prisma.adventure.update({
-        where: { id: adventureId },
+      if (userId === null) {
+        res.status(401).json("You need to be authenticated to perform this action")
+        break;
+      }
+      const updatedAdventure = await prisma.adventure.updateMany({
+        where: {
+          id: adventureId,
+          userId
+        },
         // @ts-ignore
         data: { ...body }
       })
       res.status(200).json(updatedAdventure)
       break
     case 'DELETE':
-      const deletedAdventure = await prisma.adventure.delete({
-        where: { id: adventureId }
+      if (userId === null) {
+        res.status(401).json("You need to be authenticated to perform this action")
+        break;
+      }
+      // xxx deleteMany is used instead of delete so "userId" can be used to check if the user owns the adventure
+      // seriously Prisma, correct this... https://github.com/prisma/prisma/issues/7290
+      const deletedAdventure = await prisma.adventure.deleteMany({
+        where: {
+          id: adventureId,
+          userId
+        }
       });
       res.status(200).json(deletedAdventure)
       break
