@@ -1,13 +1,20 @@
 import { Button } from "@mantine/core";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { trpc } from "../utils/trpc";
 
 const Editor: NextPage = () => {
   const [isClientSide, setIsClientSide] = useState<boolean>(false)
   const { data: sessionData } = useSession()
+  const userId = sessionData?.user?.id ?? null
   const router = useRouter()
+
+  const allAdventuresQuery = trpc.adventure.findMany.useQuery()
+  const allAdventures = allAdventuresQuery.data ?? []
+  const ownAdventures = allAdventures.filter(a => a.userId === userId)
 
   useEffect(() => {
     setIsClientSide(true)
@@ -21,7 +28,13 @@ const Editor: NextPage = () => {
 
   return (
     <div className="container">
-      This is the editor page
+      {userId &&
+        <Button
+          onClick={() => router.push("/")}
+        >
+          Go to home
+        </Button>
+      }
 
       <Button>
         Create a new adventure
@@ -30,7 +43,13 @@ const Editor: NextPage = () => {
       <hr />
       Your adventures:
       {
-
+        ownAdventures.map(pA => (
+          <div>
+            <Link href={`/adventure-${pA.id}`} key={`/${pA.id}`}>
+              {pA.name === "" ? "Unnamed adventure" : pA.name}
+            </Link>
+          </div>
+        ))
       }
       <style jsx>
         {`

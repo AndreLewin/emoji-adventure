@@ -1,16 +1,44 @@
+import { Adventure } from ".prisma/client";
 import { Button } from "@mantine/core";
 import { type NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
+  const userId = sessionData?.user?.id ?? null
   const router = useRouter()
+
+  const allAdventuresQuery = trpc.adventure.findMany.useQuery()
+  const allAdventures = allAdventuresQuery.data ?? []
+  const publishedAdventures = allAdventures.filter(a => a.isPublished)
 
   return (
     <div className="container">
+      {userId &&
+        <Button
+          onClick={() => router.push("/editor")}
+        >
+          Go to the editor
+        </Button>
+      }
+
+      <div>Public adventures:</div>
       <div>
-        TODO: list of published adventures
+        {allAdventuresQuery.isLoading && "Loading adventures..."}
+      </div>
+      <div>
+        {
+          publishedAdventures.map(pA => (
+            <div>
+              <Link href={`/adventure-${pA.id}`} key={`/${pA.id}`}>
+                {pA.name === "" ? "Unnamed adventure" : pA.name}
+              </Link>
+            </div>
+          ))
+        }
       </div>
 
       {sessionData !== undefined &&
@@ -19,13 +47,6 @@ const Home: NextPage = () => {
         </Button>
       }
 
-      {!!sessionData &&
-        <Button
-          onClick={() => router.push("/editor")}
-        >
-          Go to the editor
-        </Button>
-      }
       <style jsx>
         {`
           .container {

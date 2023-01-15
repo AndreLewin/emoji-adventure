@@ -4,11 +4,11 @@ import { defaultAdventureFactory } from "../../../store";
 
 import { router, publicProcedure } from "../trpc";
 
-export const cardRouter = router({
+export const adventureRouter = router({
   findMany: publicProcedure
     .query(async ({ ctx }) => {
       const userId = ctx?.session?.user?.id ?? null
-      return await ctx.prisma.adventure.findMany({
+      const adventures = await ctx.prisma.adventure.findMany({
         orderBy: [{ createdAt: "desc" }],
         where: {
           OR: [
@@ -19,13 +19,13 @@ export const cardRouter = router({
               isAccessible: true
             },
           ]
-        },
-        select: {
-          id: true,
-          name: true,
-          description: true
-        },
+        }
       });
+      return adventures.map(a => {
+        // don't send the data field since it can be heavy
+        const { data, ...rest } = a
+        return rest
+      })
     }),
   create: publicProcedure
     .mutation(async ({ ctx }) => {

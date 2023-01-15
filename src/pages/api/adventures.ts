@@ -31,7 +31,8 @@ export default async function handler(
         select: {
           id: true,
           name: true,
-          description: true
+          description: true,
+          isPublished: true
         },
       });
       res.status(200).json(adventure)
