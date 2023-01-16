@@ -16,16 +16,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   const [isClientSide, setIsClientSide] = useState<boolean>(false)
 
-  const set = store(state => state.set)
-
   useEffect(() => {
-    const stringifiedStore = localStorage.getItem("store")
-    if (stringifiedStore !== null) {
-      // @ts-ignore
-      set(JSON.parse(stringifiedStore))
-      // so the first change can be undone
-      pushToGridHistory(store.getState())
-    }
     setIsClientSide(true)
   }, [])
 

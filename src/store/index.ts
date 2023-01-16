@@ -29,7 +29,7 @@ export const defaultAdventureFactory = (): Omit<Adventure, "id" | "createdAt" | 
     name: "",
     description: "",
     data: JSON.stringify({
-      grids: [defaultGridFactory()],
+      grids: [{ id: 0, ...defaultGridFactory() }],
       firstGridId: 0,
       initialScript: ""
     }),
@@ -41,12 +41,13 @@ export const defaultAdventureFactory = (): Omit<Adventure, "id" | "createdAt" | 
 const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   activeGridId: 0,
   gridIdCounter: 0,
-  grids: [{ id: 0, ...defaultGridFactory() }],
   selectedTool: "",
   selectedColor: null,
   selectedEmoji: null,
   mouseDownCellIndex: null,
   lastEmojis: [],
+  // adventure data
+  grids: [{ id: 0, ...defaultGridFactory() }],
   firstGridId: 0,
   initialScript: ""
 })
@@ -113,7 +114,7 @@ export type Store = {
   initialScript: string
 }
 
-const gridHistory: Pick<Store, "activeGridId" | "grids">[] = []
+export let gridHistory: Pick<Store, "activeGridId" | "grids">[] = []
 
 export const pushToGridHistory = (store: Store) => {
   gridHistory.push(JSON.parse(JSON.stringify({ activeGridId: store.activeGridId, grids: store.grids })))
@@ -122,13 +123,15 @@ export const pushToGridHistory = (store: Store) => {
   }
   // console.log("history | index.ts l56", gridHistory)
 }
+export const emptyHistory = () => gridHistory = []
 
 const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
   // call get().set() instead of set() to add the new store state to the localStorage
   set: (partial) => {
     set(partial)
     const currentStore = get()
-    localStorage.setItem("store", JSON.stringify(currentStore))
+    //// TODO: reactivate the localStorage
+    // localStorage.setItem("store", JSON.stringify(currentStore))
   },
   reset: () => set(getDefaultStoreValues()),
   ...getDefaultStoreValues(),

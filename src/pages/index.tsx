@@ -32,8 +32,8 @@ const Home: NextPage = () => {
       <div>
         {
           publishedAdventures.map(pA => (
-            <div>
-              <Link href={`/adventure-${pA.id}`} key={`/${pA.id}`}>
+            <div key={`/adventure-${pA.id}`}>
+              <Link href={`/adventure-${pA.id}`}>
                 {pA.name === "" ? "Unnamed adventure" : pA.name}
               </Link>
             </div>

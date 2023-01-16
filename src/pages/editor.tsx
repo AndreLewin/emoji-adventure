@@ -3,7 +3,7 @@ import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { trpc } from "../utils/trpc";
 
 const Editor: NextPage = () => {
@@ -20,6 +20,13 @@ const Editor: NextPage = () => {
     setIsClientSide(true)
   }, [])
 
+  const createAdventureMutation = trpc.adventure.create.useMutation({
+    async onSuccess(data) {
+      if (data === -1) return
+      router.push(`/editor/${data.id}`)
+    }
+  })
+
   if (!isClientSide || sessionData === undefined) return <div />
   if (sessionData === null) {
     router.push("/")
@@ -29,14 +36,12 @@ const Editor: NextPage = () => {
   return (
     <div className="container">
       {userId &&
-        <Button
-          onClick={() => router.push("/")}
-        >
+        <Button onClick={() => router.push("/")}>
           Go to home
         </Button>
       }
 
-      <Button>
+      <Button onClick={() => createAdventureMutation.mutate()}>
         Create a new adventure
       </Button>
 
@@ -44,8 +49,8 @@ const Editor: NextPage = () => {
       Your adventures:
       {
         ownAdventures.map(pA => (
-          <div>
-            <Link href={`/adventure-${pA.id}`} key={`/${pA.id}`}>
+          <div key={`/adventure-${pA.id}`}>
+            <Link href={`/editor/${pA.id}`}>
               {pA.name === "" ? "Unnamed adventure" : pA.name}
             </Link>
           </div>
