@@ -49,7 +49,11 @@ const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   // adventure data
   grids: [{ id: 0, ...defaultGridFactory() }],
   firstGridId: 0,
-  initialScript: ""
+  initialScript: "",
+  // adventure info
+  adventure: null,
+  //
+  isChanged: false
 })
 
 export type Store = {
@@ -112,6 +116,8 @@ export type Store = {
   firstGridId: number
   // eval when the adventure is loaded
   initialScript: string
+  adventure: Omit<Adventure, "data"> | null
+  isChanged: boolean
 }
 
 export let gridHistory: Pick<Store, "activeGridId" | "grids">[] = []
@@ -129,6 +135,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
   // call get().set() instead of set() to add the new store state to the localStorage
   set: (partial) => {
     set(partial)
+    set({ isChanged: true })
     const currentStore = get()
     //// TODO: reactivate the localStorage
     // localStorage.setItem("store", JSON.stringify(currentStore))

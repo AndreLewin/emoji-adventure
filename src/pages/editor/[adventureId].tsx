@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
 import { Adventure } from ".prisma/client";
 import store, { emptyHistory, gridHistory, pushToGridHistory } from "../../store";
+import AdventureInfo from "../../components/AdventureInfo";
 
 const EditorAdventureId: NextPage = () => {
   const { data: sessionData } = useSession()
@@ -45,16 +46,15 @@ const EditorAdventureId: NextPage = () => {
       enabled: adventureId !== null,
       onSuccess: (adventure) => {
         if (adventure === undefined) return
-        console.log("data | [adventureId].tsx l46", adventure)
-        const { data } = adventure
+        const { data, ...rest } = adventure
         const dataParsed = JSON.parse(data)
-        console.log("dataParsed | [adventureId].tsx l51", dataParsed)
-        console.log("dataParsed.grids | [adventureId].tsx l52", dataParsed.grids)
 
         set({
           grids: dataParsed.grids,
           firstGridId: dataParsed.firstGridId,
-          initialScript: dataParsed.initialScript
+          initialScript: dataParsed.initialScript,
+          adventure: rest,
+          isChanged: false
         })
         // so the first change can be undone
         if (gridHistory.length === 0) {
@@ -84,7 +84,6 @@ const EditorAdventureId: NextPage = () => {
 
   return (
     <>
-      {JSON.stringify(adventure)}
       <ToolSelector />
       <div style={{ display: "flex" }}>
         <ColorSelector />
@@ -96,6 +95,9 @@ const EditorAdventureId: NextPage = () => {
       </div>
       <GridSelector />
       <GridInfo />
+      {/* TODO: to move adventure info edit into /editor */}
+      {/* Those info do not need to be in the store */}
+      <AdventureInfo />
     </>
   );
 };
