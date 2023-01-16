@@ -9,14 +9,13 @@ const ToolSquare: React.FC<{ tool: Tool }> = ({ tool }) => {
     return tool.toolName === selectedTool
   }, [selectedTool])
 
-  const set = store(state => state.set)
   const undo = store(state => state.undo)
 
   const handleClick = useCallback<any>(() => {
     const { toolName } = tool
     // unselect
     if (selectedTool === toolName) {
-      set({ selectedTool: "" })
+      store.setState({ selectedTool: "" })
       return
     }
 
@@ -26,7 +25,7 @@ const ToolSquare: React.FC<{ tool: Tool }> = ({ tool }) => {
       return
     }
 
-    set({ selectedTool: toolName })
+    store.setState({ selectedTool: toolName })
   }, [tool, selectedTool])
 
   return (

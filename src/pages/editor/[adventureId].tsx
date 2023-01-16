@@ -13,6 +13,7 @@ import { trpc } from "../../utils/trpc";
 import { Adventure } from ".prisma/client";
 import store, { emptyHistory, gridHistory, pushToGridHistory } from "../../store";
 import AdventureInfo from "../../components/AdventureInfo";
+import SaveAdventure from "../../components/SaveAdventure";
 
 const EditorAdventureId: NextPage = () => {
   const { data: sessionData } = useSession()
@@ -21,13 +22,15 @@ const EditorAdventureId: NextPage = () => {
 
   const [adventureId, setAdventureId] = useState<string | null>(null)
 
-  const set = store(state => state.set)
   const reset = store(state => state.reset)
   useEffect(() => {
     // make sure that data in store from other adventures don't spill on this one
     reset()
     emptyHistory()
   }, [])
+
+  const [adventure, setAdventure] = useState<Adventure | null>(null)
+
 
   useEffect(() => {
     // the query is an empty object at the first render before Router.isReady
@@ -36,38 +39,37 @@ const EditorAdventureId: NextPage = () => {
     const { adventureId } = router.query
     if (typeof adventureId !== "string" || adventureId === "") {
       router.push('/')
+      return
     } else {
       setAdventureId(adventureId)
     }
-  }, [router.query])
 
-  const adventureQuery = trpc.adventure.find.useQuery({ id: adventureId! },
-    {
-      enabled: adventureId !== null,
-      onSuccess: (adventure) => {
-        if (adventure === undefined) return
-        const { data, ...rest } = adventure
-        const dataParsed = JSON.parse(data)
-
-        set({
-          grids: dataParsed.grids,
-          firstGridId: dataParsed.firstGridId,
-          initialScript: dataParsed.initialScript,
-          adventure: rest,
-          isChanged: false
-        })
-        // so the first change can be undone
-        if (gridHistory.length === 0) {
-          pushToGridHistory(store.getState())
-        }
+    const af = async () => {
+      const res = await fetch(`/api/adventure/${adventureId}`)
+      // TODO: check return types of res.json()
+      const adventure = (await res.json())[0] as Adventure | undefined
+      if (adventure === undefined) return
+      setAdventure(adventure)
+      const { data, ...rest } = adventure
+      const dataParsed = JSON.parse(data)
+      store.setState({
+        grids: dataParsed.grids,
+        firstGridId: dataParsed.firstGridId,
+        initialScript: dataParsed.initialScript,
+        adventure: rest,
+        isChanged: false
+      })
+      // so the first change can be undone
+      if (gridHistory.length === 0) {
+        pushToGridHistory(store.getState())
       }
     }
-  )
-  const adventure = adventureQuery?.data ?? null
+    af()
+  }, [router.query])
 
   if (typeof window === "undefined") return <div />
   // don't display anything until the user is authenticated
-  if (sessionData === undefined) return <div />
+  if (sessionData === undefined) return <div>Loading...</div>
   // if the user is not logged, redirect to home
   if (sessionData === null) {
     router.push("/")
@@ -75,7 +77,7 @@ const EditorAdventureId: NextPage = () => {
   }
 
   // don't display anything before the adventure is fetched
-  if (adventure === null) return <div />
+  if (adventure === null) return <div>Loading...</div>
   // the user should only be able to edit their own adventure
   if (adventure.userId !== userId) {
     router.push("/")
@@ -94,6 +96,7 @@ const EditorAdventureId: NextPage = () => {
         <EmojiPicker />
       </div>
       <GridSelector />
+      <SaveAdventure />
       <GridInfo />
       {/* TODO: to move adventure info edit into /editor */}
       {/* Those info do not need to be in the store */}

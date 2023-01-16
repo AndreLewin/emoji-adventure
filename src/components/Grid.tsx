@@ -11,13 +11,9 @@ const GridComponent: React.FC<{}> = ({ }) => {
 
   const selectedTool = store(state => state.selectedTool)
 
-  // TODO: activate button to save to remote
-  const [isChangedLocally, setIsChangedLocally] = useState<boolean>(false)
-
-  const set = store(state => state.set)
   // avoid painting with the square tool from an outdated click
   const handleMouseLeave = useCallback<any>(() => {
-    set({ mouseDownCellIndex: null })
+    store.setState({ mouseDownCellIndex: null })
   }, [])
 
   return (

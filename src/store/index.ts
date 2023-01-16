@@ -212,14 +212,14 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     // for better UX, automatically switch to a drawing tool (if it was not already the case)
     const selectedTool = get().selectedTool
     if (selectedTool !== "pencil" && selectedTool !== "square") {
-      get().set({ selectedTool: "pencil" })
+      set({ selectedTool: "pencil" })
     }
-    get().set({ selectedEmoji: pickedEmoji, selectedColor: null })
+    set({ selectedEmoji: pickedEmoji, selectedColor: null })
     const oldLastEmojis = get().lastEmojis
     if (!oldLastEmojis.includes(pickedEmoji)) {
       const lastEmojis = [pickedEmoji, ...oldLastEmojis]
       if (lastEmojis.length > 20) lastEmojis.length = 20
-      get().set({ lastEmojis })
+      set({ lastEmojis })
     }
   },
   updateGrid: ({
