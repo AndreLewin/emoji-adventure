@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
+import EditorAdventureItem from "../components/EditorAdventureItem";
 import { trpc } from "../utils/trpc";
 
 const Editor: NextPage = () => {
@@ -47,15 +48,7 @@ const Editor: NextPage = () => {
 
       <hr />
       Your adventures:
-      {
-        ownAdventures.map(pA => (
-          <div key={`/adventure-${pA.id}`}>
-            <Link href={`/editor/${pA.id}`}>
-              {pA.name === "" ? "Unnamed adventure" : pA.name}
-            </Link>
-          </div>
-        ))
-      }
+      {ownAdventures.map(pA => <EditorAdventureItem adventure={pA} key={`/adventure-${pA.id}`} />)}
       <style jsx>
         {`
           .container {
