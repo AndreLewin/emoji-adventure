@@ -8,22 +8,50 @@ export type Tool = {
 
 const tools: Tool[] = [{
   toolName: "pencil",
-  svgIcon: <svg width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M16.84 2.73c-.39 0-.77.15-1.07.44l-2.12 2.12l5.3 5.31l2.12-2.1c.6-.61.6-1.56 0-2.14L17.9 3.17c-.3-.29-.68-.44-1.06-.44M12.94 6l-8.1 8.11l2.56.28l.18 2.29l2.28.17l.29 2.56l8.1-8.11m-14 3.74L2.5 21.73l6.7-1.79l-.24-2.16l-2.31-.17l-.18-2.32"></path></svg>
+  svgIcon:
+    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-pencil" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />
+      <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
+    </svg>
 }, {
   toolName: "square",
-  svgIcon: <svg width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M5 21q-.825 0-1.413-.587Q3 19.825 3 19V5q0-.825.587-1.413Q4.175 3 5 3h14q.825 0 1.413.587Q21 4.175 21 5v14q0 .825-.587 1.413Q19.825 21 19 21Z"></path></svg>
+  svgIcon:
+    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-square" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <rect x="4" y="4" width="16" height="16" rx="2" />
+    </svg>
 }, {
   toolName: "colorPicker",
-  svgIcon: <svg width="1em" height="1em" viewBox="0 0 24 24"><g fill="currentColor"><path d="M20.385 2.879a3 3 0 0 0-4.243 0L14.02 5l-.707-.708a1 1 0 1 0-1.414 1.415l5.657 5.656A1 1 0 0 0 18.97 9.95l-.707-.707l2.122-2.122a3 3 0 0 0 0-4.242Z" /><path fillRule="evenodd" d="M11.93 7.091L4.152 14.87a3.001 3.001 0 0 0-.587 3.415L2 19.85l1.414 1.415l1.565-1.566a3.001 3.001 0 0 0 3.415-.586l7.778-7.778L11.93 7.09Zm1.414 4.243L11.93 9.92l-6.364 6.364a1 1 0 0 0 1.414 1.414l6.364-6.364Z" clipRule="evenodd" /></g></svg>
+  svgIcon:
+    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-color-picker" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M11 7l6 6" />
+      <path d="M4 16l11.7 -11.7a1 1 0 0 1 1.4 0l2.6 2.6a1 1 0 0 1 0 1.4l-11.7 11.7h-4v-4z" />
+    </svg>
 }, {
   toolName: "emojiPicker",
-  svgIcon: <svg width="1em" height="1em" viewBox="0 0 20 20"><path fill="currentColor" d="M4.5 1a1.5 1.5 0 0 0-1.415 1H3a2 2 0 0 0-2 2v4.792a3.5 3.5 0 0 0 .37 1.565L2 11.618A2.5 2.5 0 0 0 4.236 13h1.822c1.08 0 1.99-.69 2.518-1.508a8.04 8.04 0 0 1 3.62-3.032a.5.5 0 0 0 .289-.581c-.147-.589-.42-1.013-.792-1.283a1.894 1.894 0 0 0-1.13-.346c-.202 0-.394.026-.563.06V4a2 2 0 0 0-2-2h-.085A1.5 1.5 0 0 0 6.5 1h-2Zm0 1H5v4.5a.5.5 0 0 0 1 0V2h.5a.5.5 0 0 1 .5.5v4a.5.5 0 1 0 1 0V3a1 1 0 0 1 1 1v3a.5.5 0 0 0 .722.448h.001l.01-.005l.048-.021c.044-.019.11-.045.192-.07c.166-.054.378-.102.59-.102c.209 0 .393.046.541.154a.914.914 0 0 1 .271.332a9.014 9.014 0 0 0-3.639 3.214C7.331 11.578 6.7 12 6.058 12H4.236a1.5 1.5 0 0 1-1.342-.83l-.63-1.26A2.5 2.5 0 0 1 2 8.792V4a1 1 0 0 1 1-1v3.5a.5.5 0 1 0 1 0v-4a.5.5 0 0 1 .5-.5Zm8.761 5.052a5.501 5.501 0 1 1-6.1 6.774c.333-.108.643-.261.925-.445A4.502 4.502 0 0 0 17 12.5a4.502 4.502 0 0 0-3.504-4.39a1.495 1.495 0 0 0-.04-.474a3.946 3.946 0 0 0-.195-.584ZM10.75 12.5a.75.75 0 1 0 0-1.5a.75.75 0 0 0 0 1.5Zm4.25-.75a.75.75 0 1 1-1.5 0a.75.75 0 0 1 1.5 0Zm-4.053 2.526a.5.5 0 1 0-.894.448C10.3 15.219 11.103 16 12.5 16c1.398 0 2.2-.781 2.447-1.276a.5.5 0 1 0-.894-.448c-.086.172-.55.724-1.553.724c-1.002 0-1.467-.552-1.553-.724ZM1.37 10.357l.447-.223Z" /></svg>
+  svgIcon:
+    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-rubber-stamp" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M21 17.85h-18c0 -4.05 1.421 -4.05 3.79 -4.05c5.21 0 1.21 -4.59 1.21 -6.8a4 4 0 1 1 8 0c0 2.21 -4 6.8 1.21 6.8c2.369 0 3.79 0 3.79 4.05z" />
+      <path d="M5 21h14" />
+    </svg>
 }, {
   toolName: "eraser",
-  svgIcon: <svg width="1em" height="1em" viewBox="0 0 256 256"><path fill="currentColor" d="M216 207.8h-85.7l34.8-34.7l56.6-56.6a24.1 24.1 0 0 0 0-33.9l-45.3-45.3a24 24 0 0 0-33.9 0L85.9 93.9l-56.6 56.6a24 24 0 0 0 0 33.9l37.1 37.1a8.1 8.1 0 0 0 5.7 2.3H216a8 8 0 0 0 0-16ZM153.8 48.6a8.1 8.1 0 0 1 11.3 0l45.2 45.3a7.9 7.9 0 0 1 0 11.3l-50.9 50.9l-56.5-56.6Z"></path></svg>
+  svgIcon:
+    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-eraser" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M19 20h-10.5l-4.21 -4.3a1 1 0 0 1 0 -1.41l10 -10a1 1 0 0 1 1.41 0l5 5a1 1 0 0 1 0 1.41l-9.2 9.3" />
+      <path d="M18 13.3l-6.3 -6.3" />
+    </svg>
 }, {
   toolName: "undo",
-  svgIcon: <svg width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M8 19q-.425 0-.713-.288Q7 18.425 7 18t.287-.712Q7.575 17 8 17h6.1q1.575 0 2.737-1Q18 15 18 13.5T16.837 11q-1.162-1-2.737-1H7.8l1.9 1.9q.275.275.275.7q0 .425-.275.7q-.275.275-.7.275q-.425 0-.7-.275L4.7 9.7q-.15-.15-.213-.325Q4.425 9.2 4.425 9t.062-.375Q4.55 8.45 4.7 8.3l3.6-3.6q.275-.275.7-.275q.425 0 .7.275q.275.275.275.7q0 .425-.275.7L7.8 8h6.3q2.425 0 4.163 1.575Q20 11.15 20 13.5q0 2.35-1.737 3.925Q16.525 19 14.1 19Z" /></svg>
+  svgIcon:
+    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-arrow-back-up" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M9 13l-4 -4l4 -4m-4 4h11a4 4 0 0 1 0 8h-1" />
+    </svg>
 }]
 
 const ToolSelector: React.FC<{}> = ({ }) => {

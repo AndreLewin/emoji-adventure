@@ -40,7 +40,7 @@ const SaveAdventure: React.FC<{}> = ({ }) => {
     <>
       <div className='container'>
         <Button disabled={!isChanged} onClick={saveAdventure}>
-          Save adventure
+          Save Adventure
         </Button>
       </div>
       <style jsx>

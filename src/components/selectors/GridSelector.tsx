@@ -5,7 +5,6 @@ import store from "../../store"
 const GridSelector: React.FC<{}> = ({ }) => {
   const activeGridId = store(state => state.activeGridId)
   const grids = store(state => state.grids)
-  const set = store(state => state.set)
   const createGrid = store(state => state.createGrid)
 
   const choices = useMemo<SegmentedControlItem[]>(() => {
@@ -19,7 +18,7 @@ const GridSelector: React.FC<{}> = ({ }) => {
 
   const handleChange = useCallback<any>((selectedGridIndexString: string) => {
     const selectedGridIndex: number = parseInt(selectedGridIndexString, 10)
-    set({ activeGridId: selectedGridIndex })
+    store.setState({ activeGridId: selectedGridIndex })
   }, [])
 
   return (
@@ -30,7 +29,7 @@ const GridSelector: React.FC<{}> = ({ }) => {
           onChange={handleChange}
           data={choices}
         />
-        <Button onClick={createGrid}>
+        <Button color="teal" onClick={createGrid}>
           Create Grid
         </Button>
       </div>

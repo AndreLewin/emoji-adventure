@@ -42,8 +42,8 @@ const Editor: NextPage = () => {
         </Button>
       }
 
-      <Button onClick={() => createAdventureMutation.mutate()}>
-        Create a new adventure
+      <Button color="teal" onClick={() => createAdventureMutation.mutate()}>
+        Create Adventure
       </Button>
 
       <hr />

@@ -47,7 +47,9 @@ const EditorAdventureItem: React.FC<{ adventure: AdventurePartial }> = ({ advent
     <>
       <div className='container'>
         <Link href={`/editor/${adventure.id}`}>
-          {adventure.name === "" ? "Unnamed adventure" : adventure.name}
+          <span className='link'>
+            {adventure.name === "" ? "Unnamed adventure" : adventure.name}
+          </span>
         </Link>
         <Button radius="xl" leftIcon={<IconSettings />} onClick={() => setIsAdventureModalOpened(true)}>
           Edit
@@ -69,7 +71,7 @@ const EditorAdventureItem: React.FC<{ adventure: AdventurePartial }> = ({ advent
               placeholder="Adventure description"
             />
             <Checkbox
-              label="Is accessible via link"
+              label="Is accessible to everyone via link"
               checked={localAdventure.isAccessible}
               onChange={(event) => setLocalAdventure({ ...localAdventure, isAccessible: event.currentTarget.checked })}
             />
@@ -88,6 +90,10 @@ const EditorAdventureItem: React.FC<{ adventure: AdventurePartial }> = ({ advent
         {`
           .container {
             
+          }
+
+          .link {
+            color: darkblue
           }
         `}
       </style>

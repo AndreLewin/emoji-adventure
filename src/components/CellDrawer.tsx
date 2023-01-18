@@ -48,7 +48,7 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
           disabled={script === cell.script}
           onClick={() => updateCell({ gridId, cellIndex, cellUpdate: { script } })}
         >
-          Save script
+          Save Script
         </Button>
 
         <Button onClick={() => eval(script)}>

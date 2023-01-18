@@ -12,7 +12,6 @@ import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
 import { Adventure } from ".prisma/client";
 import store, { emptyHistory, gridHistory, pushToGridHistory } from "../../store";
-import AdventureInfo from "../../components/AdventureInfo";
 import SaveAdventure from "../../components/SaveAdventure";
 
 const EditorAdventureId: NextPage = () => {
@@ -95,12 +94,13 @@ const EditorAdventureId: NextPage = () => {
         <Grid />
         <EmojiPicker />
       </div>
-      <GridSelector />
-      <SaveAdventure />
-      <GridInfo />
-      {/* TODO: to move adventure info edit into /editor */}
-      {/* Those info do not need to be in the store */}
-      <AdventureInfo />
+      <div style={{ paddingTop: "15px" }}>
+        <GridSelector />
+        <GridInfo />
+      </div>
+      <div style={{ paddingTop: "15px" }}>
+        <SaveAdventure />
+      </div>
     </>
   );
 };
