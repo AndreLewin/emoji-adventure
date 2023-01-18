@@ -4,6 +4,7 @@ import { type NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import PublicAdventureItem from "../components/PublicAdventureItem";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
@@ -30,15 +31,7 @@ const Home: NextPage = () => {
         {allAdventuresQuery.isLoading && "Loading adventures..."}
       </div>
       <div>
-        {
-          publishedAdventures.map(pA => (
-            <div key={`/adventure-${pA.id}`}>
-              <Link href={`/adventure-${pA.id}`}>
-                {pA.name === "" ? "Unnamed adventure" : pA.name}
-              </Link>
-            </div>
-          ))
-        }
+        {publishedAdventures.map(pA => <PublicAdventureItem adventure={pA} key={`/pb-adventure-${pA.id}`} />)}
       </div>
 
       {sessionData !== undefined &&
