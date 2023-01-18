@@ -19,7 +19,10 @@ const CellViewer: React.FC<{ cell: Cell }> = ({ cell }) => {
     <>
       <div
         className={`container ${hasAScript ? "gradient-border" : ""}`}
-        style={{ "backgroundColor": cell.color }}
+        style={{
+          "backgroundColor": cell.color,
+          "cursor": cell.script !== "" ? "pointer" : "default"
+        }}
         onMouseDown={(e) => handleMouseDown(e)}
       >
         {cell.emoji}
