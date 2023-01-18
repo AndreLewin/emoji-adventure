@@ -50,6 +50,13 @@ export default function AdventurePage() {
     af()
   }, [router.query])
 
+
+  // you should not be able to play on emoji-adventure-retejo.vercel.app because of your login credentials
+  if (location?.hostname === "emoji-adventure-retejo.vercel.app") {
+    router.push("/")
+    return <div />
+  }
+
   if (typeof window === "undefined") return <div />
   // don't display anything before the adventure is fetched
   if (adventure === null) return <div>Loading...</div>
