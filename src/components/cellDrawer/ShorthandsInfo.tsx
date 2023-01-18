@@ -16,7 +16,7 @@ const ShorthandsInfo: React.FC<{}> = ({ }) => {
           styles={{ header: { position: "absolute", top: 0, right: 0, margin: "5px" } }}
         >
           <div style={{ marginBottom: "10px" }}>
-            A shorthand is a faster way to write a command. A shorthand begins with $. It's converted to the full command when the cell is clicked.
+            {`A shorthand is a faster way to write a command. A shorthand begins with $. It's converted to the full command when the cell is clicked.`}
           </div>
 
           <Table withColumnBorders>
