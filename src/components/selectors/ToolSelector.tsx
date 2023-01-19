@@ -1,5 +1,7 @@
-import { Store } from "../../store"
+import store, { Store } from "../../store"
 import ToolSquare from "./toolSelector/ToolSquare"
+import { useHotkeys } from '@mantine/hooks'
+import { useEffect } from "react"
 
 export type Tool = {
   toolName: Store["selectedTool"],
@@ -62,6 +64,41 @@ export const tools: Tool[] = [{
 }]
 
 const ToolSelector: React.FC<{}> = ({ }) => {
+  const undo = store(state => state.undo)
+
+  useEffect(() => {
+    const listenKeyCode = (event: KeyboardEvent) => {
+      const { altKey, code } = event
+      // TODO: listen to key only if drawer and modals are closed
+      // an altKey check if the previous condition is too hard
+      // if (!altKey) return
+
+      const toolIndex =
+        code === "Backquote" ? 0 :
+          code === "Digit1" ? 1 :
+            code === "Digit2" ? 2 :
+              code === "Digit3" ? 3 :
+                code === "Digit4" ? 4 :
+                  code === "Digit5" ? 5 :
+                    code === "Digit6" ? 6 :
+                      code === "Digit7" ? 7 :
+                        code === "Digit8" ? 8 :
+                          code === "Digit9" ? 9 : null
+
+      if (toolIndex === 0) {
+        undo()
+        return
+      }
+
+      if (toolIndex === null) return
+      const selectedTool = tools?.[toolIndex] ?? null
+      if (selectedTool === null) return
+      store.setState({ selectedTool: selectedTool.toolName })
+    }
+
+    document.addEventListener("keydown", (event) => listenKeyCode(event))
+    return document.removeEventListener("keydown", (event) => listenKeyCode(event))
+  }, [])
 
   return (
     <>
