@@ -13,6 +13,7 @@ import { trpc } from "../../utils/trpc";
 import { Adventure } from ".prisma/client";
 import store, { emptyHistory, gridHistory, pushToGridHistory } from "../../store";
 import SaveAdventure from "../../components/SaveAdventure";
+import Cursor from "../../components/Cursor";
 
 const EditorAdventureId: NextPage = () => {
   const { data: sessionData } = useSession()
@@ -84,7 +85,7 @@ const EditorAdventureId: NextPage = () => {
   }
 
   return (
-    <>
+    <div style={{ "position": "relative" }}>
       <ToolSelector />
       <div style={{ display: "flex" }}>
         <ColorSelector />
@@ -101,7 +102,10 @@ const EditorAdventureId: NextPage = () => {
       <div style={{ paddingTop: "15px" }}>
         <SaveAdventure />
       </div>
-    </>
+      <div style={{ "position": "absolute", "top": "30px", "left": "20px" }}>
+        <Cursor />
+      </div>
+    </div>
   );
 };
 

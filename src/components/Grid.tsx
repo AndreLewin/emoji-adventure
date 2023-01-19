@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from "react"
 import store, { Grid } from "../store"
 import Cell from "./Cell"
+import Cursor from "./Cursor"
 
 const GridComponent: React.FC<{}> = ({ }) => {
   const grids = store(state => state.grids)
@@ -11,9 +12,16 @@ const GridComponent: React.FC<{}> = ({ }) => {
 
   const selectedTool = store(state => state.selectedTool)
 
-  // avoid painting with the square tool from an outdated click
   const handleMouseLeave = useCallback<any>(() => {
+    // avoid painting with the square tool from an outdated click
     store.setState({ mouseDownCellIndex: null })
+    // hide cursor of the selected tool
+    store.setState({ isToolCursorVisible: false })
+  }, [])
+
+  const handleMouseEnter = useCallback<any>(() => {
+    // show cursor of the selected tool
+    store.setState({ isToolCursorVisible: true })
   }, [])
 
   return (
@@ -22,13 +30,13 @@ const GridComponent: React.FC<{}> = ({ }) => {
         className="container"
         style={{ "cursor": selectedTool !== '' ? "pointer" : "default" }}
         onMouseLeave={() => handleMouseLeave()}
+        onMouseEnter={() => handleMouseEnter()}
         onContextMenu={(e) => { e.preventDefault() }}
       >
         {grid.cells.map((c, index) => {
           return <Cell cell={c} key={index} cellIndex={index} gridId={grid.id} />
         })}
       </div>
-
       <style jsx>
         {`
           .container {

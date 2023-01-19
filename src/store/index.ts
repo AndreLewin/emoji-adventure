@@ -42,6 +42,7 @@ const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   activeGridId: 0,
   gridIdCounter: 0,
   selectedTool: "",
+  isToolCursorVisible: false,
   selectedColor: null,
   selectedEmoji: null,
   mouseDownCellIndex: null,
@@ -103,6 +104,7 @@ export type Store = {
   gridIdCounter: number
   grids: Grid[]
   selectedTool: "pencil" | "square" | "colorPicker" | "emojiPicker" | "eraser" | "undo" | ""
+  isToolCursorVisible: boolean
   // "blue": the color is selected with the color blue
   // "": the eraser of color is selected
   // null: something else is selected (ex: emoji)
