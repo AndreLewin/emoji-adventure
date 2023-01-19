@@ -2,13 +2,14 @@ import { Adventure } from ".prisma/client"
 import { Button, Checkbox, Modal, TextInput } from "@mantine/core"
 import Link from "next/link"
 import { useCallback, useMemo, useState } from "react"
-import { IconSettings } from '@tabler/icons'
+import { IconSettings, IconTrash } from '@tabler/icons'
 import { trpc } from "../utils/trpc"
 
 type AdventurePartial = Omit<Adventure, "data">
 const EditorAdventureItem: React.FC<{ adventure: AdventurePartial }> = ({ adventure }) => {
 
   const [isAdventureModalOpened, setIsAdventureModalOpened] = useState<boolean>(false)
+  const [isDeleteConfirmModalOpened, setIsDeleteConfirmModalOpened] = useState<boolean>(false)
 
   const [savedAdventure, setSavedAdventure] = useState<AdventurePartial>(adventure)
   const [localAdventure, setLocalAdventure] = useState<AdventurePartial>(adventure)
@@ -43,6 +44,20 @@ const EditorAdventureItem: React.FC<{ adventure: AdventurePartial }> = ({ advent
     })
   }, [savedAdventure, localAdventure])
 
+  const updateDeleteMutation = trpc.adventure.delete.useMutation({
+    async onSuccess() {
+      setIsDeleteConfirmModalOpened(false)
+      utils.adventure.findMany.invalidate()
+      utils.adventure.find.invalidate({ id: adventure.id })
+    }
+  })
+
+  const handleDeleteAdventure = useCallback<any>(() => {
+    updateDeleteMutation.mutate({
+      id: adventure.id ?? "404"
+    })
+  }, [savedAdventure, localAdventure])
+
   return (
     <>
       <div className='container'>
@@ -53,6 +68,12 @@ const EditorAdventureItem: React.FC<{ adventure: AdventurePartial }> = ({ advent
         </Link>
         <Button radius="xl" compact leftIcon={<IconSettings />} onClick={() => setIsAdventureModalOpened(true)}>
           Settings
+        </Button>
+        <Button
+          color="red" radius="xl" compact leftIcon={<IconTrash />}
+          onClick={() => setIsDeleteConfirmModalOpened(true)}
+        >
+          Delete
         </Button>
         {isAdventureModalOpened && (
           <Modal
@@ -82,6 +103,20 @@ const EditorAdventureItem: React.FC<{ adventure: AdventurePartial }> = ({ advent
             />
             <Button disabled={!isLocalAdventureChanged} onClick={handleSaveAdventure}>
               Save
+            </Button>
+          </Modal>
+        )}
+        {isDeleteConfirmModalOpened && (
+          <Modal
+            opened={isDeleteConfirmModalOpened}
+            onClose={() => setIsDeleteConfirmModalOpened(false)}
+            title={`Are you sure to delete this adventure (${adventure.name})?`}
+          >
+            <Button
+              color="red"
+              onClick={handleDeleteAdventure}
+            >
+              Delete Grid
             </Button>
           </Modal>
         )}
