@@ -1,5 +1,6 @@
 import { Button, Modal, Textarea } from "@mantine/core"
 import { Dispatch, SetStateAction, useCallback, useState } from "react"
+import { getHotkeyHandler } from '@mantine/hooks'
 
 const DisplayText: React.FC<{ setScript: Dispatch<SetStateAction<string>> }> = ({ setScript }) => {
 
@@ -10,6 +11,10 @@ const DisplayText: React.FC<{ setScript: Dispatch<SetStateAction<string>> }> = (
     setScript(s => `${s}${s === "" ? "" : "\n"}window.alert(\`${textToDisplay}\`)`)
     setIsModalOpened(false)
     setTextToDisplay("")
+    setTimeout(() => {
+      const codeEditor = window.document.querySelector(".npm__react-simple-code-editor__textarea") as HTMLElement
+      codeEditor?.focus()
+    }, 50);
   }, [textToDisplay])
 
   return (
@@ -24,9 +29,12 @@ const DisplayText: React.FC<{ setScript: Dispatch<SetStateAction<string>> }> = (
           <Textarea
             data-autofocus
             value={textToDisplay}
-            onChange={(event) => setTextToDisplay(event.currentTarget.value)}
             label="Text to display"
             autosize
+            onChange={(event) => setTextToDisplay(event.currentTarget.value)}
+            onKeyDown={getHotkeyHandler([
+              ['ctrl+Enter', handleConfirm]
+            ])}
           />
           <Button
             onClick={handleConfirm}

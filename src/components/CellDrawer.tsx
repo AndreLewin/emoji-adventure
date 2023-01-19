@@ -11,6 +11,8 @@ import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
 import CodeGenerationButtons from "./cellDrawer/CodeGenerationButtons";
 import ShorthandsInfo from "./cellDrawer/ShorthandsInfo";
+import Tips from "./cellDrawer/Tips";
+import { getHotkeyHandler } from "@mantine/hooks";
 
 const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatch<SetStateAction<boolean>>, cell: Cell, gridId: number, cellIndex: number }> = (
   { isDrawerOpened, setIsDrawerOpened, cell, gridId, cellIndex }
@@ -20,12 +22,19 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
 
   const updateCell = store(state => state.updateCell)
 
+  const handleSave = useCallback<any>(() => {
+    updateCell({ gridId, cellIndex, cellUpdate: { script } })
+  }, [gridId, cellIndex, script])
+
   return (
-    <Drawer opened={isDrawerOpened} onClose={() => setIsDrawerOpened(false)} position="right" transitionDuration={0} overlayOpacity={0.2} size="xl" styles={{ header: { display: 'none' } }}>
+    <Drawer
+      opened={isDrawerOpened}
+      onClose={() => setIsDrawerOpened(false)}
+      position="right" transitionDuration={0} overlayOpacity={0.2} size="xl" styles={{ header: { display: 'none' } }}
+    >
       <div className="container">
 
         <CodeGenerationButtons setScript={setScript} />
-        <ShorthandsInfo />
 
         <div style={{ marginTop: "10px" }} />
 
@@ -40,13 +49,16 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
             border: "1px solid black",
             backgroundColor: "#ededf0"
           }}
+          onKeyDown={getHotkeyHandler([
+            ['ctrl+Enter', (event) => { handleSave(), setIsDrawerOpened(false) }]
+          ])}
         />
 
         <div style={{ marginTop: "10px" }} />
 
         <Button
           disabled={script === cell.script}
-          onClick={() => updateCell({ gridId, cellIndex, cellUpdate: { script } })}
+          onClick={handleSave}
         >
           Save Script
         </Button>
@@ -54,6 +66,9 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
         <Button onClick={() => eval(script)}>
           Try Script
         </Button>
+
+        <ShorthandsInfo />
+        <Tips />
       </div>
       <style jsx>
         {`
