@@ -51,8 +51,8 @@ const EditorAdventureItem: React.FC<{ adventure: AdventurePartial }> = ({ advent
             {adventure.name === "" ? "Unnamed adventure" : adventure.name}
           </span>
         </Link>
-        <Button radius="xl" leftIcon={<IconSettings />} onClick={() => setIsAdventureModalOpened(true)}>
-          Edit
+        <Button radius="xl" compact leftIcon={<IconSettings />} onClick={() => setIsAdventureModalOpened(true)}>
+          Settings
         </Button>
         {isAdventureModalOpened && (
           <Modal

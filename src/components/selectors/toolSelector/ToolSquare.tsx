@@ -1,3 +1,4 @@
+import { Tooltip } from "@mantine/core"
 import { useCallback, useMemo } from "react"
 import store from "../../../store"
 import { Tool } from "../ToolSelector"
@@ -30,12 +31,14 @@ const ToolSquare: React.FC<{ tool: Tool }> = ({ tool }) => {
 
   return (
     <>
-      <div
-        className={`toolSquare ${isToolSelected ? "selected" : ""}`}
-        onClick={() => handleClick()}
-      >
-        {tool.svgIcon}
-      </div>
+      <Tooltip label={tool.tooltip}>
+        <div
+          className={`toolSquare ${isToolSelected ? "selected" : ""}`}
+          onClick={() => handleClick()}
+        >
+          {tool.svgIcon}
+        </div>
+      </Tooltip>
       <style jsx>
         {`
           .toolSquare {

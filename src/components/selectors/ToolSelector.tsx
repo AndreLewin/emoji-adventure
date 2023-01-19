@@ -3,11 +3,13 @@ import ToolSquare from "./toolSelector/ToolSquare"
 
 export type Tool = {
   toolName: Store["selectedTool"],
+  tooltip: string,
   svgIcon: JSX.Element
 }
 
 const tools: Tool[] = [{
   toolName: "pencil",
+  tooltip: "Click to draw",
   svgIcon:
     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-pencil" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -16,6 +18,7 @@ const tools: Tool[] = [{
     </svg>
 }, {
   toolName: "square",
+  tooltip: "Click then release to draw square",
   svgIcon:
     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-square" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -23,6 +26,7 @@ const tools: Tool[] = [{
     </svg>
 }, {
   toolName: "colorPicker",
+  tooltip: "Pick color",
   svgIcon:
     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-color-picker" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -31,6 +35,7 @@ const tools: Tool[] = [{
     </svg>
 }, {
   toolName: "emojiPicker",
+  tooltip: "Pick emoji",
   svgIcon:
     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-rubber-stamp" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -39,6 +44,7 @@ const tools: Tool[] = [{
     </svg>
 }, {
   toolName: "eraser",
+  tooltip: "Empty cell",
   svgIcon:
     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-eraser" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -47,6 +53,7 @@ const tools: Tool[] = [{
     </svg>
 }, {
   toolName: "undo",
+  tooltip: "Undo",
   svgIcon:
     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-arrow-back-up" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
