@@ -34,7 +34,7 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
     >
       <div className="container">
 
-        <CodeGenerationButtons setScript={setScript} />
+        <CodeGenerationButtons setScript={setScript} cellIndex={cellIndex} />
 
         <div style={{ marginTop: "10px" }} />
 

@@ -20,3 +20,31 @@ export const twoIndexesIntoIndexesOfSquare = (index1: number, index2: number, it
 
   return indexesOfSquare
 }
+
+export const getSymmetricalCellIndex = (index: number, itemsPerLine: number): number => {
+  const line = (Math.floor(index / itemsPerLine)) + 1
+  const column = (index % itemsPerLine) + 1
+  const symmetricalLine = (itemsPerLine + 1) - line
+  const symmetricalColumn = (itemsPerLine + 1) - column
+  const symmetricalIndex = ((symmetricalLine - 1) * itemsPerLine) + (symmetricalColumn - 1)
+  return symmetricalIndex
+}
+
+export const getSameLineSymmetricalCellIndex = (index: number, itemsPerLine: number): number => {
+  const line = (Math.floor(index / itemsPerLine)) + 1
+  const column = (index % itemsPerLine) + 1
+  const symmetricalLine = line
+  const symmetricalColumn = (itemsPerLine + 1) - column
+  const symmetricalIndex = ((symmetricalLine - 1) * itemsPerLine) + (symmetricalColumn - 1)
+  return symmetricalIndex
+}
+
+export const getSameColumnSymmetricalCellIndex = (index: number, itemsPerLine: number): number => {
+  const line = (Math.floor(index / itemsPerLine)) + 1
+  const column = (index % itemsPerLine) + 1
+  const symmetricalLine = (itemsPerLine + 1) - line
+  const symmetricalColumn = column
+  const symmetricalIndex = ((symmetricalLine - 1) * itemsPerLine) + (symmetricalColumn - 1)
+  return symmetricalIndex
+}
+
