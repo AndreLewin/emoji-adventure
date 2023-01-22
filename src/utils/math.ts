@@ -22,29 +22,33 @@ export const twoIndexesIntoIndexesOfSquare = (index1: number, index2: number, it
 }
 
 export const getSymmetricalCellIndex = (index: number, itemsPerLine: number): number => {
-  const line = (Math.floor(index / itemsPerLine)) + 1
-  const column = (index % itemsPerLine) + 1
+  const { line, column } = getCellPositionFromCellIndex(index)
   const symmetricalLine = (itemsPerLine + 1) - line
   const symmetricalColumn = (itemsPerLine + 1) - column
-  const symmetricalIndex = ((symmetricalLine - 1) * itemsPerLine) + (symmetricalColumn - 1)
-  return symmetricalIndex
+  return getCellIndexFromCellPosition({ line: symmetricalLine, column: symmetricalColumn })
 }
 
 export const getSameLineSymmetricalCellIndex = (index: number, itemsPerLine: number): number => {
-  const line = (Math.floor(index / itemsPerLine)) + 1
-  const column = (index % itemsPerLine) + 1
+  const { line, column } = getCellPositionFromCellIndex(index)
   const symmetricalLine = line
   const symmetricalColumn = (itemsPerLine + 1) - column
-  const symmetricalIndex = ((symmetricalLine - 1) * itemsPerLine) + (symmetricalColumn - 1)
-  return symmetricalIndex
+  return getCellIndexFromCellPosition({ line: symmetricalLine, column: symmetricalColumn })
 }
 
 export const getSameColumnSymmetricalCellIndex = (index: number, itemsPerLine: number): number => {
-  const line = (Math.floor(index / itemsPerLine)) + 1
-  const column = (index % itemsPerLine) + 1
+  const { line, column } = getCellPositionFromCellIndex(index)
   const symmetricalLine = (itemsPerLine + 1) - line
   const symmetricalColumn = column
-  const symmetricalIndex = ((symmetricalLine - 1) * itemsPerLine) + (symmetricalColumn - 1)
-  return symmetricalIndex
+  return getCellIndexFromCellPosition({ line: symmetricalLine, column: symmetricalColumn })
 }
 
+export const getCellPositionFromCellIndex = (cellIndex: number): { line: number, column: number } => {
+  return {
+    line: (Math.floor(cellIndex / 10)) + 1,
+    column: (cellIndex % 10) + 1
+  }
+}
+
+export const getCellIndexFromCellPosition = ({ line, column }: { line: number, column: number }): number => {
+  return ((line - 1) * 10) + (column - 1)
+}

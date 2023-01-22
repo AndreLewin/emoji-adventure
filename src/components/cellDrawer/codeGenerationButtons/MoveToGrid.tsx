@@ -1,13 +1,17 @@
 import { Button, Checkbox, Modal, Select, Textarea } from "@mantine/core"
 import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react"
 import store from "../../../store"
-import { getSameLineSymmetricalCellIndex, getSameColumnSymmetricalCellIndex } from "../../../utils/math"
+import { getSameLineSymmetricalCellIndex, getSameColumnSymmetricalCellIndex, getCellPositionFromCellIndex } from "../../../utils/math"
 
 const MoveToGrid: React.FC<{ setScript: Dispatch<SetStateAction<string>>, cellIndex: number }> = ({ setScript, cellIndex }) => {
 
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false)
-  const [shouldCreateSameColumnSymmetricEvent, setShouldCreateSameColumnSymmetricEvent] = useState<boolean>(false)
-  const [shouldCreateSameLineSymmetricEvent, setShouldCreateSameLineSymmetricEvent] = useState<boolean>(false)
+  const [shouldCreateSameColumnSymmetricEvent, setShouldCreateSameColumnSymmetricEvent] = useState<boolean>(
+    getCellPositionFromCellIndex(cellIndex).line === 1 || getCellPositionFromCellIndex(cellIndex).line === 10
+  )
+  const [shouldCreateSameLineSymmetricEvent, setShouldCreateSameLineSymmetricEvent] = useState<boolean>(
+    getCellPositionFromCellIndex(cellIndex).column === 1 || getCellPositionFromCellIndex(cellIndex).column === 10
+  )
 
   const updateCell = store(state => state.updateCell)
   const activeGridId = store(state => state.activeGridId)
@@ -69,6 +73,7 @@ const MoveToGrid: React.FC<{ setScript: Dispatch<SetStateAction<string>>, cellIn
           opened={isModalOpened}
           onClose={() => { setIsModalOpened(false) }}
           styles={{ header: { position: "absolute", top: 0, right: 0, margin: "5px" } }}
+          size="lg"
         >
           <Checkbox
             checked={shouldCreateSameLineSymmetricEvent}
