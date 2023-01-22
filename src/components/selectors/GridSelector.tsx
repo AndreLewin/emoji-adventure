@@ -32,6 +32,9 @@ const GridSelector: React.FC<{}> = ({ }) => {
         <Button color="teal" onClick={() => createGrid({})}>
           Create Grid
         </Button>
+        <Button color="teal" onClick={() => createGrid({ idOfGridToCopy: activeGridId })}>
+          Duplicate Grid
+        </Button>
       </div>
       <style jsx>
         {`
