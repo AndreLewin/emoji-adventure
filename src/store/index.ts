@@ -97,7 +97,13 @@ export type Store = {
       text?: string
     }
   }) => void
-  createGrid: () => Grid
+  createGrid: ({
+    name,
+    idOfGridToCopy,
+  }: {
+    name?: string
+    idOfGridToCopy?: number
+  }) => Grid
   deleteGrid: (gridIdToDelete: number) => void
   activeGridId: number
   grids: Grid[]
@@ -241,10 +247,40 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     get().set({ grids: [...grids] })
     pushToGridHistory(get())
   },
-  createGrid: () => {
+  createGrid: ({
+    name,
+    idOfGridToCopy,
+  }: {
+    name?: string
+    idOfGridToCopy?: number
+  }) => {
     const { grids } = get()
     const nextGridId = Math.max(...grids.map(g => g.id)) + 1
-    const newGrid = { id: nextGridId, ...defaultGridFactory() }
+
+    let gridToCopy = {}
+    if (idOfGridToCopy !== undefined) {
+      const matchingGrid = grids.find(g => g.id === idOfGridToCopy)
+      if (matchingGrid === undefined) return
+      gridToCopy = {
+        ...matchingGrid,
+        cells: matchingGrid.cells.map(c => {
+          return {
+            ...c,
+            // don't keep scripts 
+            script: ""
+          }
+        })
+      }
+    }
+
+    const newGrid = {
+      ...defaultGridFactory(),
+      ...(idOfGridToCopy !== undefined ? gridToCopy : {}),
+      ...(name !== undefined ? { text: name } : {}),
+      id: nextGridId
+    }
+    console.log("newGrid | index.ts l267", newGrid)
+
     const newGrids = [...grids, newGrid]
     get().set({ grids: newGrids })
     pushToGridHistory(get())

@@ -29,7 +29,7 @@ const GridSelector: React.FC<{}> = ({ }) => {
           onChange={handleChange}
           data={choices}
         />
-        <Button color="teal" onClick={createGrid}>
+        <Button color="teal" onClick={() => createGrid({})}>
           Create Grid
         </Button>
       </div>

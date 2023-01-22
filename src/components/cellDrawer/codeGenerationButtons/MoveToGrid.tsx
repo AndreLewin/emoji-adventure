@@ -1,4 +1,4 @@
-import { Button, Checkbox, Modal, Select, Textarea } from "@mantine/core"
+import { Button, Checkbox, Divider, Modal, Select, Textarea, TextInput } from "@mantine/core"
 import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react"
 import store from "../../../store"
 import { getSameLineSymmetricalCellIndex, getSameColumnSymmetricalCellIndex, getCellPositionFromCellIndex } from "../../../utils/math"
@@ -12,6 +12,8 @@ const MoveToGrid: React.FC<{ setScript: Dispatch<SetStateAction<string>>, cellIn
   const [shouldCreateSameLineSymmetricEvent, setShouldCreateSameLineSymmetricEvent] = useState<boolean>(
     getCellPositionFromCellIndex(cellIndex).column === 1 || getCellPositionFromCellIndex(cellIndex).column === 10
   )
+  const [shouldCopyCurrentGrid, setShouldCopyCurrentGrid] = useState<boolean>(false)
+  const [newGridName, setNewGridName] = useState<string>("")
 
   const updateCell = store(state => state.updateCell)
   const activeGridId = store(state => state.activeGridId)
@@ -29,16 +31,19 @@ const MoveToGrid: React.FC<{ setScript: Dispatch<SetStateAction<string>>, cellIn
   }, [grids])
 
   const handleSelectedGrid = useCallback<any>(({
-    gridId = null,
-    isGoingToNewGrid = false
+    gridId,
+    isGoingToNewGrid
   }: {
-    gridId: string | null,
-    isGoingToNewGrid: boolean
+    gridId?: string,
+    isGoingToNewGrid?: boolean
   }) => {
     let targetGrid = gridId
     let newGrid = null
     if (isGoingToNewGrid) {
-      newGrid = createGrid()
+      newGrid = createGrid({
+        ...(shouldCopyCurrentGrid ? { idOfGridToCopy: activeGridId } : {}),
+        ...(newGridName !== "" ? { name: newGridName } : {})
+      })
       targetGrid = `${newGrid.id}`
     }
 
@@ -63,7 +68,7 @@ const MoveToGrid: React.FC<{ setScript: Dispatch<SetStateAction<string>>, cellIn
       const codeEditor = window.document.querySelector(".npm__react-simple-code-editor__textarea") as HTMLElement
       codeEditor?.focus()
     }, 50);
-  }, [grids, shouldCreateSameColumnSymmetricEvent, shouldCreateSameLineSymmetricEvent, activeGridId])
+  }, [grids, shouldCreateSameColumnSymmetricEvent, shouldCreateSameLineSymmetricEvent, activeGridId, shouldCopyCurrentGrid, newGridName])
 
   return (
     <>
@@ -85,18 +90,29 @@ const MoveToGrid: React.FC<{ setScript: Dispatch<SetStateAction<string>>, cellIn
             onChange={(event) => { setShouldCreateSameColumnSymmetricEvent(event.currentTarget.checked), setShouldCreateSameLineSymmetricEvent(false) }}
             label="Create a mirror event on the same column on the target grid"
           />
+          <Divider size="sm" my="xs" label="Move to existing Grid" labelPosition="center" />
           <Select
-            label="Grid to move to"
             value={null}
             onChange={(event) => handleSelectedGrid({ gridId: event })}
             data={selectData}
+          />
+          <Divider size="sm" my="xs" label="Move to a new Grid" labelPosition="center" />
+          <Checkbox
+            checked={shouldCopyCurrentGrid}
+            onChange={() => { setShouldCopyCurrentGrid(!shouldCopyCurrentGrid) }}
+            label="Copy colors and emojis from current grid"
+          />
+          <TextInput
+            value={newGridName}
+            onChange={(event) => setNewGridName(event.target.value)}
+            placeholder="New grid name"
           />
           <Button
             onClick={() => handleSelectedGrid({ isGoingToNewGrid: true })}
             fullWidth
             mt="md"
           >
-            Move to a new Grid
+            Create
           </Button>
         </Modal>
       </span>
