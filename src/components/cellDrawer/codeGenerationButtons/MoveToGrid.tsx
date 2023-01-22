@@ -11,6 +11,7 @@ const MoveToGrid: React.FC<{ setScript: Dispatch<SetStateAction<string>>, cellIn
 
   const updateCell = store(state => state.updateCell)
   const activeGridId = store(state => state.activeGridId)
+  const createGrid = store(state => state.createGrid)
 
   const grids = store(state => state.grids)
   const selectData = useMemo(() => {
@@ -23,10 +24,23 @@ const MoveToGrid: React.FC<{ setScript: Dispatch<SetStateAction<string>>, cellIn
     })
   }, [grids])
 
-  const handleSelectedGrid = useCallback<any>((gridId: string | null) => {
-    setScript(s => `${s}${s === "" ? "" : "\n"}window._s.setState({ activeGridId: ${gridId} }) `)
+  const handleSelectedGrid = useCallback<any>(({
+    gridId = null,
+    isGoingToNewGrid = false
+  }: {
+    gridId: string | null,
+    isGoingToNewGrid: boolean
+  }) => {
+    let targetGrid = gridId
+    let newGrid = null
+    if (isGoingToNewGrid) {
+      newGrid = createGrid()
+      targetGrid = `${newGrid.id}`
+    }
+
+    setScript(s => `${s}${s === "" ? "" : "\n"}window._s.setState({ activeGridId: ${targetGrid} }) `)
     if (shouldCreateSameColumnSymmetricEvent || shouldCreateSameLineSymmetricEvent) {
-      const grid = grids.find(g => `${g.id}` === gridId)
+      const grid = isGoingToNewGrid ? newGrid : grids.find(g => `${g.id}` === targetGrid)
       if (!grid) return
       let symmetricalCellIndex = cellIndex
       if (shouldCreateSameColumnSymmetricEvent) symmetricalCellIndex = getSameColumnSymmetricalCellIndex(symmetricalCellIndex, 10)
@@ -69,16 +83,16 @@ const MoveToGrid: React.FC<{ setScript: Dispatch<SetStateAction<string>>, cellIn
           <Select
             label="Grid to move to"
             value={null}
-            onChange={handleSelectedGrid}
+            onChange={(event) => handleSelectedGrid({ gridId: event })}
             data={selectData}
           />
-          {/* <Button
-            onClick={handleConfirm}
+          <Button
+            onClick={() => handleSelectedGrid({ isGoingToNewGrid: true })}
             fullWidth
             mt="md"
           >
-            Confirm
-          </Button> */}
+            Move to a new Grid
+          </Button>
         </Modal>
       </span>
       <style jsx>

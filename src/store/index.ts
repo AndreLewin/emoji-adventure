@@ -40,7 +40,6 @@ export const defaultAdventureFactory = (): Omit<Adventure, "id" | "createdAt" | 
 
 const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   activeGridId: 0,
-  gridIdCounter: 0,
   selectedTool: "",
   isToolCursorVisible: false,
   selectedColor: null,
@@ -98,10 +97,9 @@ export type Store = {
       text?: string
     }
   }) => void
-  createGrid: () => void
+  createGrid: () => Grid
   deleteGrid: (gridIdToDelete: number) => void
   activeGridId: number
-  gridIdCounter: number
   grids: Grid[]
   selectedTool: "pencil" | "square" | "colorPicker" | "emojiPicker" | "eraser" | "undo" | ""
   isToolCursorVisible: boolean
@@ -244,10 +242,13 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     pushToGridHistory(get())
   },
   createGrid: () => {
-    const { grids, gridIdCounter } = get()
-    const newGrids = [...grids, { id: gridIdCounter + 1, ...defaultGridFactory() }]
-    get().set({ grids: newGrids, activeGridId: newGrids.length - 1, gridIdCounter: gridIdCounter + 1 })
+    const { grids } = get()
+    const nextGridId = Math.max(...grids.map(g => g.id)) + 1
+    const newGrid = { id: nextGridId, ...defaultGridFactory() }
+    const newGrids = [...grids, newGrid]
+    get().set({ grids: newGrids })
     pushToGridHistory(get())
+    return newGrid
   },
   deleteGrid: (gridIdToDelete: number) => {
     const { grids, activeGridId } = get()
