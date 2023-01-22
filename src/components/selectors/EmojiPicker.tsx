@@ -33,6 +33,22 @@ const EmojiPicker: React.FC<{}> = ({ }) => {
           h3.categoryName {
             display: none !important;
           }
+
+          .picmo-picker {
+            height: 100%;
+          }
+
+          .picmo-picker > .header {
+            height: 90px;
+          }
+
+          .picmo-picker > .content {
+            height: 300px;
+          }
+
+          .picmo-picker > .content > .emojiArea {
+            height: inherit;
+          }
         `}
       </style>
     </>

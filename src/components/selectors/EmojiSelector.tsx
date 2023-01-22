@@ -17,7 +17,8 @@ const EmojiSelector: React.FC<{}> = ({ }) => {
       <style jsx>
         {`
           .container {
-            margin-left: 3px;
+            /* so the emoji selector is aligned with the emoji picker */
+            margin-left: calc(3px + 37px);
             display: flex;
           }
           .lastEmojisContainer {
