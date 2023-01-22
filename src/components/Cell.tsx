@@ -10,12 +10,12 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
   const mouseDownCellIndex = store(state => state.mouseDownCellIndex)
 
   const updateCell = store(state => state.updateCell)
-
   const updateSquare = store(state => state.updateSquare)
+  const floodFill = store(state => state.floodFill)
 
   const handleMouseOver = useCallback<any>((event: MouseEvent) => {
     const { buttons } = event
-    // left click
+    // left click holded
     if (buttons === 1) {
       if (selectedTool === "pencil") {
         if (selectedColor !== null && cell.color !== selectedColor) {
@@ -45,21 +45,25 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
     const { buttons } = event
     if (buttons === 1) {
       if (selectedTool === "pencil") {
-        if (selectedColor !== null && cell.color !== selectedColor) {
-          updateCell({
-            gridId,
-            cellIndex,
-            cellUpdate: { color: selectedColor }
-          })
-        } else if (selectedEmoji !== null && cell.emoji !== selectedEmoji) {
-          updateCell({
-            gridId,
-            cellIndex,
-            cellUpdate: { emoji: selectedEmoji }
-          })
-        }
+        updateCell({
+          gridId,
+          cellIndex,
+          cellUpdate: {
+            ...(selectedColor !== null ? { color: selectedColor } : {}),
+            ...(selectedEmoji !== null ? { emoji: selectedEmoji } : {})
+          }
+        })
       } else if (selectedTool === "square") {
         set({ mouseDownCellIndex: cellIndex })
+      } else if (selectedTool === "bucket") {
+        floodFill({
+          gridId,
+          cellIndex,
+          cellUpdate: {
+            ...(selectedColor !== null ? { color: selectedColor } : {}),
+            ...(selectedEmoji !== null ? { emoji: selectedEmoji } : {})
+          }
+        })
       } else if (selectedTool === "colorPicker") {
         set({ selectedColor: cell.color, selectedTool: "pencil", selectedEmoji: null })
       } else if (selectedTool === "emojiPicker") {

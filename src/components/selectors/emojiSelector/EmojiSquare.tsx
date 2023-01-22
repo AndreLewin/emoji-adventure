@@ -16,7 +16,7 @@ const EmojiSquare: React.FC<{ emoji: string }> = ({ emoji }) => {
       selectedEmoji: emoji,
       selectedColor: null
     })
-    if (selectedTool !== "pencil" && selectedTool !== "square") {
+    if (selectedTool !== "pencil" && selectedTool !== "square" && selectedTool !== "bucket") {
       set({ selectedTool: "pencil" })
     }
   }, [emoji, selectedEmoji, selectedTool])

@@ -1,6 +1,6 @@
 import { Adventure } from '.prisma/client'
 import create, { GetState, SetState } from 'zustand'
-import { twoIndexesIntoIndexesOfSquare } from '../utils/math'
+import { getIndexesToFloodFill, twoIndexesIntoIndexesOfSquare } from '../utils/math'
 
 export type Cell = {
   color: string
@@ -88,6 +88,19 @@ export type Store = {
       script?: string
     }
   }) => void
+  floodFill: ({
+    gridId,
+    cellIndex,
+    cellUpdate
+  }: {
+    gridId: number,
+    cellIndex: number,
+    cellUpdate: {
+      color?: string,
+      emoji?: string,
+      script?: string
+    }
+  }) => void
   pickEmoji: (pickedEmoji: string) => void
   updateGrid: ({
     gridId
@@ -107,7 +120,7 @@ export type Store = {
   deleteGrid: (gridIdToDelete: number) => void
   activeGridId: number
   grids: Grid[]
-  selectedTool: "pencil" | "square" | "colorPicker" | "emojiPicker" | "eraser" | "undo" | ""
+  selectedTool: "pencil" | "square" | "bucket" | "colorPicker" | "emojiPicker" | "eraser" | "undo" | ""
   isToolCursorVisible: boolean
   // "blue": the color is selected with the color blue
   // "": the eraser of color is selected
@@ -203,6 +216,46 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     const ITEMS_PER_LINE = 10
     const ITEMS_PER_COLUMN = 10
     const cellIndexesToChange = twoIndexesIntoIndexesOfSquare(cellIndex1, cellIndex2, ITEMS_PER_LINE, ITEMS_PER_COLUMN)
+
+    cellIndexesToChange.forEach((cellIndex) => {
+      grid.cells[cellIndex]! = {
+        ...grid.cells[cellIndex]!,
+        ...cellUpdate
+      }
+    })
+
+    get().set({ grids: [...grids] })
+    pushToGridHistory(get())
+  },
+  floodFill: ({
+    gridId,
+    cellIndex,
+    cellUpdate
+  }: {
+    gridId: number,
+    cellIndex: number,
+    cellUpdate: {
+      color?: string,
+      emoji?: string,
+      script?: string
+    }
+  }) => {
+    const { grids } = get()
+    const grid = grids.find(g => g.id === gridId)
+    if (typeof grid === "undefined") return console.error(`grid ${gridId} not found in the store`)
+    if (cellIndex >= 100 || cellIndex < 0) return console.error(`cellIndex ${cellIndex} does not exist (must be 0-100)`)
+
+    // for now we allow flood fill only for color and emojis
+    // and not both at the same time
+    let cellIndexesToChange: number[] = []
+    const isChangingColor = cellUpdate?.color !== undefined
+    if (isChangingColor) {
+      cellIndexesToChange = getIndexesToFloodFill(cellIndex, grid.cells.map(c => c.color))
+    }
+    const isChangingEmoji = cellUpdate?.emoji !== undefined
+    if (isChangingEmoji) {
+      cellIndexesToChange = getIndexesToFloodFill(cellIndex, grid.cells.map(c => c.emoji))
+    }
 
     cellIndexesToChange.forEach((cellIndex) => {
       grid.cells[cellIndex]! = {

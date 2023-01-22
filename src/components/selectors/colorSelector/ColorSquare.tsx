@@ -18,7 +18,7 @@ const ColorSquare: React.FC<{ color: string }> = ({ color }) => {
       selectedColor: color,
       selectedEmoji: null
     })
-    if (selectedTool !== "pencil" && selectedTool !== "square") {
+    if (selectedTool !== "pencil" && selectedTool !== "square" && selectedTool !== "bucket") {
       store.setState({ selectedTool: "pencil" })
     }
   }, [color, selectedColor, selectedTool])

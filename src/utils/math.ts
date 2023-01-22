@@ -52,3 +52,57 @@ export const getCellPositionFromCellIndex = (cellIndex: number): { line: number,
 export const getCellIndexFromCellPosition = ({ line, column }: { line: number, column: number }): number => {
   return ((line - 1) * 10) + (column - 1)
 }
+
+export const getIndexOfUp = (cellIndex: number): number | null => {
+  const { line, column } = getCellPositionFromCellIndex(cellIndex)
+  if (line === 1) return null
+  return getCellIndexFromCellPosition({ line: line - 1, column })
+}
+
+export const getIndexOfDown = (cellIndex: number): number | null => {
+  const { line, column } = getCellPositionFromCellIndex(cellIndex)
+  if (line === 10) return null
+  return getCellIndexFromCellPosition({ line: line + 1, column })
+}
+
+export const getIndexOfLeft = (cellIndex: number): number | null => {
+  const { line, column } = getCellPositionFromCellIndex(cellIndex)
+  if (column === 1) return null
+  return getCellIndexFromCellPosition({ line, column: column - 1 })
+}
+
+export const getIndexOfRight = (cellIndex: number): number | null => {
+  const { line, column } = getCellPositionFromCellIndex(cellIndex)
+  if (column === 10) return null
+  return getCellIndexFromCellPosition({ line, column: column + 1 })
+}
+
+// https://en.wikipedia.org/wiki/Flood_fill
+export const getIndexesToFloodFill = (targetIndex: number, gridValues: string[]) => {
+  const targetValue = gridValues[targetIndex]
+  const indexesWithTargetValue: number[] = []
+  const indexesAlreadyChecked: number[] = []
+
+  // for each index (starting from targetIndex)
+  const checkIndexThenLookAround = (index: number) => {
+    if (indexesAlreadyChecked.includes(index)) return
+    indexesAlreadyChecked.push(index)
+
+    const value = gridValues[index]
+    if (value !== targetValue) return
+    indexesWithTargetValue.push(index)
+
+    const indexUp = getIndexOfUp(index)
+    if (indexUp !== null) checkIndexThenLookAround(indexUp)
+    const indexDown = getIndexOfDown(index)
+    if (indexDown !== null) checkIndexThenLookAround(indexDown)
+    const indexRight = getIndexOfRight(index)
+    if (indexRight !== null) checkIndexThenLookAround(indexRight)
+    const indexLeft = getIndexOfLeft(index)
+    if (indexLeft !== null) checkIndexThenLookAround(indexLeft)
+  }
+
+  checkIndexThenLookAround(targetIndex)
+
+  return indexesWithTargetValue
+}
