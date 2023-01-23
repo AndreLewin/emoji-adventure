@@ -1,3 +1,5 @@
+import { Button, Modal, Textarea } from "@mantine/core"
+import { getHotkeyHandler } from "@mantine/hooks"
 import { useCallback, useMemo, useState } from "react"
 import store, { Cell } from "../store"
 import CellDrawer from "./CellDrawer"
@@ -42,7 +44,7 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
   }, [cell, gridId, cellIndex, selectedTool, selectedColor, selectedEmoji])
 
   const handleMouseDown = useCallback<any>((event: MouseEvent) => {
-    const { buttons } = event
+    const { buttons, ctrlKey, altKey } = event
     if (buttons === 1) {
       if (selectedTool === "pencil") {
         updateCell({
@@ -76,7 +78,13 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
         })
       }
     } else if (buttons === 2 || buttons === 3) {
-      setIsDrawerOpened(true)
+      if (ctrlKey) {
+        setIsTextShortcutOpen(true)
+      } else if (altKey) {
+        setIsMoveShortcutOpen(true)
+      } else {
+        setIsDrawerOpened(true)
+      }
     }
   }, [cell, gridId, cellIndex, selectedTool, selectedColor, selectedEmoji])
 
@@ -100,11 +108,27 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
     }
   }, [cell, gridId, cellIndex, selectedTool, selectedColor, mouseDownCellIndex, selectedEmoji])
 
-  const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(false)
-
   const hasAScript = useMemo<boolean>(() => {
     return cell.script !== ""
   }, [cell.script])
+
+  const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(false)
+  const [isTextShortcutOpen, setIsTextShortcutOpen] = useState<boolean>(false)
+  const [shortcutText, setShortcutText] = useState<string>("")
+  const [isMoveShortcutOpen, setIsMoveShortcutOpen] = useState<boolean>(false)
+
+  const handleTextShortcutConfirm = useCallback<any>(() => {
+    const s = cell.script
+    updateCell({
+      gridId,
+      cellIndex,
+      cellUpdate: {
+        script: `${s}${s === "" ? "" : "\n"}window.alert(\`${shortcutText}\`)`
+      }
+    })
+    setShortcutText("")
+    setIsTextShortcutOpen(false)
+  }, [shortcutText, gridId, cellIndex, cell])
 
   return (
     <>
@@ -128,6 +152,32 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
           cellIndex={cellIndex}
           key={`grid${gridId}-cell${cellIndex}`}
         />
+      }
+
+      {isTextShortcutOpen &&
+        <Modal
+          opened={isTextShortcutOpen}
+          onClose={() => { setIsTextShortcutOpen(false), setShortcutText("") }}
+          styles={{ header: { position: "absolute", top: 0, right: 0, margin: "5px" } }}
+        >
+          <Textarea
+            data-autofocus
+            value={shortcutText}
+            label="Text to display (CTRL+Enter to confirm)"
+            autosize
+            onChange={(event) => setShortcutText(event.currentTarget.value)}
+            onKeyDown={getHotkeyHandler([
+              ['ctrl+Enter', handleTextShortcutConfirm]
+            ])}
+          />
+          <Button
+            onClick={handleTextShortcutConfirm}
+            fullWidth
+            mt="md"
+          >
+            Confirm
+          </Button>
+        </Modal>
       }
 
       <style jsx>
