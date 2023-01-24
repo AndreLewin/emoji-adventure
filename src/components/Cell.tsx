@@ -2,6 +2,7 @@ import { Button, Modal, Textarea } from "@mantine/core"
 import { getHotkeyHandler } from "@mantine/hooks"
 import { useCallback, useMemo, useState } from "react"
 import store, { Cell } from "../store"
+import TextShortcutModal from "./cell/TextShortcutModal"
 import CellDrawer from "./CellDrawer"
 
 const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }> = ({ cell, cellIndex, gridId }) => {
@@ -81,7 +82,8 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
       if (ctrlKey) {
         setIsTextShortcutOpen(true)
       } else if (altKey) {
-        setIsMoveShortcutOpen(true)
+        // TODO
+        // setIsMoveShortcutOpen(true)
       } else {
         setIsDrawerOpened(true)
       }
@@ -114,21 +116,6 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
 
   const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(false)
   const [isTextShortcutOpen, setIsTextShortcutOpen] = useState<boolean>(false)
-  const [shortcutText, setShortcutText] = useState<string>("")
-  const [isMoveShortcutOpen, setIsMoveShortcutOpen] = useState<boolean>(false)
-
-  const handleTextShortcutConfirm = useCallback<any>(() => {
-    const s = cell.script
-    updateCell({
-      gridId,
-      cellIndex,
-      cellUpdate: {
-        script: `${s}${s === "" ? "" : "\n"}window.alert(\`${shortcutText}\`)`
-      }
-    })
-    setShortcutText("")
-    setIsTextShortcutOpen(false)
-  }, [shortcutText, gridId, cellIndex, cell])
 
   return (
     <>
@@ -155,29 +142,12 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
       }
 
       {isTextShortcutOpen &&
-        <Modal
-          opened={isTextShortcutOpen}
-          onClose={() => { setIsTextShortcutOpen(false), setShortcutText("") }}
-          styles={{ header: { position: "absolute", top: 0, right: 0, margin: "5px" } }}
-        >
-          <Textarea
-            data-autofocus
-            value={shortcutText}
-            label="Text to display (CTRL+Enter to confirm)"
-            autosize
-            onChange={(event) => setShortcutText(event.currentTarget.value)}
-            onKeyDown={getHotkeyHandler([
-              ['ctrl+Enter', handleTextShortcutConfirm]
-            ])}
-          />
-          <Button
-            onClick={handleTextShortcutConfirm}
-            fullWidth
-            mt="md"
-          >
-            Confirm
-          </Button>
-        </Modal>
+        <TextShortcutModal
+          closeModal={() => setIsTextShortcutOpen(false)}
+          cell={cell}
+          cellIndex={cellIndex}
+          gridId={gridId}
+        />
       }
 
       <style jsx>
