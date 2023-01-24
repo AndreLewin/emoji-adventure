@@ -60,6 +60,13 @@ export type Store = {
   set: SetState<Store>
   reset: () => void
   undo: () => void
+  getCell: ({
+    gridId,
+    cellIndex
+  }: {
+    gridId: number,
+    cellIndex: number
+  }) => Cell | null,
   updateCell: ({
     gridId,
     cellIndex,
@@ -167,6 +174,18 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       const oldGridToUse = gridHistory[gridHistory.length - 1]!
       get().set(oldGridToUse)
     }
+  },
+  getCell({
+    gridId,
+    cellIndex
+  }: {
+    gridId: number,
+    cellIndex: number
+  }) {
+    const { grids } = get()
+    const grid = grids.find(g => g.id === gridId)
+    if (typeof grid === "undefined") return null
+    return grid.cells?.[cellIndex] ?? null
   },
   updateCell({
     gridId,

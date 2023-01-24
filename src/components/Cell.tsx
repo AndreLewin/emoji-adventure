@@ -2,6 +2,7 @@ import { Button, Modal, Textarea } from "@mantine/core"
 import { getHotkeyHandler } from "@mantine/hooks"
 import { useCallback, useMemo, useState } from "react"
 import store, { Cell } from "../store"
+import MoveShortcutModal from "./cell/MoveShortcutModal"
 import TextShortcutModal from "./cell/TextShortcutModal"
 import CellDrawer from "./CellDrawer"
 
@@ -82,8 +83,7 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
       if (ctrlKey) {
         setIsTextShortcutOpen(true)
       } else if (altKey) {
-        // TODO
-        // setIsMoveShortcutOpen(true)
+        setIsMoveShortcutOpen(true)
       } else {
         setIsDrawerOpened(true)
       }
@@ -116,6 +116,7 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
 
   const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(false)
   const [isTextShortcutOpen, setIsTextShortcutOpen] = useState<boolean>(false)
+  const [isMoveShortcutOpen, setIsMoveShortcutOpen] = useState<boolean>(false)
 
   return (
     <>
@@ -144,6 +145,15 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
       {isTextShortcutOpen &&
         <TextShortcutModal
           closeModal={() => setIsTextShortcutOpen(false)}
+          cell={cell}
+          cellIndex={cellIndex}
+          gridId={gridId}
+        />
+      }
+
+      {isMoveShortcutOpen &&
+        <MoveShortcutModal
+          closeModal={() => setIsMoveShortcutOpen(false)}
           cell={cell}
           cellIndex={cellIndex}
           gridId={gridId}
