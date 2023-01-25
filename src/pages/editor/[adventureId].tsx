@@ -14,6 +14,7 @@ import { Adventure } from ".prisma/client";
 import store, { emptyHistory, gridHistory, pushToGridHistory } from "../../store";
 import SaveAdventure from "../../components/SaveAdventure";
 import Cursor from "../../components/Cursor";
+import { Button } from "@mantine/core";
 
 const EditorAdventureId: NextPage = () => {
   const { data: sessionData } = useSession()
@@ -102,6 +103,16 @@ const EditorAdventureId: NextPage = () => {
       <div style={{ paddingTop: "15px" }}>
         <SaveAdventure />
       </div>
+      <hr />
+      <a href={`${location?.hostname === "localhost" ? "" : "https://emoji-adventure.vercel.app"}/${adventureId}`} target="_blank">
+        <Button color="gray">
+          {`Play your saved Adventure (make sure it is accessible through the Adventure list first)`}
+        </Button>
+      </a>
+      <hr />
+      <Button color="gray" onClick={() => router.push("/editor")}>
+        {`Go to your Adventures (make sure to save your changes before leaving)`}
+      </Button>
       <div style={{ "position": "absolute", "top": "30px", "left": "20px" }}>
         <Cursor />
       </div>
