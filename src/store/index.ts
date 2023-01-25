@@ -380,4 +380,7 @@ if (typeof window !== 'undefined') {
   window._s = store
   // @ts-ignore
   window._ss = () => store.getState()
+  // store for global variables
+  // @ts-ignore
+  window._g = {}
 }

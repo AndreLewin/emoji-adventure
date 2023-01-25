@@ -67,8 +67,10 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
           Try Script
         </Button>
 
-        <ShorthandsInfo />
+        {/* <ShorthandsInfo /> */}
         <Tips />
+        <div></div>
+        {'WIP: Shorthands (like "$wa" instead of "$window.alert")'}
       </div>
       <style jsx>
         {`
