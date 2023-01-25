@@ -48,6 +48,10 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
   const handleMouseDown = useCallback<any>((event: MouseEvent) => {
     const { buttons, ctrlKey, altKey } = event
     if (buttons === 1) {
+      if (altKey) {
+        eval(cell.script)
+        return
+      }
       if (selectedTool === "pencil") {
         updateCell({
           gridId,

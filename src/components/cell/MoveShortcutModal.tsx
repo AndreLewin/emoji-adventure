@@ -63,7 +63,7 @@ const MoveShortcutModal: React.FC<{
         gridId,
         cellIndex,
         cellUpdate: {
-          script: `${selectedCell.script}${selectedCell.script === "" ? "" : "\n"}window._s.setState({ activeGridId: ${activeGridId} }) `
+          script: `${selectedCell.script}${selectedCell.script === "" ? "" : "\n"}window._s.setState({ activeGridId: ${targetGrid} }) `
         }
       })
 
