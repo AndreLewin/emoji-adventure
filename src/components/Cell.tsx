@@ -16,9 +16,13 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
   const updateCell = store(state => state.updateCell)
   const updateSquare = store(state => state.updateSquare)
   const floodFill = store(state => state.floodFill)
+  const getCell = store(state => state.getCell)
 
   const handleMouseOver = useCallback<any>((event: MouseEvent) => {
-    const { buttons } = event
+    const { buttons, ctrlKey } = event
+    // don't do anything if the user is duplicating a cell
+    if (ctrlKey) return
+
     // left click holded
     if (buttons === 1) {
       if (selectedTool === "pencil") {
@@ -51,7 +55,11 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
       if (altKey) {
         eval(cell.script)
         return
+      } else if (ctrlKey) {
+        set({ mouseDownCellIndex: cellIndex })
+        return
       }
+
       if (selectedTool === "pencil") {
         updateCell({
           gridId,
@@ -95,6 +103,24 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
   }, [cell, gridId, cellIndex, selectedTool, selectedColor, selectedEmoji])
 
   const handleMouseUp = useCallback<any>((event: MouseEvent) => {
+    const { ctrlKey } = event
+    if (ctrlKey) {
+      const startCellIndex = mouseDownCellIndex
+      const endCellIndex = cellIndex
+      if (startCellIndex !== null && endCellIndex !== null) {
+        const cellToCopy = getCell({ gridId, cellIndex: startCellIndex })
+        if (cellToCopy !== null) {
+          updateCell({
+            gridId,
+            cellIndex: endCellIndex,
+            cellUpdate: { ...cellToCopy }
+          })
+        }
+      }
+      set({ mouseDownCellIndex: null })
+      return
+    }
+
     if (selectedTool === "square") {
       const startCellIndex = mouseDownCellIndex
       const endCellIndex = cellIndex
