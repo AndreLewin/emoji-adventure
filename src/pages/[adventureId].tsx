@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import GridInfoViewer from "../components/viewers/GridInfoViewer"
+import AdventureInfoViewer from "../components/viewers/AdventureInfoViewer"
 import GridViewer from "../components/viewers/GridViewer"
 import store, { emptyHistory } from "../store"
 
@@ -65,6 +66,7 @@ export default function AdventurePage() {
     <div className="container">
       <GridViewer />
       <GridInfoViewer />
+      <AdventureInfoViewer />
 
       <style jsx>
         {`

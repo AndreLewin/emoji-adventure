@@ -52,8 +52,8 @@ const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   initialScript: "",
   // adventure info
   adventure: null,
-  //
-  isChanged: false
+  isChanged: false,
+  map: new Map<string, any>()
 })
 
 export type Store = {
@@ -125,6 +125,9 @@ export type Store = {
     idOfGridToCopy?: number
   }) => Grid
   deleteGrid: (gridIdToDelete: number) => void
+  mapGet: (key: string) => any
+  // works as a proxy for reactivity (store set) and to trigger the functions that are subscribed to the key
+  mapSet: (key: string, value: any) => void
   activeGridId: number
   grids: Grid[]
   selectedTool: "pencil" | "square" | "bucket" | "colorPicker" | "emojiPicker" | "eraser" | "undo" | ""
@@ -143,7 +146,12 @@ export type Store = {
   // eval when the adventure is loaded
   initialScript: string
   adventure: Omit<Adventure, "data"> | null
+  // in the editor, turns true if a change is made
   isChanged: boolean
+  // reactive variables that can be displayed on screen
+  // variables (keys) starting with _ won't be displayed
+  // only number and string values will be displayed
+  map: Map<string, any>
 }
 
 export let gridHistory: Pick<Store, "activeGridId" | "grids">[] = []
@@ -367,6 +375,14 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     get().set({ activeGridId: isRemovingActiveGridId ? newGrids[newGrids.length - 1]!.id : activeGridId })
     get().set({ grids: newGrids })
     pushToGridHistory(get())
+  },
+  mapGet: (key: string) => {
+    const { map } = get()
+    return map.get(key)
+  },
+  mapSet: (key: string, value: any) => {
+    const { map } = get()
+    set({ map: new Map(map).set(key, value) })
   }
 }))
 

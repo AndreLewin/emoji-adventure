@@ -11,7 +11,7 @@ const GlobalVariable: React.FC<{ setScript: Dispatch<SetStateAction<string>> }> 
   return (
     <>
       <span className='container'>
-        <Button onClick={handleClick}>Global variable</Button>
+        <Button onClick={handleClick}>Global variable (deprecated)</Button>
       </span>
       <style jsx>
         {`

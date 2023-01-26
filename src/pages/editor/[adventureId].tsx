@@ -15,6 +15,7 @@ import store, { emptyHistory, gridHistory, pushToGridHistory } from "../../store
 import SaveAdventure from "../../components/SaveAdventure";
 import Cursor from "../../components/Cursor";
 import { Button } from "@mantine/core";
+import Variables from "../../components/Variables";
 
 const EditorAdventureId: NextPage = () => {
   const { data: sessionData } = useSession()
@@ -99,6 +100,9 @@ const EditorAdventureId: NextPage = () => {
       <div style={{ paddingTop: "15px" }}>
         <GridSelector />
         <GridInfo />
+      </div>
+      <div style={{ paddingTop: "15px" }}>
+        <Variables />
       </div>
       <div style={{ paddingTop: "15px" }}>
         <SaveAdventure />

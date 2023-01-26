@@ -5,6 +5,7 @@ import AskForName from "./codeGenerationButtons/AskForName";
 import GlobalVariable from "./codeGenerationButtons/GlobalVariable";
 import RemoveScript from "./codeGenerationButtons/RemoveScript";
 import ChangeEmoji from "./codeGenerationButtons/ChangeEmoji";
+import MapVariable from "./codeGenerationButtons/MapVariable";
 
 const CodeGenerationButtons: React.FC<{ setScript: Dispatch<SetStateAction<string>>, cellIndex: number }> = ({ setScript, cellIndex }) => {
 
@@ -19,6 +20,8 @@ const CodeGenerationButtons: React.FC<{ setScript: Dispatch<SetStateAction<strin
         <div />
         <RemoveScript setScript={setScript} cellIndex={cellIndex} />
         <ChangeEmoji setScript={setScript} cellIndex={cellIndex} />
+        <div />
+        <MapVariable setScript={setScript} cellIndex={cellIndex} />
       </div>
       <style jsx>
         {`
