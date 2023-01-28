@@ -158,7 +158,9 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
         onMouseUp={(e) => handleMouseUp(e)}
         onContextMenu={(e) => setIsDrawerOpened(true)}
       >
-        {cell.emoji}
+        <span className="emoji-wrapper">
+          {cell.emoji}
+        </span>
       </div>
 
       {isDrawerOpened &&
@@ -209,6 +211,18 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
 
           .selected-border {
             border: 6px solid var(--highlighter-blue);
+          }
+
+          .emoji-wrapper {
+            /* so the text/emoji is displayed over the background color of other cells */
+            z-index: 2; 
+            width: 100%;
+            height: 100%;
+            white-space: nowrap;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
         `}
       </style>
