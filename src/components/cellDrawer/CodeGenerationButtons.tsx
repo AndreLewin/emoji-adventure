@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
 import DisplayText from "./codeGenerationButtons/DisplayText";
 import MoveToGrid from "./codeGenerationButtons/MoveToGrid";
 import AskForName from "./codeGenerationButtons/AskForName";
@@ -7,21 +6,21 @@ import RemoveScript from "./codeGenerationButtons/RemoveScript";
 import ChangeEmoji from "./codeGenerationButtons/ChangeEmoji";
 import MapVariable from "./codeGenerationButtons/MapVariable";
 
-const CodeGenerationButtons: React.FC<{ setScript: Dispatch<SetStateAction<string>>, cellIndex: number }> = ({ setScript, cellIndex }) => {
+const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
 
   return (
     <>
       <div className='container'>
-        <DisplayText setScript={setScript} />
-        <MoveToGrid setScript={setScript} cellIndex={cellIndex} />
+        <DisplayText gridId={gridId} cellIndex={cellIndex} />
+        <MoveToGrid gridId={gridId} cellIndex={cellIndex} />
         <div />
-        <AskForName setScript={setScript} />
-        <GlobalVariable setScript={setScript} />
+        <AskForName gridId={gridId} cellIndex={cellIndex} />
+        <GlobalVariable gridId={gridId} cellIndex={cellIndex} />
         <div />
-        <RemoveScript setScript={setScript} cellIndex={cellIndex} />
-        <ChangeEmoji setScript={setScript} cellIndex={cellIndex} />
+        <RemoveScript gridId={gridId} cellIndex={cellIndex} />
+        <ChangeEmoji gridId={gridId} cellIndex={cellIndex} />
         <div />
-        <MapVariable setScript={setScript} cellIndex={cellIndex} />
+        <MapVariable gridId={gridId} cellIndex={cellIndex} />
       </div>
       <style jsx>
         {`

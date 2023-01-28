@@ -1,12 +1,18 @@
 import { Button } from "@mantine/core"
-import { Dispatch, SetStateAction, useCallback } from "react"
+import { useCallback } from "react"
+import store from "../../../store"
 
-const GlobalVariable: React.FC<{ setScript: Dispatch<SetStateAction<string>> }> = ({ setScript }) => {
+const GlobalVariable: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
+  const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
     const script = `if (window._g.counter === undefined) window._g.counter = 0\nwindow._g.counter += 1\nalert(\`Number of times you clicked: \${window._g.counter}!\`)`
-    setScript(s => `${s}${s === "" ? "" : "\n"}${script}`)
-  }, [])
+    updateCellWithAppend({
+      gridId,
+      cellIndex,
+      cellUpdate: { script }
+    })
+  }, [gridId, cellIndex])
 
   return (
     <>

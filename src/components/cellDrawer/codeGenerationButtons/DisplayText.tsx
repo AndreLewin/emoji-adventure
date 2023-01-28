@@ -1,21 +1,28 @@
 import { Button, Modal, Textarea } from "@mantine/core"
-import { Dispatch, SetStateAction, useCallback, useState } from "react"
+import { useCallback, useState } from "react"
 import { getHotkeyHandler } from '@mantine/hooks'
+import store from "../../../store"
 
-const DisplayText: React.FC<{ setScript: Dispatch<SetStateAction<string>> }> = ({ setScript }) => {
+const DisplayText: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
 
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false)
   const [textToDisplay, setTextToDisplay] = useState<string>("")
+  const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleConfirm = useCallback<any>(() => {
-    setScript(s => `${s}${s === "" ? "" : "\n"}window.alert(\`${textToDisplay}\`)`)
+    const script = `window.alert(\`${textToDisplay}\`)`
+    updateCellWithAppend({
+      gridId,
+      cellIndex,
+      cellUpdate: { script }
+    })
     setIsModalOpened(false)
     setTextToDisplay("")
     setTimeout(() => {
       const codeEditor = window.document.querySelector(".npm__react-simple-code-editor__textarea") as HTMLElement
       codeEditor?.focus()
     }, 50);
-  }, [textToDisplay])
+  }, [textToDisplay, gridId, cellIndex])
 
   return (
     <>

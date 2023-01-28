@@ -80,6 +80,19 @@ export type Store = {
       script?: string
     }
   }) => void
+  updateCellWithAppend: ({
+    gridId,
+    cellIndex,
+    cellUpdate
+  }: {
+    gridId: number,
+    cellIndex: number,
+    cellUpdate: {
+      color?: string,
+      emoji?: string,
+      script?: string
+    }
+  }) => void
   updateSquare: ({
     gridId,
     cellIndex1,
@@ -215,6 +228,39 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     grid.cells[cellIndex]! = {
       ...grid.cells[cellIndex]!,
       ...cellUpdate
+    }
+    get().set({ grids: [...grids] })
+    pushToGridHistory(get())
+  },
+  updateCellWithAppend({
+    gridId,
+    cellIndex,
+    cellUpdate
+  }: {
+    gridId: number,
+    cellIndex: number,
+    cellUpdate: {
+      color?: string,
+      emoji?: string,
+      script?: string
+    }
+  }) {
+    const { grids } = get()
+    const grid = grids.find(g => g.id === gridId)
+    if (typeof grid === "undefined") return console.error(`grid ${gridId} not found in the store`)
+    if (cellIndex >= 100) return console.error(`cellIndex ${cellIndex} does not exist (must be 0-100)`)
+    const newCell = { ...grid.cells[cellIndex]! }
+
+    if (cellUpdate.emoji !== undefined) {
+      newCell.emoji += cellUpdate.emoji
+    }
+    if (cellUpdate.script !== undefined) {
+      newCell.script += (newCell.script === "" ? "" : "\n") + cellUpdate.script
+    }
+
+    grid.cells[cellIndex]! = {
+      ...grid.cells[cellIndex]!,
+      ...newCell
     }
     get().set({ grids: [...grids] })
     pushToGridHistory(get())

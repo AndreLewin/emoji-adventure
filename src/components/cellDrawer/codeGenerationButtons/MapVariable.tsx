@@ -1,13 +1,17 @@
 import { Button } from "@mantine/core"
-import { Dispatch, SetStateAction, useCallback } from "react"
+import { useCallback } from "react"
 import store from "../../../store"
 
-const MapVariable: React.FC<{ setScript: Dispatch<SetStateAction<string>>, cellIndex: number }> = ({ setScript, cellIndex }) => {
-  const gridId = store(state => state.activeGridId)
+const MapVariable: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
+  const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
     const script = `window._ss().mapSet("visibleVariable", 10)\nwindow._ss().mapSet("_invisibleVariable", 10)\nconst visibleVariable = window._ss().mapGet("visibleVariable")`
-    setScript(s => `${s}${s === "" ? "" : "\n"}${script}`)
+    updateCellWithAppend({
+      gridId,
+      cellIndex,
+      cellUpdate: { script }
+    })
   }, [gridId, cellIndex])
 
   return (

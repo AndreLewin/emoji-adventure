@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react"
 import store from "../../../store"
 import { getSameLineSymmetricalCellIndex, getSameColumnSymmetricalCellIndex, getCellPositionFromCellIndex } from "../../../utils/math"
 
-const MoveToGrid: React.FC<{ setScript: Dispatch<SetStateAction<string>>, cellIndex: number }> = ({ setScript, cellIndex }) => {
+const MoveToGrid: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
 
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false)
   const [shouldCreateSameColumnSymmetricEvent, setShouldCreateSameColumnSymmetricEvent] = useState<boolean>(
@@ -15,48 +15,53 @@ const MoveToGrid: React.FC<{ setScript: Dispatch<SetStateAction<string>>, cellIn
   const [shouldCopyCurrentGrid, setShouldCopyCurrentGrid] = useState<boolean>(false)
   const [newGridName, setNewGridName] = useState<string>("")
 
-  const updateCell = store(state => state.updateCell)
-  const activeGridId = store(state => state.activeGridId)
   const createGrid = store(state => state.createGrid)
+  const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const grids = store(state => state.grids)
   const selectData = useMemo(() => {
-    const gridsExceptActiveOne = grids.filter(g => g.id !== activeGridId)
+    const gridsExceptActiveOne = grids.filter(g => g.id !== gridId)
     return gridsExceptActiveOne.map(grid => {
       return {
         value: `${grid.id}`,
         label: `${grid.id}: ${grid.text}`
       }
     })
-  }, [grids])
+  }, [grids, gridId])
 
   const handleSelectedGrid = useCallback<any>(({
-    gridId,
+    targetGridId,
     isGoingToNewGrid
   }: {
-    gridId?: string,
+    targetGridId?: string,
     isGoingToNewGrid?: boolean
   }) => {
-    let targetGrid = gridId
+    let targetGridIdd = targetGridId
     let newGrid = null
     if (isGoingToNewGrid) {
       newGrid = createGrid({
-        ...(shouldCopyCurrentGrid ? { idOfGridToCopy: activeGridId } : {}),
+        ...(shouldCopyCurrentGrid ? { idOfGridToCopy: gridId } : {}),
         ...(newGridName !== "" ? { name: newGridName } : {})
       })
-      targetGrid = `${newGrid.id}`
+      targetGridIdd = `${newGrid.id}`
     }
 
-    setScript(s => `${s}${s === "" ? "" : "\n"}window._s.setState({ activeGridId: ${targetGrid} }) `)
+    const script = `window._s.setState({ activeGridId: ${targetGridIdd} })`
+    updateCellWithAppend({
+      gridId,
+      cellIndex,
+      cellUpdate: { script }
+    })
+
     if (shouldCreateSameColumnSymmetricEvent || shouldCreateSameLineSymmetricEvent) {
-      const grid = isGoingToNewGrid ? newGrid : grids.find(g => `${g.id}` === targetGrid)
+      const grid = isGoingToNewGrid ? newGrid : grids.find(g => `${g.id}` === targetGridId)
       if (!grid) return
       let symmetricalCellIndex = cellIndex
       if (shouldCreateSameColumnSymmetricEvent) symmetricalCellIndex = getSameColumnSymmetricalCellIndex(symmetricalCellIndex, 10)
       if (shouldCreateSameLineSymmetricEvent) symmetricalCellIndex = getSameLineSymmetricalCellIndex(symmetricalCellIndex, 10)
       let newScript = grid.cells[symmetricalCellIndex]?.script ?? ""
-      newScript = `${newScript}${newScript === "" ? "" : "\n"}window._s.setState({ activeGridId: ${activeGridId} }) `
-      updateCell({
+      newScript = `window._s.setState({ activeGridId: ${gridId} })`
+      updateCellWithAppend({
         gridId: grid.id,
         cellIndex: symmetricalCellIndex,
         cellUpdate: { script: newScript }
@@ -68,7 +73,7 @@ const MoveToGrid: React.FC<{ setScript: Dispatch<SetStateAction<string>>, cellIn
       const codeEditor = window.document.querySelector(".npm__react-simple-code-editor__textarea") as HTMLElement
       codeEditor?.focus()
     }, 50);
-  }, [grids, shouldCreateSameColumnSymmetricEvent, shouldCreateSameLineSymmetricEvent, activeGridId, shouldCopyCurrentGrid, newGridName])
+  }, [grids, shouldCreateSameColumnSymmetricEvent, shouldCreateSameLineSymmetricEvent, gridId, shouldCopyCurrentGrid, newGridName])
 
   return (
     <>
@@ -93,7 +98,7 @@ const MoveToGrid: React.FC<{ setScript: Dispatch<SetStateAction<string>>, cellIn
           <Divider size="sm" my="xs" label="Move to existing Grid" labelPosition="center" />
           <Select
             value={null}
-            onChange={(event) => handleSelectedGrid({ gridId: event })}
+            onChange={(event) => handleSelectedGrid({ targetGridId: event })}
             data={selectData}
           />
           <Divider size="sm" my="xs" label="Move to a new Grid" labelPosition="center" />

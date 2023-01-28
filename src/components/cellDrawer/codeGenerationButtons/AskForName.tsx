@@ -1,12 +1,18 @@
 import { Button } from "@mantine/core"
-import { Dispatch, SetStateAction, useCallback } from "react"
+import { useCallback } from "react"
+import store from "../../../store"
 
-const AskForName: React.FC<{ setScript: Dispatch<SetStateAction<string>> }> = ({ setScript }) => {
+const AskForName: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
+  const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
     const script = `const name = window.prompt("What is your name?")\nalert(\`Hello \$\{name\}!\`)`
-    setScript(s => `${s}${s === "" ? "" : "\n"}${script}`)
-  }, [])
+    updateCellWithAppend({
+      gridId,
+      cellIndex,
+      cellUpdate: { script }
+    })
+  }, [gridId, cellIndex])
 
   return (
     <>

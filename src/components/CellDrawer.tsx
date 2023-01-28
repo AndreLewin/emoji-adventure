@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useState } from "react"
+import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react"
 import { Button, Drawer } from "@mantine/core"
 import store, { Cell } from "../store"
 
@@ -17,14 +17,21 @@ import { getHotkeyHandler } from "@mantine/hooks";
 const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatch<SetStateAction<boolean>>, cell: Cell, gridId: number, cellIndex: number }> = (
   { isDrawerOpened, setIsDrawerOpened, cell, gridId, cellIndex }
 ) => {
-
-  const [script, setScript] = useState<string>(cell.script)
-
   const updateCell = store(state => state.updateCell)
 
-  const handleSave = useCallback<any>(() => {
-    updateCell({ gridId, cellIndex, cellUpdate: { script } })
-  }, [gridId, cellIndex, script])
+  const script = useMemo<string>(() => {
+    return cell.script ?? ""
+  }, [cell])
+
+  const setScript = useCallback<any>((script: string) => {
+    updateCell({
+      gridId,
+      cellIndex,
+      cellUpdate: {
+        script
+      }
+    })
+  }, [gridId, cellIndex])
 
   return (
     <Drawer
@@ -34,7 +41,7 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
     >
       <div className="container">
 
-        <CodeGenerationButtons setScript={setScript} cellIndex={cellIndex} />
+        <CodeGenerationButtons gridId={gridId} cellIndex={cellIndex} />
 
         <div style={{ marginTop: "10px" }} />
 
@@ -50,18 +57,11 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
             backgroundColor: "#ededf0"
           }}
           onKeyDown={getHotkeyHandler([
-            ['ctrl+Enter', (event) => { handleSave(), setIsDrawerOpened(false) }]
+            ['ctrl+Enter', () => { setIsDrawerOpened(false) }]
           ])}
         />
 
         <div style={{ marginTop: "10px" }} />
-
-        <Button
-          disabled={script === cell.script}
-          onClick={handleSave}
-        >
-          Save Script
-        </Button>
 
         <Button onClick={() => eval(script)}>
           Try Script
