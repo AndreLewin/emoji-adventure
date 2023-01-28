@@ -15,7 +15,7 @@ import store, { emptyHistory, gridHistory, pushToGridHistory } from "../../store
 import SaveAdventure from "../../components/SaveAdventure";
 import Cursor from "../../components/Cursor";
 import { Button } from "@mantine/core";
-import Variables from "../../components/Variables";
+import AdventureInfo from "../../components/AdventureInfo";
 
 const EditorAdventureId: NextPage = () => {
   const { data: sessionData } = useSession()
@@ -57,7 +57,7 @@ const EditorAdventureId: NextPage = () => {
       store.setState({
         grids: dataParsed.grids,
         firstGridId: dataParsed.firstGridId,
-        initialScript: dataParsed.initialScript,
+        onLoadScript: dataParsed.onLoadScript,
         adventure: rest,
         isChanged: false
       })
@@ -97,17 +97,13 @@ const EditorAdventureId: NextPage = () => {
         <Grid />
         <EmojiPicker />
       </div>
-      <div style={{ paddingTop: "15px" }}>
-        <GridSelector />
-        <GridInfo />
-      </div>
-      <div style={{ paddingTop: "15px" }}>
-        <Variables />
-      </div>
-      <div style={{ paddingTop: "15px" }}>
-        <SaveAdventure />
-      </div>
-      <hr />
+      <div style={{ paddingTop: "30px" }} />
+      <GridSelector />
+      <GridInfo />
+      <div style={{ paddingTop: "30px" }} />
+      <AdventureInfo />
+      <SaveAdventure />
+      <div style={{ paddingTop: "30px" }} />
       <a href={`${location?.hostname === "localhost" ? "" : "https://emoji-adventure.vercel.app"}/${adventureId}`} target="_blank">
         <Button color="gray">
           {`Play your saved Adventure (make sure it is accessible through the Adventure list first)`}

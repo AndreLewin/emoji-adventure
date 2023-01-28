@@ -43,7 +43,7 @@ export default function AdventurePage() {
       store.setState({
         grids: dataParsed.grids,
         firstGridId: dataParsed.firstGridId,
-        initialScript: dataParsed.initialScript,
+        onLoadScript: dataParsed.onLoadScript,
         adventure: rest,
         isChanged: false
       })

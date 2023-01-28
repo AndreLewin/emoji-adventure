@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import store from "../store";
+import store from "../../store";
 
 const Variables: React.FC<{}> = ({ }) => {
   const map = store(state => state.map)
@@ -17,7 +17,7 @@ const Variables: React.FC<{}> = ({ }) => {
 
   return (
     <>
-      {`Variables `}
+      {`Map variables: `}
       {JSON.stringify(toDisplay)}
 
       <style jsx>

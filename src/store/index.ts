@@ -31,7 +31,7 @@ export const defaultAdventureFactory = (): Omit<Adventure, "id" | "createdAt" | 
     data: JSON.stringify({
       grids: [{ id: 0, ...defaultGridFactory() }],
       firstGridId: 0,
-      initialScript: ""
+      onLoadScript: ""
     }),
     isAccessible: false,
     isPublished: false
@@ -49,7 +49,7 @@ const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   // adventure data
   grids: [{ id: 0, ...defaultGridFactory() }],
   firstGridId: 0,
-  initialScript: "",
+  onLoadScript: "",
   // adventure info
   adventure: null,
   isChanged: false,
@@ -144,7 +144,7 @@ export type Store = {
   // the first grid where the player will play
   firstGridId: number
   // eval when the adventure is loaded
-  initialScript: string
+  onLoadScript: string
   adventure: Omit<Adventure, "data"> | null
   // in the editor, turns true if a change is made
   isChanged: boolean

@@ -1,8 +1,13 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import store from "../../store";
 
 const AdventureInfoViewer: React.FC<{}> = ({ }) => {
   const map = store(state => state.map)
+  const onLoadScript = store(state => state.onLoadScript)
+
+  useEffect(() => {
+    eval(onLoadScript)
+  }, [])
 
   const toDisplay = useMemo<{ 0: string, 1: any }[]>(() => {
     const array = [...map]
