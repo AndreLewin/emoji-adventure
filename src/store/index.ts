@@ -6,6 +6,8 @@ export type Cell = {
   color: string
   emoji: string
   onClickCScript: string
+  onViewCScript: string
+  onInitCScript: string
 }
 
 export type Grid = {
@@ -14,13 +16,21 @@ export type Grid = {
   text: string
   cells: Cell[]
   onViewGScript: string
+  onInitGScript: string
 }
 
 export const defaultGridFactory = (): Omit<Grid, "id"> => {
   return {
     text: "",
-    cells: (new Array(100)).fill({}).map(() => ({ color: "", emoji: "", onClickCScript: "" })),
-    onViewGScript: ""
+    cells: (new Array(100)).fill({}).map(() => ({
+      color: "",
+      emoji: "",
+      onClickCScript: "",
+      onViewCScript: "",
+      onInitCScript: ""
+    })),
+    onViewGScript: "",
+    onInitGScript: ""
   }
 }
 
@@ -77,7 +87,9 @@ export type Store = {
     cellUpdate: {
       color?: string,
       emoji?: string,
-      onClickCScript?: string
+      onClickCScript?: string,
+      onViewCScript?: string,
+      onInitCScript?: string
     }
   }) => void
   updateCellWithAppend: ({
@@ -91,6 +103,8 @@ export type Store = {
       color?: string,
       emoji?: string,
       onClickCScript?: string
+      onViewCScript?: string,
+      onInitCScript?: string
     }
   }) => void
   updateSquare: ({
@@ -106,6 +120,8 @@ export type Store = {
       color?: string,
       emoji?: string,
       onClickCScript?: string
+      onViewCScript?: string,
+      onInitCScript?: string
     }
   }) => void
   floodFill: ({
@@ -119,6 +135,8 @@ export type Store = {
       color?: string,
       emoji?: string,
       onClickCScript?: string
+      onViewCScript?: string,
+      onInitCScript?: string
     }
   }) => void
   pickEmoji: (pickedEmoji: string) => void
@@ -219,6 +237,8 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       color?: string,
       emoji?: string,
       onClickCScript?: string
+      onViewCScript?: string,
+      onInitCScript?: string
     }
   }) {
     const { grids } = get()
@@ -243,6 +263,8 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       color?: string,
       emoji?: string,
       onClickCScript?: string
+      onViewCScript?: string,
+      onInitCScript?: string
     }
   }) {
     const { grids } = get()
@@ -256,6 +278,12 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     }
     if (cellUpdate.onClickCScript !== undefined) {
       newCell.onClickCScript += (newCell.onClickCScript === "" ? "" : "\n") + cellUpdate.onClickCScript
+    }
+    if (cellUpdate.onViewCScript !== undefined) {
+      newCell.onViewCScript += (newCell.onViewCScript === "" ? "" : "\n") + cellUpdate.onViewCScript
+    }
+    if (cellUpdate.onInitCScript !== undefined) {
+      newCell.onInitCScript += (newCell.onInitCScript === "" ? "" : "\n") + cellUpdate.onInitCScript
     }
 
     grid.cells[cellIndex]! = {
@@ -277,7 +305,9 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     cellUpdate: {
       color?: string,
       emoji?: string,
-      onClickCScript?: string
+      onClickCScript?: string,
+      onViewCScript?: string,
+      onInitCScript?: string
     }
   }) => {
     const { grids } = get()
@@ -311,6 +341,8 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       color?: string,
       emoji?: string,
       onClickCScript?: string
+      onViewCScript?: string,
+      onInitCScript?: string
     }
   }) => {
     const { grids } = get()
@@ -393,7 +425,9 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
           return {
             ...c,
             // don't keep scripts 
-            onClickCScript: ""
+            onClickCScript: "",
+            onViewCScript: "",
+            onInitCScript: ""
           }
         })
       }
