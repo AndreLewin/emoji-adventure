@@ -8,13 +8,16 @@ const DisplayText: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false)
   const [textToDisplay, setTextToDisplay] = useState<string>("")
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
+  const activeCScriptTab = store(state => state.activeCScriptTab)
 
   const handleConfirm = useCallback<any>(() => {
-    const onClickCScript = `window.alert(\`${textToDisplay}\`)`
+    const script = `window.alert(\`${textToDisplay}\`)`
     updateCellWithAppend({
       gridId,
       cellIndex,
-      cellUpdate: { onClickCScript }
+      cellUpdate: { 
+        [activeCScriptTab]: script
+      }
     })
     setIsModalOpened(false)
     setTextToDisplay("")
@@ -22,7 +25,7 @@ const DisplayText: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
       const codeEditor = window.document.querySelector(".npm__react-simple-code-editor__textarea") as HTMLElement
       codeEditor?.focus()
     }, 50);
-  }, [textToDisplay, gridId, cellIndex])
+  }, [activeCScriptTab, updateCellWithAppend, textToDisplay, gridId, cellIndex])
 
   return (
     <>

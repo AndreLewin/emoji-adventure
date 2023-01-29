@@ -3,16 +3,19 @@ import { useCallback } from "react"
 import store from "../../../store"
 
 const MapVariable: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
+  const activeCScriptTab = store(state => state.activeCScriptTab)
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const onClickCScript = `window._ss().mapSet("visibleVariable", 10)\nwindow._ss().mapSet("_invisibleVariable", 10)\nconst visibleVariable = window._ss().mapGet("visibleVariable")`
+    const script = `window._ss().mapSet("visibleVariable", 10)\nwindow._ss().mapSet("_invisibleVariable", 10)\nconst visibleVariable = window._ss().mapGet("visibleVariable")`
     updateCellWithAppend({
       gridId,
       cellIndex,
-      cellUpdate: { onClickCScript }
+      cellUpdate: {
+        [activeCScriptTab]: script
+      }
     })
-  }, [gridId, cellIndex])
+  }, [activeCScriptTab, updateCellWithAppend, gridId, cellIndex])
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react"
-import { Button, Drawer } from "@mantine/core"
+import { Button, Drawer, Tabs } from "@mantine/core"
 import store, { Cell } from "../store"
 
 // https://github.com/react-simple-script-editor/react-simple-script-editor
@@ -18,20 +18,21 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
   { isDrawerOpened, setIsDrawerOpened, cell, gridId, cellIndex }
 ) => {
   const updateCell = store(state => state.updateCell)
+  const activeCScriptTab = store(state => state.activeCScriptTab)
 
-  const onClickCScript = useMemo<string>(() => {
-    return cell.onClickCScript ?? ""
-  }, [cell])
+  const script = useMemo<string>(() => {
+    return cell[activeCScriptTab] ?? ""
+  }, [cell, activeCScriptTab])
 
-  const setOnClickScript = useCallback<any>((onClickCScript: string) => {
+  const setOnClickScript = useCallback<any>((script: string) => {
     updateCell({
       gridId,
       cellIndex,
       cellUpdate: {
-        onClickCScript
+        [activeCScriptTab]: script
       }
     })
-  }, [gridId, cellIndex])
+  }, [activeCScriptTab, updateCell, gridId, cellIndex])
 
   return (
     <Drawer
@@ -45,9 +46,19 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
 
         <div style={{ marginTop: "10px" }} />
 
-        OnClickScript
+        <Tabs
+          value={activeCScriptTab}
+          onTabChange={(value) => store.setState({ activeCScriptTab: value as "onClickCScript" | "onViewCScript" | "onInitCScript" })}
+        >
+          <Tabs.List>
+            <Tabs.Tab value="onClickCScript">On Click</Tabs.Tab>
+            <Tabs.Tab value="onViewCScript">On View</Tabs.Tab>
+            <Tabs.Tab value="onInitCScript">On Init</Tabs.Tab>
+          </Tabs.List>
+        </Tabs>
+
         <Editor
-          value={onClickCScript}
+          value={script}
           onValueChange={script => setOnClickScript(script)}
           highlight={script => highlight(script, languages.js)}
           padding={10}
@@ -64,7 +75,7 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
 
         <div style={{ marginTop: "10px" }} />
 
-        <Button onClick={() => eval(onClickCScript)}>
+        <Button onClick={() => eval(script)}>
           Try Script
         </Button>
 

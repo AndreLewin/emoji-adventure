@@ -3,16 +3,19 @@ import { useCallback } from "react"
 import store from "../../../store"
 
 const AskForName: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
+  const activeCScriptTab = store(state => state.activeCScriptTab)
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const onClickCScript = `const name = window.prompt("What is your name?")\nalert(\`Hello \$\{name\}!\`)`
+    const script = `const name = window.prompt("What is your name?")\nalert(\`Hello \$\{name\}!\`)`
     updateCellWithAppend({
       gridId,
       cellIndex,
-      cellUpdate: { onClickCScript }
+      cellUpdate: {
+        [activeCScriptTab]: script
+      }
     })
-  }, [gridId, cellIndex])
+  }, [activeCScriptTab, updateCellWithAppend, gridId, cellIndex])
 
   return (
     <>

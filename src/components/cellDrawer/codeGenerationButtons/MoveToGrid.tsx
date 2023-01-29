@@ -4,7 +4,6 @@ import store from "../../../store"
 import { getSameLineSymmetricalCellIndex, getSameColumnSymmetricalCellIndex, getCellPositionFromCellIndex } from "../../../utils/math"
 
 const MoveToGrid: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
-
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false)
   const [shouldCreateSameColumnSymmetricEvent, setShouldCreateSameColumnSymmetricEvent] = useState<boolean>(
     getCellPositionFromCellIndex(cellIndex).line === 1 || getCellPositionFromCellIndex(cellIndex).line === 10
@@ -17,6 +16,7 @@ const MoveToGrid: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, c
 
   const createGrid = store(state => state.createGrid)
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
+  const activeCScriptTab = store(state => state.activeCScriptTab)
 
   const grids = store(state => state.grids)
   const selectData = useMemo(() => {
@@ -46,11 +46,13 @@ const MoveToGrid: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, c
       targetGridIdd = `${newGrid.id}`
     }
 
-    const onClickCScript = `window._s.setState({ activeGridId: ${targetGridIdd} })`
+    const script = `window._s.setState({ activeGridId: ${targetGridIdd} })`
     updateCellWithAppend({
       gridId,
       cellIndex,
-      cellUpdate: { onClickCScript }
+      cellUpdate: {
+        [activeCScriptTab]: script
+      }
     })
 
     if (shouldCreateSameColumnSymmetricEvent || shouldCreateSameLineSymmetricEvent) {
@@ -73,7 +75,7 @@ const MoveToGrid: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, c
       const codeEditor = window.document.querySelector(".npm__react-simple-code-editor__textarea") as HTMLElement
       codeEditor?.focus()
     }, 50);
-  }, [grids, shouldCreateSameColumnSymmetricEvent, shouldCreateSameLineSymmetricEvent, gridId, shouldCopyCurrentGrid, newGridName])
+  }, [activeCScriptTab, updateCellWithAppend, grids, shouldCreateSameColumnSymmetricEvent, shouldCreateSameLineSymmetricEvent, gridId, shouldCopyCurrentGrid, newGridName])
 
   return (
     <>
