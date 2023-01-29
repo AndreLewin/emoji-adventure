@@ -10,11 +10,11 @@ const DisplayText: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleConfirm = useCallback<any>(() => {
-    const script = `window.alert(\`${textToDisplay}\`)`
+    const onClickScript = `window.alert(\`${textToDisplay}\`)`
     updateCellWithAppend({
       gridId,
       cellIndex,
-      cellUpdate: { script }
+      cellUpdate: { onClickScript }
     })
     setIsModalOpened(false)
     setTextToDisplay("")

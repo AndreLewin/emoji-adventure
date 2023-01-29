@@ -46,11 +46,11 @@ const MoveToGrid: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, c
       targetGridIdd = `${newGrid.id}`
     }
 
-    const script = `window._s.setState({ activeGridId: ${targetGridIdd} })`
+    const onClickScript = `window._s.setState({ activeGridId: ${targetGridIdd} })`
     updateCellWithAppend({
       gridId,
       cellIndex,
-      cellUpdate: { script }
+      cellUpdate: { onClickScript }
     })
 
     if (shouldCreateSameColumnSymmetricEvent || shouldCreateSameLineSymmetricEvent) {
@@ -59,12 +59,12 @@ const MoveToGrid: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, c
       let symmetricalCellIndex = cellIndex
       if (shouldCreateSameColumnSymmetricEvent) symmetricalCellIndex = getSameColumnSymmetricalCellIndex(symmetricalCellIndex, 10)
       if (shouldCreateSameLineSymmetricEvent) symmetricalCellIndex = getSameLineSymmetricalCellIndex(symmetricalCellIndex, 10)
-      let newScript = grid.cells[symmetricalCellIndex]?.script ?? ""
+      let newScript = grid.cells[symmetricalCellIndex]?.onClickScript ?? ""
       newScript = `window._s.setState({ activeGridId: ${gridId} })`
       updateCellWithAppend({
         gridId: grid.id,
         cellIndex: symmetricalCellIndex,
-        cellUpdate: { script: newScript }
+        cellUpdate: { onClickScript: newScript }
       })
     }
 

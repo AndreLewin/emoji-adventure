@@ -6,11 +6,11 @@ const MapVariable: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `window._ss().mapSet("visibleVariable", 10)\nwindow._ss().mapSet("_invisibleVariable", 10)\nconst visibleVariable = window._ss().mapGet("visibleVariable")`
+    const onClickScript = `window._ss().mapSet("visibleVariable", 10)\nwindow._ss().mapSet("_invisibleVariable", 10)\nconst visibleVariable = window._ss().mapGet("visibleVariable")`
     updateCellWithAppend({
       gridId,
       cellIndex,
-      cellUpdate: { script }
+      cellUpdate: { onClickScript }
     })
   }, [gridId, cellIndex])
 

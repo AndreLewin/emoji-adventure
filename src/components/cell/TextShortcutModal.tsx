@@ -16,15 +16,14 @@ const TextShortcutModal: React.FC<{
 }) => {
     const [shortcutText, setShortcutText] = useState<string>("")
 
-    const updateCell = store(state => state.updateCell)
+    const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
     const handleTextShortcutConfirm = useCallback<any>(() => {
-      const s = cell.script
-      updateCell({
+      updateCellWithAppend({
         gridId,
         cellIndex,
         cellUpdate: {
-          script: `${s}${s === "" ? "" : "\n"}window.alert(\`${shortcutText}\`)`
+          onClickScript: `window.alert(\`${shortcutText}\`)`
         }
       })
       setShortcutText("")

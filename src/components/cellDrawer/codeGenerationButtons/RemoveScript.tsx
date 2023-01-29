@@ -6,11 +6,11 @@ const RemoveScript: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId,
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `_ss().updateCell({\n  gridId: ${gridId},\n  cellIndex: ${cellIndex},\n  cellUpdate: { script: "" }\n})`
+    const onClickScript = `_ss().updateCell({\n  gridId: ${gridId},\n  cellIndex: ${cellIndex},\n  cellUpdate: { onClickScript: "" }\n})`
     updateCellWithAppend({
       gridId,
       cellIndex,
-      cellUpdate: { script }
+      cellUpdate: { onClickScript }
     })
   }, [gridId, cellIndex])
 

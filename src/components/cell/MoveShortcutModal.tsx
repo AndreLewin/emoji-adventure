@@ -24,7 +24,7 @@ const MoveShortcutModal: React.FC<{
     const [newGridName, setNewGridName] = useState<string>("")
 
     const getCell = store(state => state.getCell)
-    const updateCell = store(state => state.updateCell)
+    const updateCellWithAppend = store(state => state.updateCellWithAppend)
     const activeGridId = store(state => state.activeGridId)
     const createGrid = store(state => state.createGrid)
 
@@ -59,11 +59,11 @@ const MoveShortcutModal: React.FC<{
       // update script on selected cell
       const selectedCell = getCell({ gridId, cellIndex })
       if (selectedCell === null) return
-      updateCell({
+      updateCellWithAppend({
         gridId,
         cellIndex,
         cellUpdate: {
-          script: `${selectedCell.script}${selectedCell.script === "" ? "" : "\n"}window._s.setState({ activeGridId: ${targetGrid} }) `
+          onClickScript: `window._s.setState({ activeGridId: ${targetGrid} }) `
         }
       })
 
@@ -76,11 +76,11 @@ const MoveShortcutModal: React.FC<{
 
         const selectedCell = getCell({ gridId: parseInt(targetGrid, 10), cellIndex: symmetricalCellIndex })
         if (selectedCell === null) return
-        updateCell({
+        updateCellWithAppend({
           gridId: parseInt(targetGrid, 10),
           cellIndex: symmetricalCellIndex,
           cellUpdate: {
-            script: `${selectedCell.script}${selectedCell.script === "" ? "" : "\n"}window._s.setState({ activeGridId: ${activeGridId} }) `
+            onClickScript: `window._s.setState({ activeGridId: ${activeGridId} }) `
           }
         })
       }

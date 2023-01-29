@@ -12,7 +12,6 @@ const Scripts: React.FC<{}> = ({ }) => {
   const onStartScript = store(state => state.onStartScript)
   const set = store(state => state.set)
 
-
   return (
     <>
       <div className='container'>
@@ -29,7 +28,7 @@ const Scripts: React.FC<{}> = ({ }) => {
             backgroundColor: "#ededf0"
           }}
         />
-        <Button onClick={() => eval(onLoadScript)}>
+        <Button onClick={() => eval(onStartScript)}>
           Try Script
         </Button>
       </div>
