@@ -57,7 +57,7 @@ const EditorAdventureId: NextPage = () => {
       store.setState({
         grids: dataParsed.grids,
         firstGridId: dataParsed.firstGridId,
-        onStartScript: dataParsed.onStartScript,
+        onInitAScript: dataParsed.onInitAScript,
         adventure: rest,
         isChanged: false
       })

@@ -5,15 +5,15 @@ const CellViewer: React.FC<{ cell: Cell }> = ({ cell }) => {
   const handleMouseDown = useCallback<any>((event: MouseEvent) => {
     const { buttons } = event
     if (buttons === 1) {
-      if (cell.onClickScript !== "") {
-        eval(cell.onClickScript)
+      if (cell.onClickCScript !== "") {
+        eval(cell.onClickCScript)
       }
     }
   }, [cell])
 
   const hasAScript = useMemo<boolean>(() => {
-    return cell.onClickScript !== ""
-  }, [cell.onClickScript])
+    return cell.onClickCScript !== ""
+  }, [cell.onClickCScript])
 
   return (
     <>
@@ -21,7 +21,7 @@ const CellViewer: React.FC<{ cell: Cell }> = ({ cell }) => {
         className={`container ${hasAScript ? "gradient-border" : ""}`}
         style={{
           "backgroundColor": cell.color,
-          "cursor": cell.onClickScript !== "" ? "pointer" : "default"
+          "cursor": cell.onClickCScript !== "" ? "pointer" : "default"
         }}
         onMouseDown={(e) => handleMouseDown(e)}
       >

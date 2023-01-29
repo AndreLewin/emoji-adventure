@@ -6,11 +6,11 @@ const AskForName: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, c
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const onClickScript = `const name = window.prompt("What is your name?")\nalert(\`Hello \$\{name\}!\`)`
+    const onClickCScript = `const name = window.prompt("What is your name?")\nalert(\`Hello \$\{name\}!\`)`
     updateCellWithAppend({
       gridId,
       cellIndex,
-      cellUpdate: { onClickScript }
+      cellUpdate: { onClickCScript }
     })
   }, [gridId, cellIndex])
 

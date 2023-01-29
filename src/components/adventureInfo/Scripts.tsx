@@ -9,7 +9,7 @@ import store from '../../store';
 import { Button } from '@mantine/core';
 
 const Scripts: React.FC<{}> = ({ }) => {
-  const onStartScript = store(state => state.onStartScript)
+  const onInitAScript = store(state => state.onInitAScript)
   const set = store(state => state.set)
 
   return (
@@ -17,8 +17,8 @@ const Scripts: React.FC<{}> = ({ }) => {
       <div className='container'>
         Script to execute when the Adventure is loaded:
         <Editor
-          value={onStartScript}
-          onValueChange={script => set({ onStartScript: script })}
+          value={onInitAScript}
+          onValueChange={script => set({ onInitAScript: script })}
           highlight={script => highlight(script, languages.js)}
           padding={10}
           style={{
@@ -28,7 +28,7 @@ const Scripts: React.FC<{}> = ({ }) => {
             backgroundColor: "#ededf0"
           }}
         />
-        <Button onClick={() => eval(onStartScript)}>
+        <Button onClick={() => eval(onInitAScript)}>
           Try Script
         </Button>
       </div>

@@ -5,7 +5,7 @@ import { getIndexesToFloodFill, twoIndexesIntoIndexesOfSquare } from '../utils/m
 export type Cell = {
   color: string
   emoji: string
-  onClickScript: string
+  onClickCScript: string
 }
 
 export type Grid = {
@@ -13,14 +13,14 @@ export type Grid = {
   id: number
   text: string
   cells: Cell[]
-  onViewScript: string
+  onViewGScript: string
 }
 
 export const defaultGridFactory = (): Omit<Grid, "id"> => {
   return {
     text: "",
-    cells: (new Array(100)).fill({}).map(() => ({ color: "", emoji: "", onClickScript: "" })),
-    onViewScript: ""
+    cells: (new Array(100)).fill({}).map(() => ({ color: "", emoji: "", onClickCScript: "" })),
+    onViewGScript: ""
   }
 }
 
@@ -31,7 +31,7 @@ export const defaultAdventureFactory = (): Omit<Adventure, "id" | "createdAt" | 
     data: JSON.stringify({
       grids: [{ id: 0, ...defaultGridFactory() }],
       firstGridId: 0,
-      onStartScript: ""
+      onInitAScript: ""
     }),
     isAccessible: false,
     isPublished: false
@@ -49,7 +49,7 @@ const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   // adventure data
   grids: [{ id: 0, ...defaultGridFactory() }],
   firstGridId: 0,
-  onStartScript: "",
+  onInitAScript: "",
   // adventure info
   adventure: null,
   isChanged: false,
@@ -77,7 +77,7 @@ export type Store = {
     cellUpdate: {
       color?: string,
       emoji?: string,
-      onClickScript?: string
+      onClickCScript?: string
     }
   }) => void
   updateCellWithAppend: ({
@@ -90,7 +90,7 @@ export type Store = {
     cellUpdate: {
       color?: string,
       emoji?: string,
-      onClickScript?: string
+      onClickCScript?: string
     }
   }) => void
   updateSquare: ({
@@ -105,7 +105,7 @@ export type Store = {
     cellUpdate: {
       color?: string,
       emoji?: string,
-      onClickScript?: string
+      onClickCScript?: string
     }
   }) => void
   floodFill: ({
@@ -118,7 +118,7 @@ export type Store = {
     cellUpdate: {
       color?: string,
       emoji?: string,
-      onClickScript?: string
+      onClickCScript?: string
     }
   }) => void
   pickEmoji: (pickedEmoji: string) => void
@@ -157,7 +157,7 @@ export type Store = {
   // the first grid where the player will play
   firstGridId: number
   // eval when the adventure is loaded
-  onStartScript: string
+  onInitAScript: string
   adventure: Omit<Adventure, "data"> | null
   // in the editor, turns true if a change is made
   isChanged: boolean
@@ -218,7 +218,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     cellUpdate: {
       color?: string,
       emoji?: string,
-      onClickScript?: string
+      onClickCScript?: string
     }
   }) {
     const { grids } = get()
@@ -242,7 +242,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     cellUpdate: {
       color?: string,
       emoji?: string,
-      onClickScript?: string
+      onClickCScript?: string
     }
   }) {
     const { grids } = get()
@@ -254,8 +254,8 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     if (cellUpdate.emoji !== undefined) {
       newCell.emoji += cellUpdate.emoji
     }
-    if (cellUpdate.onClickScript !== undefined) {
-      newCell.onClickScript += (newCell.onClickScript === "" ? "" : "\n") + cellUpdate.onClickScript
+    if (cellUpdate.onClickCScript !== undefined) {
+      newCell.onClickCScript += (newCell.onClickCScript === "" ? "" : "\n") + cellUpdate.onClickCScript
     }
 
     grid.cells[cellIndex]! = {
@@ -277,7 +277,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     cellUpdate: {
       color?: string,
       emoji?: string,
-      onClickScript?: string
+      onClickCScript?: string
     }
   }) => {
     const { grids } = get()
@@ -310,7 +310,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     cellUpdate: {
       color?: string,
       emoji?: string,
-      onClickScript?: string
+      onClickCScript?: string
     }
   }) => {
     const { grids } = get()
@@ -393,7 +393,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
           return {
             ...c,
             // don't keep scripts 
-            onClickScript: ""
+            onClickCScript: ""
           }
         })
       }

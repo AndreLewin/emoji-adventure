@@ -19,16 +19,16 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
 ) => {
   const updateCell = store(state => state.updateCell)
 
-  const onClickScript = useMemo<string>(() => {
-    return cell.onClickScript ?? ""
+  const onClickCScript = useMemo<string>(() => {
+    return cell.onClickCScript ?? ""
   }, [cell])
 
-  const setOnClickScript = useCallback<any>((onClickScript: string) => {
+  const setOnClickScript = useCallback<any>((onClickCScript: string) => {
     updateCell({
       gridId,
       cellIndex,
       cellUpdate: {
-        onClickScript
+        onClickCScript
       }
     })
   }, [gridId, cellIndex])
@@ -47,7 +47,7 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
 
         OnClickScript
         <Editor
-          value={onClickScript}
+          value={onClickCScript}
           onValueChange={script => setOnClickScript(script)}
           highlight={script => highlight(script, languages.js)}
           padding={10}
@@ -64,7 +64,7 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
 
         <div style={{ marginTop: "10px" }} />
 
-        <Button onClick={() => eval(onClickScript)}>
+        <Button onClick={() => eval(onClickCScript)}>
           Try Script
         </Button>
 

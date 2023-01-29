@@ -6,11 +6,11 @@ const GlobalVariable: React.FC<{ gridId: number, cellIndex: number }> = ({ gridI
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const onClickScript = `if (window._g.counter === undefined) window._g.counter = 0\nwindow._g.counter += 1\nalert(\`Number of times you clicked: \${window._g.counter}!\`)`
+    const onClickCScript = `if (window._g.counter === undefined) window._g.counter = 0\nwindow._g.counter += 1\nalert(\`Number of times you clicked: \${window._g.counter}!\`)`
     updateCellWithAppend({
       gridId,
       cellIndex,
-      cellUpdate: { onClickScript }
+      cellUpdate: { onClickCScript }
     })
   }, [gridId, cellIndex])
 

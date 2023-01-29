@@ -53,7 +53,7 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
     const { buttons, ctrlKey, altKey } = event
     if (buttons === 1) {
       if (altKey) {
-        eval(cell.onClickScript)
+        eval(cell.onClickCScript)
         return
       } else if (ctrlKey) {
         set({ mouseDownCellIndex: cellIndex })
@@ -141,8 +141,8 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
   }, [cell, gridId, cellIndex, selectedTool, selectedColor, mouseDownCellIndex, selectedEmoji])
 
   const hasAScript = useMemo<boolean>(() => {
-    return cell.onClickScript !== ""
-  }, [cell.onClickScript])
+    return cell.onClickCScript !== ""
+  }, [cell.onClickCScript])
 
   const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(false)
   const [isTextShortcutOpen, setIsTextShortcutOpen] = useState<boolean>(false)

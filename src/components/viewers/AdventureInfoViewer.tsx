@@ -3,10 +3,10 @@ import store from "../../store";
 
 const AdventureInfoViewer: React.FC<{}> = ({ }) => {
   const map = store(state => state.map)
-  const onStartScript = store(state => state.onStartScript)
+  const onInitAScript = store(state => state.onInitAScript)
 
   useEffect(() => {
-    eval(onStartScript)
+    eval(onInitAScript)
   }, [])
 
   const toDisplay = useMemo<{ 0: string, 1: any }[]>(() => {
