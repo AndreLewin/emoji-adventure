@@ -9,7 +9,7 @@ const SaveAdventure: React.FC<{}> = ({ }) => {
   const set = store(state => state.set)
   const grids = store(state => state.grids)
   const firstGridId = store(state => state.firstGridId)
-  const onLoadScript = store(state => state.onLoadScript)
+  const onStartScript = store(state => state.onStartScript)
 
   const updateMutation = trpc.adventure.update.useMutation({
     async onSuccess(adventure) {
@@ -30,7 +30,7 @@ const SaveAdventure: React.FC<{}> = ({ }) => {
         data: JSON.stringify({
           grids,
           firstGridId,
-          onLoadScript
+          onStartScript
         })
       }
     })
