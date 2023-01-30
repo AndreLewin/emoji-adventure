@@ -140,9 +140,15 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
     }
   }, [cell, gridId, cellIndex, selectedTool, selectedColor, mouseDownCellIndex, selectedEmoji])
 
-  const hasAScript = useMemo<boolean>(() => {
+  const hasAClickScript = useMemo<boolean>(() => {
     return cell.onClickCScript !== ""
   }, [cell.onClickCScript])
+  const hasAViewScript = useMemo<boolean>(() => {
+    return cell.onViewCScript !== ""
+  }, [cell.onViewCScript])
+  const hasAnInitScript = useMemo<boolean>(() => {
+    return cell.onInitCScript !== ""
+  }, [cell.onInitCScript])
 
   const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(false)
   const [isTextShortcutOpen, setIsTextShortcutOpen] = useState<boolean>(false)
@@ -151,16 +157,20 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
   return (
     <>
       <div
-        className={`container ${hasAScript ? "gradient-border" : ""} ${isDrawerOpened ? "selected-border" : ""}`}
+        className={`container ${hasAnInitScript ? "init-script-style" : ""} ${isDrawerOpened ? "selected-border" : ""}`}
         style={{ "backgroundColor": cell.color }}
         onMouseOver={(e) => handleMouseOver(e)}
         onMouseDown={(e) => handleMouseDown(e)}
         onMouseUp={(e) => handleMouseUp(e)}
         onContextMenu={(e) => setIsDrawerOpened(true)}
       >
-        <span className="emoji-wrapper">
-          {cell.emoji}
-        </span>
+        <div className={`full ${hasAViewScript ? "view-script-style" : ""}`}>
+          <div className={`full ${hasAClickScript ? "click-script-style" : ""}`}>
+            <span className="emoji-wrapper">
+              {cell.emoji}
+            </span>
+          </div>
+        </div>
       </div>
 
       {isDrawerOpened &&
@@ -202,11 +212,28 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
             font-size: 1.5em;
           }
 
-          .gradient-border {
+          .click-script-style {
             border: 3px dashed;
             border-image-slice: 1;
             border-width: 3px;
             border-image-source: linear-gradient(to right, #d53a9d, #3593f7);
+          }
+          .view-script-style {
+            border: 3px dashed;
+            border-image-slice: 1;
+            border-width: 3px;
+            border-image-source: linear-gradient(to bottom, #428929, #b3a058);
+          }
+          .init-script-style {
+            border: 3px dashed;
+            border-image-slice: 1;
+            border-width: 3px;
+            border-image-source: linear-gradient(to bottom left, #ffffff, #323287);
+          }
+
+          .full {
+            width: 100%;
+            height: 100%;
           }
 
           .selected-border {

@@ -51,9 +51,24 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
           onTabChange={(value) => store.setState({ activeCScriptTab: value as "onClickCScript" | "onViewCScript" | "onInitCScript" })}
         >
           <Tabs.List>
-            <Tabs.Tab value="onClickCScript">On Click</Tabs.Tab>
-            <Tabs.Tab value="onViewCScript">On View</Tabs.Tab>
-            <Tabs.Tab value="onInitCScript">On Init</Tabs.Tab>
+            <Tabs.Tab
+              style={{ "background": "linear-gradient(to right, #d53a9d75, #3593f775)" }}
+              value="onClickCScript"
+            >
+              On Click
+            </Tabs.Tab>
+            <Tabs.Tab
+              style={{ "background": "linear-gradient(to bottom, #42892975, #b3a05875)" }}
+              value="onViewCScript"
+            >
+              On View
+            </Tabs.Tab>
+            <Tabs.Tab
+              style={{ "background": "linear-gradient(to bottom left, #ffffff75, #32328775)" }}
+              value="onInitCScript"
+            >
+              On Init
+            </Tabs.Tab>
           </Tabs.List>
         </Tabs>
 
