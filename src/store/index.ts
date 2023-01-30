@@ -450,12 +450,14 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     return newGrid
   },
   deleteGrid: (gridIdToDelete: number) => {
-    const { grids, activeGridId } = get()
+    const { grids, activeGridId, firstGridId } = get()
     // can't delete the last grid
     if (grids.length <= 1) return
     const isRemovingActiveGridId = gridIdToDelete === activeGridId
+    const isRemovingFirstGridId = gridIdToDelete === firstGridId
     const newGrids = grids.filter(g => g.id !== gridIdToDelete)
     get().set({ activeGridId: isRemovingActiveGridId ? newGrids[newGrids.length - 1]!.id : activeGridId })
+    get().set({ firstGridId: isRemovingFirstGridId ? newGrids[newGrids.length - 1]!.id : firstGridId })
     get().set({ grids: newGrids })
     pushToGridHistory(get())
   },

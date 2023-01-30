@@ -40,9 +40,12 @@ export default function AdventurePage() {
       setAdventure(adventure)
       const { data, ...rest } = adventure
       const dataParsed = JSON.parse(data)
+      console.log("dataParsed.firstGridId | [adventureId].tsx l43", dataParsed.firstGridId)
+
       store.setState({
         grids: dataParsed.grids,
         firstGridId: dataParsed.firstGridId,
+        activeGridId: dataParsed.firstGridId,
         onInitAScript: dataParsed.onInitAScript,
         adventure: rest,
         isChanged: false

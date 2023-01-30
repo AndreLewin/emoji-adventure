@@ -116,7 +116,7 @@ const EditorAdventureItem: React.FC<{ adventure: AdventurePartial }> = ({ advent
               color="red"
               onClick={handleDeleteAdventure}
             >
-              Delete Grid
+              Delete Adventure
             </Button>
           </Modal>
         )}

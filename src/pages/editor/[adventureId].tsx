@@ -5,6 +5,7 @@ import EmojiSelector from "../../components/selectors/EmojiSelector";
 import Grid from "../../components/Grid";
 import EmojiPicker from "../../components/selectors/EmojiPicker";
 import GridSelector from "../../components/selectors/GridSelector";
+import FirstGridSelector from "../../components/selectors/FirstGridSelector";
 import GridInfo from "../../components/GridInfo";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -57,6 +58,7 @@ const EditorAdventureId: NextPage = () => {
       store.setState({
         grids: dataParsed.grids,
         firstGridId: dataParsed.firstGridId,
+        activeGridId: dataParsed.firstGridId,
         onInitAScript: dataParsed.onInitAScript,
         adventure: rest,
         isChanged: false
@@ -100,6 +102,7 @@ const EditorAdventureId: NextPage = () => {
       <div style={{ paddingTop: "30px" }} />
       <GridSelector />
       <GridInfo />
+      <FirstGridSelector />
       <div style={{ paddingTop: "30px" }} />
       <AdventureInfo />
       <SaveAdventure />

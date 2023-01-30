@@ -1,7 +1,6 @@
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo } from "react"
 import store, { Grid } from "../store"
 import Cell from "./Cell"
-import Cursor from "./Cursor"
 
 const GridComponent: React.FC<{}> = ({ }) => {
   const grids = store(state => state.grids)
