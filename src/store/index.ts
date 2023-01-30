@@ -147,6 +147,8 @@ export type Store = {
     gridId: number
     gridUpdate: {
       text?: string
+      onViewGScript?: string
+      onInitGScript?: string
     }
   }) => void
   createGrid: ({
@@ -396,6 +398,8 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     gridId: number
     gridUpdate: {
       text?: string
+      onViewGScript?: string
+      onInitGScript?: string
     }
   }) => {
     const { grids } = get()

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import store from "../../store";
+import store from "../store";
 
-const Variables: React.FC<{}> = ({ }) => {
+const DisplayMapVariables: React.FC<{}> = ({ }) => {
   const map = store(state => state.map)
 
   const toDisplay = useMemo<{ 0: string, 1: any }[]>(() => {
@@ -31,4 +31,4 @@ const Variables: React.FC<{}> = ({ }) => {
   )
 }
 
-export default Variables
+export default DisplayMapVariables

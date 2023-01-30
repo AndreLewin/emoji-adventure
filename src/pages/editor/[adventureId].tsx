@@ -16,7 +16,9 @@ import store, { emptyHistory, gridHistory, pushToGridHistory } from "../../store
 import SaveAdventure from "../../components/SaveAdventure";
 import Cursor from "../../components/Cursor";
 import { Button } from "@mantine/core";
-import AdventureInfo from "../../components/AdventureInfo";
+import DisplayMapVariables from "../../components/DisplayMapVariables";
+import GridScripts from "../../components/GridScripts";
+import AdventureScript from "../../components/AdventureScript";
 
 const EditorAdventureId: NextPage = () => {
   const { data: sessionData } = useSession()
@@ -99,12 +101,15 @@ const EditorAdventureId: NextPage = () => {
         <Grid />
         <EmojiPicker />
       </div>
+      <DisplayMapVariables />
       <div style={{ paddingTop: "30px" }} />
       <GridSelector />
       <GridInfo />
       <FirstGridSelector />
+      <GridScripts />
       <div style={{ paddingTop: "30px" }} />
-      <AdventureInfo />
+      <AdventureScript />
+      <div style={{ paddingTop: "30px" }} />
       <SaveAdventure />
       <div style={{ paddingTop: "30px" }} />
       <a href={`${location?.hostname === "localhost" ? "" : "https://emoji-adventure.vercel.app"}/${adventureId}`} target="_blank">

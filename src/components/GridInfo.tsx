@@ -29,7 +29,7 @@ const GridInfo: React.FC<{}> = ({ }) => {
         <TextInput
           value={grid.text}
           onChange={handleTextChange}
-          placeholder="Grid text"
+          placeholder="Grid title / text"
         />
         <Button
           color="red"

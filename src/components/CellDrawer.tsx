@@ -24,7 +24,7 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
     return cell[activeCScriptTab] ?? ""
   }, [cell, activeCScriptTab])
 
-  const setOnClickScript = useCallback<any>((script: string) => {
+  const setScript = useCallback<any>((script: string) => {
     updateCell({
       gridId,
       cellIndex,
@@ -74,7 +74,7 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
 
         <Editor
           value={script}
-          onValueChange={script => setOnClickScript(script)}
+          onValueChange={script => setScript(script)}
           highlight={script => highlight(script, languages.js)}
           padding={10}
           style={{

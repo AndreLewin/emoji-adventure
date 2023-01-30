@@ -5,8 +5,8 @@ import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
-import store from '../../store';
-import { Button } from '@mantine/core';
+import store from '../store';
+import { Button, Tabs } from '@mantine/core';
 
 const Scripts: React.FC<{}> = ({ }) => {
   const onInitAScript = store(state => state.onInitAScript)
@@ -15,9 +15,20 @@ const Scripts: React.FC<{}> = ({ }) => {
   return (
     <>
       <div className='container'>
-        Script to execute when the Adventure is loaded:
+        <Tabs
+          value={onInitAScript}
+        >
+          <Tabs.List>
+            <Tabs.Tab
+              value="onInitAScript"
+            >
+              On Init
+            </Tabs.Tab>
+          </Tabs.List>
+        </Tabs>
         <Editor
           value={onInitAScript}
+          placeholder="Script to execute when the adventure is loaded"
           onValueChange={script => set({ onInitAScript: script })}
           highlight={script => highlight(script, languages.js)}
           padding={10}
