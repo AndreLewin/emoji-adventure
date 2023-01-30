@@ -5,7 +5,8 @@ import { useEffect, useState } from "react"
 import GridInfoViewer from "../components/viewers/GridInfoViewer"
 import AdventureInfoViewer from "../components/viewers/AdventureInfoViewer"
 import GridViewer from "../components/viewers/GridViewer"
-import store, { emptyHistory } from "../store"
+import store, { emptyHistory, Store } from "../store"
+import { evalScript } from "../utils/evalScript"
 
 export default function AdventurePage() {
   const router = useRouter()
@@ -18,7 +19,6 @@ export default function AdventurePage() {
   }, [])
 
   const [adventure, setAdventure] = useState<Adventure | null>(null)
-
 
   useEffect(() => {
     // the query is an empty object at the first render before Router.isReady
@@ -40,20 +40,35 @@ export default function AdventurePage() {
       setAdventure(adventure)
       const { data, ...rest } = adventure
       const dataParsed = JSON.parse(data)
-      console.log("dataParsed.firstGridId | [adventureId].tsx l43", dataParsed.firstGridId)
+
+      const grids = dataParsed.grids as Store["grids"]
+      const firstGridId = dataParsed.firstGridId as Store["firstGridId"]
+      const activeGridId = dataParsed.firstGridId as Store["activeGridId"]
+      const onInitAScript = dataParsed.onInitAScript as Store["onInitAScript"]
 
       store.setState({
-        grids: dataParsed.grids,
-        firstGridId: dataParsed.firstGridId,
-        activeGridId: dataParsed.firstGridId,
-        onInitAScript: dataParsed.onInitAScript,
-        adventure: rest,
-        isChanged: false
+        grids,
+        firstGridId,
+        activeGridId,
+        onInitAScript,
+        adventure: rest
       })
+
+      // execute init scripts
+      // adventure
+      evalScript(onInitAScript)
+      // grids
+      grids.forEach(g => evalScript(g.onInitGScript, { gridId: g.id }))
+      // cells
+      grids.forEach(g => {
+        g.cells.forEach((c, index) => {
+          evalScript(c.onInitCScript, { gridId: g.id, cellIndex: index })
+        })
+      })
+      store.setState({ isInitFinished: true })
     }
     af()
   }, [router.query])
-
 
   // you should not be able to play on emoji-adventure-retejo.vercel.app because of your login credentials
   if (location?.hostname === "emoji-adventure-retejo.vercel.app") {

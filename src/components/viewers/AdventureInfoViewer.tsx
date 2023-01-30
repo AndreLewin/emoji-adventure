@@ -5,10 +5,6 @@ const AdventureInfoViewer: React.FC<{}> = ({ }) => {
   const map = store(state => state.map)
   const onInitAScript = store(state => state.onInitAScript)
 
-  useEffect(() => {
-    eval(onInitAScript)
-  }, [])
-
   const toDisplay = useMemo<{ 0: string, 1: any }[]>(() => {
     const array = [...map]
     return array.filter(pair => {

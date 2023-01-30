@@ -1,5 +1,6 @@
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import store, { Grid } from "../../store"
+import { evalScript } from "../../utils/evalScript"
 import CellViewer from "./CellViewer"
 
 const GridViewer: React.FC<{}> = ({ }) => {
@@ -8,6 +9,17 @@ const GridViewer: React.FC<{}> = ({ }) => {
   const grid = useMemo<Grid>(() => {
     return grids.find(g => g.id === activeGridId)!
   }, [grids, activeGridId])
+  const isInitFinished = store(state => state.isInitFinished)
+
+  useEffect(() => {
+    if (!isInitFinished) return
+
+    // execute view scripts
+    // grid
+    evalScript(grid.onViewGScript, { gridId: grid.id })
+    // cells
+    grid.cells.forEach((c, index) => evalScript(c.onViewCScript, { gridId: grid.id, cellIndex: index }))
+  }, [grid, isInitFinished])
 
   return (
     <div>
