@@ -11,7 +11,5 @@ export const evalScript = (
   if (script === "") return
   // will unravel shorthands
 
-  console.log("script | evalScript.ts l14", script)
-
   eval(script)
 }

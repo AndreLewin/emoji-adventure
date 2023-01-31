@@ -28,7 +28,7 @@ const Scripts: React.FC<{}> = ({ }) => {
         </Tabs>
         <Editor
           value={onInitAScript}
-          placeholder="Script to execute when the adventure is loaded"
+          placeholder="Script to execute when the adventure is loaded (good place for map subscribers and global functions)"
           onValueChange={script => set({ onInitAScript: script })}
           highlight={script => highlight(script, languages.js)}
           padding={10}

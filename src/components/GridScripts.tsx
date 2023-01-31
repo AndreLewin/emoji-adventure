@@ -59,7 +59,7 @@ const GridScripts: React.FC<{}> = ({ }) => {
           placeholder={
             activeGScriptTab === "onViewGScript" ?
               "Script to execute when the grid comes into view" :
-              "Script to execute when the adventure is loaded (shorthands use grid context)"
+              "Script to execute when the adventure is loaded (shorthands use grid context) (good place for map subscribers)"
           }
           onValueChange={script => setScript(script)}
           highlight={script => highlight(script, languages.js)}
