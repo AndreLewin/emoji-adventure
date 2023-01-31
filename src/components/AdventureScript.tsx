@@ -7,10 +7,17 @@ import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
 import store from '../store';
 import { Button, Tabs } from '@mantine/core';
+import { useCallback } from 'react';
 
 const Scripts: React.FC<{}> = ({ }) => {
   const onInitAScript = store(state => state.onInitAScript)
   const set = store(state => state.set)
+
+  const setExampleScript = useCallback<any>(() => {
+    const scriptToAppend = `window._ss().mapSet("hp", 10)\nwindow._ss().mapSubscribe("hp", (value => { if(value <= 0){ alert("You are dead!") }}))\n\nwindow._g.takeDamages = (damages) => {\n  const hp = window._ss().mapGet("hp")\n  window._ss().mapSet("hp", hp - damages)\n}\n\n// then use window._g.takeDamages elsewhere`
+    const script = `${onInitAScript}${onInitAScript === "" ? "" : "\n"}${scriptToAppend}`
+    set({ onInitAScript: script })
+  }, [onInitAScript, set])
 
   return (
     <>
@@ -41,6 +48,9 @@ const Scripts: React.FC<{}> = ({ }) => {
         />
         <Button onClick={() => eval(onInitAScript)}>
           Try Script
+        </Button>
+        <Button color="gray" onClick={() => setExampleScript()}>
+          Example Script
         </Button>
       </div>
       <style jsx>
