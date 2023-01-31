@@ -112,7 +112,7 @@ const EditorAdventureId: NextPage = () => {
       <div style={{ paddingTop: "30px" }} />
       <SaveAdventure />
       <div style={{ paddingTop: "30px" }} />
-      <a href={`${location?.hostname === "localhost" ? "" : "https://emoji-adventure.vercel.app"}/${adventureId}`} target="_blank">
+      <a href={`${location?.hostname === "localhost" ? "" : "https://emoji-adventure.vercel.app"}/${adventureId}`} target="_blank" rel="noreferrer">
         <Button color="gray">
           {`Play your saved Adventure (make sure it is accessible through the Adventure list first)`}
         </Button>
