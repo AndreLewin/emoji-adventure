@@ -27,7 +27,7 @@ const GridViewer: React.FC<{}> = ({ }) => {
         onContextMenu={(e) => { e.preventDefault() }}
       >
         {grid.cells.map((c, index) => {
-          return <CellViewer cell={c} key={index} />
+          return <CellViewer cell={c} key={index} gridId={activeGridId} cellIndex={index} />
         })}
       </div>
 

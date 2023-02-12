@@ -8,6 +8,7 @@ import 'prismjs/themes/prism.css';
 import store, { Grid } from '../store';
 import { Button, Tabs } from '@mantine/core';
 import { useCallback, useMemo, useState } from 'react';
+import { evalScript } from '../utils/evalScript';
 
 const GridScripts: React.FC<{}> = ({ }) => {
   const set = store(state => state.set)
@@ -71,7 +72,7 @@ const GridScripts: React.FC<{}> = ({ }) => {
             backgroundColor: "#ededf0"
           }}
         />
-        <Button onClick={() => eval(gridScript)}>
+        <Button onClick={() => evalScript(gridScript, { gridId: activeGridId })}>
           Try Script
         </Button>
       </div>

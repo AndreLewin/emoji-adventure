@@ -13,6 +13,7 @@ import CodeGenerationButtons from "./cellDrawer/CodeGenerationButtons";
 import ShorthandsInfo from "./cellDrawer/ShorthandsInfo";
 import Tips from "./cellDrawer/Tips";
 import { getHotkeyHandler } from "@mantine/hooks";
+import { evalScript } from "../utils/evalScript";
 
 const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatch<SetStateAction<boolean>>, cell: Cell, gridId: number, cellIndex: number }> = (
   { isDrawerOpened, setIsDrawerOpened, cell, gridId, cellIndex }
@@ -93,11 +94,12 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
           onKeyDown={getHotkeyHandler([
             ['ctrl+Enter', () => { setIsDrawerOpened(false) }]
           ])}
+          autoFocus={true}
         />
 
         <div style={{ marginTop: "10px" }} />
 
-        <Button onClick={() => eval(script)}>
+        <Button onClick={() => evalScript(script, { gridId, cellIndex })}>
           Try Script
         </Button>
 

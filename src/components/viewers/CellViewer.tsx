@@ -1,12 +1,13 @@
 import { useCallback, useMemo } from "react"
 import { Cell } from "../../store"
+import { evalScript } from "../../utils/evalScript"
 
-const CellViewer: React.FC<{ cell: Cell }> = ({ cell }) => {
+const CellViewer: React.FC<{ cell: Cell, cellIndex: number, gridId: number }> = ({ cell, cellIndex, gridId }) => {
   const handleMouseDown = useCallback<any>((event: MouseEvent) => {
     const { buttons } = event
     if (buttons === 1) {
       if (cell.onClickCScript !== "") {
-        eval(cell.onClickCScript)
+        evalScript(cell.onClickCScript, { gridId, cellIndex })
       }
     }
   }, [cell])

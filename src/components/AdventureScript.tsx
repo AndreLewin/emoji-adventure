@@ -8,6 +8,7 @@ import 'prismjs/themes/prism.css';
 import store from '../store';
 import { Button, Tabs } from '@mantine/core';
 import { useCallback } from 'react';
+import { evalScript } from '../utils/evalScript';
 
 const Scripts: React.FC<{}> = ({ }) => {
   const onInitAScript = store(state => state.onInitAScript)
@@ -46,7 +47,7 @@ const Scripts: React.FC<{}> = ({ }) => {
             backgroundColor: "#ededf0"
           }}
         />
-        <Button onClick={() => eval(onInitAScript)}>
+        <Button onClick={() => evalScript(onInitAScript)}>
           Try Script
         </Button>
         <Button color="gray" onClick={() => setExampleScript()}>

@@ -1,7 +1,6 @@
-import { Button, Modal, Textarea } from "@mantine/core"
-import { getHotkeyHandler } from "@mantine/hooks"
 import { useCallback, useMemo, useState } from "react"
 import store, { Cell } from "../store"
+import { evalScript } from "../utils/evalScript"
 import MoveShortcutModal from "./cell/MoveShortcutModal"
 import TextShortcutModal from "./cell/TextShortcutModal"
 import CellDrawer from "./CellDrawer"
@@ -53,7 +52,7 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
     const { buttons, ctrlKey, altKey } = event
     if (buttons === 1) {
       if (altKey) {
-        eval(cell.onClickCScript)
+        evalScript(cell.onClickCScript, { gridId, cellIndex })
         return
       } else if (ctrlKey) {
         set({ mouseDownCellIndex: cellIndex })
