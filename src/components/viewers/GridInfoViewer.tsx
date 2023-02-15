@@ -21,7 +21,13 @@ const GridInfoViewer: React.FC<{}> = ({ }) => {
       <style jsx>
         {`
           .container {
-            
+            width: 400px;
+          }
+
+          .grid-text {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
           }
         `}
       </style>

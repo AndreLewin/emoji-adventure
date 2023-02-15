@@ -3,7 +3,6 @@ import store from "../../store";
 
 const AdventureInfoViewer: React.FC<{}> = ({ }) => {
   const map = store(state => state.map)
-  const onInitAScript = store(state => state.onInitAScript)
 
   const toDisplay = useMemo<{ 0: string, 1: any }[]>(() => {
     const array = [...map]
@@ -17,18 +16,20 @@ const AdventureInfoViewer: React.FC<{}> = ({ }) => {
   }, [map])
 
   return (
-    <>
-      {`Variables `}
-      {JSON.stringify(toDisplay)}
-
+    <div className="container">
+      {toDisplay.map(v => {
+        return (
+          <div>{`${v[0]}: ${v[1]}`}</div>
+        )
+      })}
       <style jsx>
         {`
           .container {
-            
+            margin-left: 10px;
           }
         `}
       </style>
-    </>
+    </div>
   )
 }
 
