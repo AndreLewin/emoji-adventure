@@ -35,6 +35,8 @@ const CellViewer: React.FC<{ cell: Cell, cellIndex: number, gridId: number }> = 
             justify-content: center;
             align-items: center;
             font-size: 1.5em;
+            width: 40px;
+            height: 40px;
           }
 
           .gradient-border {

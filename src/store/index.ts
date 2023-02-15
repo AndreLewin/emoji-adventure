@@ -17,6 +17,7 @@ export type Grid = {
   cells: Cell[]
   onViewGScript: string
   onInitGScript: string
+  backgroundImage?: string
 }
 
 export const defaultGridFactory = (): Omit<Grid, "id"> => {
@@ -151,6 +152,7 @@ export type Store = {
       text?: string
       onViewGScript?: string
       onInitGScript?: string
+      backgroundImage?: string
     }
   }) => void
   createGrid: ({
@@ -415,6 +417,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       text?: string
       onViewGScript?: string
       onInitGScript?: string
+      backgroundImage?: string
     }
   }) => {
     const { grids } = get()

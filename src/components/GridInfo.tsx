@@ -21,6 +21,15 @@ const GridInfo: React.FC<{}> = ({ }) => {
     })
   }, [grid])
 
+  const handleBackgroundChange = useCallback<any>((event: ChangeEvent<HTMLInputElement>) => {
+    updateGrid({
+      gridId: grid.id,
+      gridUpdate: {
+        backgroundImage: event.target.value
+      }
+    })
+  }, [grid])
+
   const [isDeleteConfirmModalOpened, setIsDeleteConfirmModalOpened] = useState<boolean>(false)
 
   return (
@@ -30,6 +39,11 @@ const GridInfo: React.FC<{}> = ({ }) => {
           value={grid.text}
           onChange={handleTextChange}
           placeholder="Grid title / text"
+        />
+        <TextInput
+          value={grid.backgroundImage}
+          onChange={handleBackgroundChange}
+          placeholder="Background image url"
         />
         <Button
           color="red"

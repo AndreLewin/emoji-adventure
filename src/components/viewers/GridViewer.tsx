@@ -24,6 +24,7 @@ const GridViewer: React.FC<{}> = ({ }) => {
   return (
     <div>
       <div className="container"
+        style={{ backgroundImage: `url(${grid.backgroundImage ?? ""})` }}
         onContextMenu={(e) => { e.preventDefault() }}
       >
         {grid.cells.map((c, index) => {
@@ -39,7 +40,10 @@ const GridViewer: React.FC<{}> = ({ }) => {
             grid-auto-rows: 40px;
             outline-color: rgba(50, 115, 220, 0.1);
             width: fit-content;
-            user-select: none; {/* disable selecting text when click held */}
+            /* disable selecting text when click held */
+            user-select: none;
+
+            background-size: contain;
           }
 
           .container > * {

@@ -32,16 +32,15 @@ const GridComponent: React.FC<{}> = ({ }) => {
         onMouseEnter={() => handleMouseEnter()}
         onContextMenu={(e) => { e.preventDefault() }}
       >
-        {grid.cells.map((c, index) => {
-          return <Cell cell={c} key={index} cellIndex={index} gridId={grid.id} />
-        })}
+        <div className="image" style={{ backgroundImage: `url(${grid.backgroundImage ?? ""})` }}>
+          {grid.cells.map((c, index) => {
+            return <Cell cell={c} key={index} cellIndex={index} gridId={grid.id} />
+          })}
+        </div>
       </div>
       <style jsx>
         {`
           .container {
-            display: grid;
-            grid-template-columns: repeat(10, 40px);
-            grid-auto-rows: 40px;
             outline: 0.5px solid;
             outline-color: rgba(50, 115, 220, 0.1);
             width: fit-content;
@@ -53,6 +52,14 @@ const GridComponent: React.FC<{}> = ({ }) => {
             background-image:  repeating-linear-gradient(45deg, #e1e1e1 25%, transparent 25%, transparent 75%, #e1e1e1 75%, #e1e1e1), repeating-linear-gradient(45deg, #e1e1e1 25%, #f6f6f6 25%, #f6f6f6 75%, #e1e1e1 75%, #e1e1e1);
             background-position: 0 0, 8px 8px;
             background-size: 16px 16px;
+          }
+
+          .image {
+            display: grid;
+            grid-template-columns: repeat(10, 40px);
+            grid-auto-rows: 40px;
+
+            background-size: contain;
           }
 
           .container > * {
