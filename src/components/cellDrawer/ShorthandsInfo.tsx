@@ -1,5 +1,8 @@
 import { Button, Modal, Table } from "@mantine/core"
 import { useState } from "react"
+import { getRegexes } from "../../utils/evalScript"
+
+const regexes = getRegexes("%GRIDID%", "%CELLID%")
 
 const ShorthandsInfo: React.FC<{}> = ({ }) => {
 
@@ -12,52 +15,37 @@ const ShorthandsInfo: React.FC<{}> = ({ }) => {
         <Modal
           opened={isModalOpened}
           onClose={() => { setIsModalOpened(false) }}
-          size="xl"
+          fullScreen
           styles={{ header: { position: "absolute", top: 0, right: 0, margin: "5px" } }}
         >
           <div style={{ marginBottom: "10px" }}>
-            {`A shorthand is a faster way to write a command. A shorthand begins with $. It's converted to the full command when the cell is clicked.`}
+            {`Variables starting with ! are called Shorthands. They are shortcuts to real javascript variables and calls. Shortcuts are converted to javascript just before execution.`}
+            <div> </div>
+            {`Shorthands with two ! use information from the context where the script is executed. For example, a grid script will have access to "gridId", and a cell script will have access to "gridId" and "cellId".`}
+            {` Do not use shorthands with two ! in a callback of a map variable (the second parameter of window._ss().mapSubscribe). This is because the original context is lost.`}
+            <div> </div>
           </div>
 
           <Table withColumnBorders>
-            <thead>
-              <tr>
-                <th>Shorthand</th>
-                <th>Use</th>
-                <th>Full command</th>
-              </tr>
-            </thead>
             <tbody>
-              <tr>
-                <td>$t(s)</td>
-                <td>Display the message s</td>
-                <td>window.alert(s)</td>
-              </tr>
-              <tr>
-                <td>$m(n)</td>
-                <td>Move to the grid n</td>
-                <td>{`window._s.setState({ activeGridId: n })`}</td>
-              </tr>
-              <tr>
-                <td>$d(n1, n2)</td>
-                <td>Delete script on grid n1 on cell n2</td>
-                <td>TODO</td>
-              </tr>
-              <tr>
-                <td>_d</td>
-                <td>Delete this script</td>
-                <td>TODO</td>
-              </tr>
-              <tr>
-                <td>$$variable</td>
-                <td>Access global variable (for all cells)</td>
-                <td>window.$adventure1.global_variable</td>
-              </tr>
-              <tr>
-                <td>__variable</td>
-                <td>Access local variable (only for this cell). <br /> Use this if you want a value to be remembered between the executions of a same cell.</td>
-                <td>window.$adventure1.grid2_cell3_variable</td>
-              </tr>
+              <div>
+                <tr>
+                  <th>Shorthand</th>
+                  <th>Full command</th>
+                  <th>Function</th>
+                </tr>
+                {
+                  regexes.map(regex => {
+                    return (
+                      <tr>
+                        <td>{regex[3] ?? regex[0] as string}</td>
+                        <td>{regex[1]}</td>
+                        <td>{regex[2]}</td>
+                      </tr>
+                    )
+                  })
+                }
+              </div>
             </tbody>
           </Table>
         </Modal>

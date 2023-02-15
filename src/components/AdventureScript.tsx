@@ -15,7 +15,7 @@ const Scripts: React.FC<{}> = ({ }) => {
   const set = store(state => state.set)
 
   const setExampleScript = useCallback<any>(() => {
-    const scriptToAppend = `window._ss().mapSet("hp", 10)\nwindow._ss().mapSubscribe("hp", (value => { if(value <= 0){ alert("You are dead!") }}))\n\nwindow._g.takeDamages = (damages) => {\n  const hp = window._ss().mapGet("hp")\n  window._ss().mapSet("hp", hp - damages)\n}\n\n// then use window._g.takeDamages elsewhere`
+    const scriptToAppend = `window._ss().mapSet("hp", 10)\nwindow._ss().mapSubscribe("hp", value => value <= 0 && !(dead))\n\nwindow._g.takeDamages = (damages) => {\n  const hp = window._ss().mapGet("hp")\n  window._ss().mapSet("hp", hp - damages)\n}\n\n// then use window._g.takeDamages elsewhere`
     const script = `${onInitAScript}${onInitAScript === "" ? "" : "\n"}${scriptToAppend}`
     set({ onInitAScript: script })
   }, [onInitAScript, set])
