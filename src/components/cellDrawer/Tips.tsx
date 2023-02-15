@@ -26,10 +26,6 @@ const Tips: React.FC<{}> = ({ }) => {
           <div>{`Order of execution of scripts (lifecycle): Adventure On Init > Grids On Init > Cells On Init > Grid on View > Cells on View`}</div>
           <div> </div>
           <div>{`You have access to "window" inside the scripts. So basically you can do anything a website can do. With the exception of Shorthands, everything is pure real Javascript in the browser context.`}</div>
-          <div> </div>
-          <div>{`Map variables are variables visible under the grid. You can subscribe to a map variable with a callback that will be executed when the value of the variable changes. If you don't need this kind of reactivity, prefer global variables.`}</div>
-          <div> </div>
-          <div>{`You can prevent a map variable from being visible by starting its name with _`}</div>
         </Modal>
       </span>
       <style jsx>

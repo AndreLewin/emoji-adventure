@@ -2,8 +2,8 @@ import DisplayText from "./codeGenerationButtons/DisplayText";
 import MoveToGrid from "./codeGenerationButtons/MoveToGrid";
 import AskForName from "./codeGenerationButtons/AskForName";
 import GlobalVariable from "./codeGenerationButtons/GlobalVariable";
-import RemoveScript from "./codeGenerationButtons/RemoveScript";
-import ChangeEmoji from "./codeGenerationButtons/ChangeEmoji";
+import UpdateElement from "./codeGenerationButtons/UpdateElement";
+import DeleteElement from "./codeGenerationButtons/DeleteElement";
 import MapVariable from "./codeGenerationButtons/MapVariable";
 
 const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
@@ -17,8 +17,8 @@ const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = (
         <AskForName gridId={gridId} cellIndex={cellIndex} />
         <GlobalVariable gridId={gridId} cellIndex={cellIndex} />
         <div />
-        <RemoveScript gridId={gridId} cellIndex={cellIndex} />
-        <ChangeEmoji gridId={gridId} cellIndex={cellIndex} />
+        <UpdateElement gridId={gridId} cellIndex={cellIndex} />
+        <DeleteElement gridId={gridId} cellIndex={cellIndex} />
         <div />
         <MapVariable gridId={gridId} cellIndex={cellIndex} />
       </div>

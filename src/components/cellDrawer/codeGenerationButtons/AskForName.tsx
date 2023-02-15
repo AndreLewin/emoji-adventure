@@ -7,7 +7,7 @@ const AskForName: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, c
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `const name = window.prompt("What is your name?")\nalert(\`Hello \$\{name\}!\`)`
+    const script = `const name = !p("What is your name?")\n!a(\`Hello \$\{name\}!\`)`
     updateCellWithAppend({
       gridId,
       cellIndex,

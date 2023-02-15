@@ -2,16 +2,16 @@ import { Button } from "@mantine/core"
 import { useCallback } from "react"
 import store from "../../../store"
 
-const ChangeEmoji: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
+const UpdateElement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
   const activeCScriptTab = store(state => state.activeCScriptTab)
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `_ss().updateCell({\n  gridId: ${gridId},\n  cellIndex: ${cellIndex},\n  cellUpdate: { emoji: "🦊" }\n})`
+    const script = `// Update emoji\n!!ue("🦊")\n// Update color\n!!uc("brown")\n`
     updateCellWithAppend({
       gridId,
       cellIndex,
-      cellUpdate: { 
+      cellUpdate: {
         [activeCScriptTab]: script
       }
     })
@@ -20,7 +20,7 @@ const ChangeEmoji: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
   return (
     <>
       <span className='container'>
-        <Button onClick={handleClick}>Change Emoji</Button>
+        <Button onClick={handleClick}>Update element</Button>
       </span>
       <style jsx>
         {`
@@ -33,4 +33,4 @@ const ChangeEmoji: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
   )
 }
 
-export default ChangeEmoji
+export default UpdateElement

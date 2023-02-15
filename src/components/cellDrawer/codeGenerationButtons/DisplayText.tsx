@@ -11,11 +11,11 @@ const DisplayText: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
   const activeCScriptTab = store(state => state.activeCScriptTab)
 
   const handleConfirm = useCallback<any>(() => {
-    const script = `window.alert(\`${textToDisplay}\`)`
+    const script = `!a(\`${textToDisplay}\`)`
     updateCellWithAppend({
       gridId,
       cellIndex,
-      cellUpdate: { 
+      cellUpdate: {
         [activeCScriptTab]: script
       }
     })

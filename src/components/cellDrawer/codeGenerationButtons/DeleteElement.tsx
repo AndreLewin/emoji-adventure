@@ -2,12 +2,12 @@ import { Button } from "@mantine/core"
 import { Dispatch, SetStateAction, useCallback } from "react"
 import store from "../../../store"
 
-const RemoveScript: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
-  const activeCScriptTab = store(state => state.activeCScriptTab)  
+const DeleteElement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
+  const activeCScriptTab = store(state => state.activeCScriptTab)
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `_ss().updateCell({\n  gridId: ${gridId},\n  cellIndex: ${cellIndex},\n  cellUpdate: { onClickCScript: "" }\n})`
+    const script = `// Delete click script\n!dcs!\n// Delete emoji\n!de!\n// Delete color\n!dc!\n`
     updateCellWithAppend({
       gridId,
       cellIndex,
@@ -20,7 +20,7 @@ const RemoveScript: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId,
   return (
     <>
       <span className='container'>
-        <Button onClick={handleClick}>Remove Script</Button>
+        <Button onClick={handleClick}>Delete element</Button>
       </span>
       <style jsx>
         {`
@@ -33,4 +33,4 @@ const RemoveScript: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId,
   )
 }
 
-export default RemoveScript
+export default DeleteElement
