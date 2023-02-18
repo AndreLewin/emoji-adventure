@@ -17,9 +17,9 @@ const AdventureInfoViewer: React.FC<{}> = ({ }) => {
 
   return (
     <div className="container">
-      {toDisplay.map(v => {
+      {toDisplay.map((v, id) => {
         return (
-          <div>{`${v[0]}: ${v[1]}`}</div>
+          <div key={`mv-${id}`}>{`${v[0]}: ${v[1]}`}</div>
         )
       })}
       <style jsx>

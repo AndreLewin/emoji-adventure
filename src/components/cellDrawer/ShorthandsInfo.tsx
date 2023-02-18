@@ -35,9 +35,9 @@ const ShorthandsInfo: React.FC<{}> = ({ }) => {
                   <th>Function</th>
                 </tr>
                 {
-                  regexes.map(regex => {
+                  regexes.map((regex, id) => {
                     return (
-                      <tr>
+                      <tr key={`regex-${id}`}>
                         <td>{regex[3] ?? regex[0] as string}</td>
                         <td>{regex[1]}</td>
                         <td>{regex[2]}</td>
