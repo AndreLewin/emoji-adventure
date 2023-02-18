@@ -46,7 +46,7 @@ const MoveToGrid: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, c
       targetGridIdd = `${newGrid.id}`
     }
 
-    const script = `!m(${targetGridIdd}) `
+    const script = `@m(${targetGridIdd}) `
     updateCellWithAppend({
       gridId,
       cellIndex,
@@ -62,7 +62,7 @@ const MoveToGrid: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, c
       if (shouldCreateSameColumnSymmetricEvent) symmetricalCellIndex = getSameColumnSymmetricalCellIndex(symmetricalCellIndex, 10)
       if (shouldCreateSameLineSymmetricEvent) symmetricalCellIndex = getSameLineSymmetricalCellIndex(symmetricalCellIndex, 10)
       let newScript = grid.cells[symmetricalCellIndex]?.onClickCScript ?? ""
-      newScript = `!m(${gridId}) `
+      newScript = `@m(${gridId}) `
       updateCellWithAppend({
         gridId: grid.id,
         cellIndex: symmetricalCellIndex,

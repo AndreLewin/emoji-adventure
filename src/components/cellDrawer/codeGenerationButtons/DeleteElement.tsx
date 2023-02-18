@@ -7,7 +7,7 @@ const DeleteElement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `// Delete click script\n!dcs!\n// Delete emoji\n!de!\n// Delete color\n!dc!\n`
+    const script = `// Delete click script\n@dcs@\n// Delete emoji\n@de@\n// Delete color\n@dc@\n`
     updateCellWithAppend({
       gridId,
       cellIndex,
