@@ -52,6 +52,11 @@ export const getRegexes = (
       "Delete click script of the cell (no () needed)"
     ],
     [
+      "@dvs@",
+      `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { onViewCScript: "" }})`,
+      "Delete view script of the cell"
+    ],
+    [
       "@dc@",
       `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { color: "" }})`,
       "Delete color of the cell"
@@ -122,6 +127,11 @@ export const getRegexes = (
       "@.",
       `window._g.`,
       "Global variable (you will use this a lot)"
+    ],
+    [
+      "@d",
+      `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { emoji: "", onClickCScript: "", onViewScript: "" }})`,
+      "Delete emoji, click script and view script of the cell (equivalent to @de@, @dcs@ and @dvs@)"
     ],
   ]
 }
