@@ -84,7 +84,7 @@ const ToolSelector: React.FC<{}> = ({ }) => {
       // if (!altKey) return
 
       const toolIndex =
-        code === "Backquote" ? 0 :
+        code === "Backquote" && altKey === true ? 0 :
           code === "Digit1" ? 1 :
             code === "Digit2" ? 2 :
               code === "Digit3" ? 3 :
