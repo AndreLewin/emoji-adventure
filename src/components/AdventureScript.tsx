@@ -15,7 +15,7 @@ const Scripts: React.FC<{}> = ({ }) => {
   const set = store(state => state.set)
 
   const setExampleScript = useCallback<any>(() => {
-    const scriptToAppend = `@ms("hp", 10)\n@msb("hp", value => value <= 0 && @(dead))\n\n@.takeDamages = (damages) => {\n  const hp = @mg("hp")\n  @ms("hp", hp - damages)\n}\n\n// then use @.takeDamages elsewhere`
+    const scriptToAppend = `#ms("hp", 10)\n#msb("hp", value => value <= 0 && #(dead))\n\n#.takeDamages = (damages) => {\n  const hp = #mg("hp")\n  #ms("hp", hp - damages)\n}\n\n// then use #.takeDamages elsewhere`
     const script = `${onInitAScript}${onInitAScript === "" ? "" : "\n"}${scriptToAppend}`
     set({ onInitAScript: script })
   }, [onInitAScript, set])

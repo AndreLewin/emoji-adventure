@@ -7,7 +7,7 @@ const UpdateElement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `// Update emoji\n@@ue("🦊")\n// Update color\n@@uc("brown")\n`
+    const script = `// Update emoji\n@ue("🦊")\n// Update color\n@uc("brown")\n`
     updateCellWithAppend({
       gridId,
       cellIndex,
