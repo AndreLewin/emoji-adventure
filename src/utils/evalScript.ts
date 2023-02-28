@@ -13,12 +13,12 @@ export const getRegexes = (
       "Local variable (use only in a Grid or Cell)"
     ],
     [
-      "@g",
+      "@gi",
       `${gridId}`,
       "Get gridId (in a Grid or Cell)"
     ],
     [
-      "@c",
+      "@ci",
       `${cellIndex}`,
       "Get cellId (in a Cell)"
     ],
@@ -69,7 +69,7 @@ export const getRegexes = (
     [
       "@d",
       `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { emoji: "", onClickCScript: "", onViewScript: "" }})`,
-      "Delete emoji, click script and view script of the cell (equivalent to @de@, @dcs@ and @dvs@)"
+      "Delete emoji, click script and view script of the cell (equivalent to @de, @dcs and @dvs)"
     ],
     [
       /\#\((.*?)\)/g,
@@ -90,7 +90,7 @@ export const getRegexes = (
     [
       "#msb(",
       `window._ss().mapSubscribe(`,
-      "Add a subscriber to a map variable (e.g. !msb('hp', value => value <= 0 && !(dead) ) )"
+      "Add a subscriber to a map variable (e.g. #msb('hp', value => value <= 0 && #(dead) ) )"
     ],
     [
       "#g(",
