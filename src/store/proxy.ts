@@ -1,3 +1,5 @@
+// import { getRegexes } from "../utils/evalScript";
+
 const proxyTarget = {};
 
 export type Subcriber = {
@@ -7,14 +9,6 @@ export type Subcriber = {
 }
 
 export let subscribers: Subcriber[] = []
-
-const addSubscriber = (variable: string, callback: (newValue?: any) => {}, id = "") => {
-  subscribers.push({
-    variable,
-    callback,
-    id
-  })
-}
 
 const handler = {
   get(target, prop) {
@@ -36,8 +30,6 @@ const handler = {
 
     // trigger subscribers
     const subscribersForVariable = subscribers.filter(s => s.variable === variable)
-    // TODO: parse the callback for shorthands before using it
-    // it is parsed based on the variable name, thus based on what it is subscribed to
     subscribersForVariable.forEach(subscriber => subscriber.callback(value))
     return true
   },
@@ -57,15 +49,31 @@ const subscriberHandler = {
   get() {
     return "not available"
   },
-  set(_object, variable: string, callback: (newValue?: any) => {}) {
+  set(_object, variable: string, unparsedCallback: (newValue?: any) => {}) {
     console.log("variable | proxy.ts l32", variable)
-    console.log("value | proxy.ts l32", callback)
+    console.log("value | proxy.ts l32", unparsedCallback)
 
     callbackCounter++
 
+    /*
+    // parse the callback for shorthands
+    // do not use function functionName() {} because their content is hard to parse
+
+    const gridId = variable.match(/gridId(\d*)/)?.[1] ?? undefined
+    const cellIndex = variable.match(/cellIndex(\d*)/)?.[1] ?? undefined
+
+    const regexes = getRegexes(gridId, cellIndex)
+
+    let newCallbackBody = unparsedCallback.toString()
+    regexes.forEach(regex => {
+      newCallbackBody = newCallbackBody.replaceAll(regex[0], regex[1])
+    })
+    const newCallback = eval(newCallbackBody)
+    */
+
     subscribers.push({
       variable,
-      callback,
+      callback: unparsedCallback,
       id: `${callbackCounter}`
     })
     return true
@@ -73,9 +81,6 @@ const subscriberHandler = {
 };
 
 export const subscriberProxy = new Proxy(proxyTarget2, subscriberHandler)
-
-
-
 
 // everything is 0 by default
 // because most variable are going to be number (counter and scores)
@@ -90,10 +95,3 @@ export const subscriberProxy = new Proxy(proxyTarget2, subscriberHandler)
 // $#.c : subscriber to global c
 // $@.c : subscriber to map c
 // $^.c :
-
-// $#c : subscribe to global count
-// $@c : subscribe to map count
-// $^c : subscribe to local count
-
-
-// make a new proxy for subscribers (too hard to parse)
