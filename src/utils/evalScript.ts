@@ -8,14 +8,29 @@ export const getRegexes = (
   // so... avoid using _ in your normal variables :shrug:
   return [
     [
+      "$#.",
+      `window._subscriberProxy.`,
+      "Add a subscriber to a global (adventure) variable. (e.g. $#.score = v => console.log(`score: ${v}`))"
+    ],
+    [
       "#.",
       `window._proxy.`,
       "Global (adventure) variable"
     ],
     [
+      "$@.",
+      `window._subscriberProxy.${gridId === null ? `` : `gridId${gridId}`}`,
+      "Add a subscriber to a grid variable. (e.g. $@.count = v => v > 10 && #m(2))"
+    ],
+    [
       "@.",
       `window._proxy.${gridId === null ? `` : `gridId${gridId}`}`,
       "Grid variable (use only in a Grid or Cell)"
+    ],
+    [
+      "$^.",
+      `window._subscriberProxy.${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
+      "Add a subscriber to a cell variable. (e.g. $^.life = v => v <= 0 && ^d)"
     ],
     [
       "^.",
@@ -79,7 +94,7 @@ export const getRegexes = (
     [
       "^d",
       `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { emoji: "", onClickCScript: "", onViewScript: "" }})`,
-      "Delete emoji, click script and view script of the cell (equivalent to @de, @dcs and @dvs)"
+      "Delete emoji, click script and view script of the cell (equivalent to ^de, ^dcs and ^dvs)"
     ],
     [
       /\#\((.*?)\)/g,

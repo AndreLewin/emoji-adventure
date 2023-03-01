@@ -1,4 +1,4 @@
-const target = {};
+const proxyTarget = {};
 
 export type Subcriber = {
   variable: string,
@@ -36,20 +36,46 @@ const handler = {
 
     // trigger subscribers
     const subscribersForVariable = subscribers.filter(s => s.variable === variable)
+    // TODO: parse the callback for shorthands before using it
+    // it is parsed based on the variable name, thus based on what it is subscribed to
     subscribersForVariable.forEach(subscriber => subscriber.callback(value))
     return true
   },
 };
 
-export const proxy = new Proxy(target, handler);
+export const proxy = new Proxy(proxyTarget, handler);
 
-addSubscriber("potato", (v) => console.log(`subs ${v}`))
 
-proxy.potato++
-proxy.potato++
+// subscriber proxy
+// used to simplify shorthands
+// window._subscriberProxy.xxx = yyy will be translated to subscribers.push({ variable: x, callback: y })
 
-if (proxy.tomato) console.log("tomato")
-if (proxy.potato) console.log("potato")
+let callbackCounter = 0
+
+const proxyTarget2 = {};
+const subscriberHandler = {
+  get() {
+    return "not available"
+  },
+  set(_object, variable: string, callback: (newValue?: any) => {}) {
+    console.log("variable | proxy.ts l32", variable)
+    console.log("value | proxy.ts l32", callback)
+
+    callbackCounter++
+
+    subscribers.push({
+      variable,
+      callback,
+      id: `${callbackCounter}`
+    })
+    return true
+  },
+};
+
+export const subscriberProxy = new Proxy(proxyTarget2, subscriberHandler)
+
+
+
 
 // everything is 0 by default
 // because most variable are going to be number (counter and scores)
@@ -68,3 +94,6 @@ if (proxy.potato) console.log("potato")
 // $#c : subscribe to global count
 // $@c : subscribe to map count
 // $^c : subscribe to local count
+
+
+// make a new proxy for subscribers (too hard to parse)
