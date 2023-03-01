@@ -8,9 +8,19 @@ export const getRegexes = (
   // so... avoid using _ in your normal variables :shrug:
   return [
     [
+      "#.",
+      `window._g.`,
+      "Global (adventure) variable"
+    ],
+    [
       "@.",
+      `window._g.${gridId === null ? `` : `gridId${gridId}`}`,
+      "Grid variable (use only in a Grid or Cell)"
+    ],
+    [
+      "^.",
       `window._g.${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
-      "Local variable (use only in a Grid or Cell)"
+      "Cell variable (use only in a Cell)"
     ],
     [
       "@gi",
@@ -18,56 +28,56 @@ export const getRegexes = (
       "Get gridId (in a Grid or Cell)"
     ],
     [
-      "@ci",
+      "^ci",
       `${cellIndex}`,
       "Get cellId (in a Cell)"
     ],
     [
-      /\@ucs\((.*?)\)/g,
+      /\^ucs\((.*?)\)/g,
       `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { onClickCScript: $1 }})`,
       "Update click script of the cell",
-      "@ucs($1)"
+      "^ucs($1)"
     ],
     [
-      /\@uc\((.*?)\)/g,
+      /\^uc\((.*?)\)/g,
       `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { color: $1 }})`,
       "Update color of the cell",
-      "@uc($1)"
+      "^uc($1)"
     ],
     [
-      /\@ue\((.*?)\)/g,
+      /\^ue\((.*?)\)/g,
       `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { emoji: $1 }})`,
       "Update emoji/characters of the cell",
-      "@ue($1)"
+      "^ue($1)"
     ],
     [
-      /\@u\((.*?)\)/g,
+      /\^u\((.*?)\)/g,
       `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: $1})`,
       "Update the cell (you must provide an update object)",
-      "@u($1)"
+      "^u($1)"
     ],
     [
-      "@dcs",
+      "^dcs",
       `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { onClickCScript: "" }})`,
       "Delete click script of the cell (no () needed)"
     ],
     [
-      "@dvs",
+      "^dvs",
       `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { onViewCScript: "" }})`,
       "Delete view script of the cell"
     ],
     [
-      "@dc",
+      "^dc",
       `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { color: "" }})`,
       "Delete color of the cell"
     ],
     [
-      "@de",
+      "^de",
       `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { emoji: "" }})`,
       "Delete emoji of the cell"
     ],
     [
-      "@d",
+      "^d",
       `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { emoji: "", onClickCScript: "", onViewScript: "" }})`,
       "Delete emoji, click script and view script of the cell (equivalent to @de, @dcs and @dvs)"
     ],
@@ -127,11 +137,6 @@ export const getRegexes = (
       `window._s.setState({ activeGridId: $1 })`,
       "Move to specified gridId",
       "#m($1)"
-    ],
-    [
-      "#.",
-      `window._g.`,
-      "Global variable (you will use this a lot)"
     ]
   ]
 }

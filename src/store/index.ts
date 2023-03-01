@@ -537,4 +537,8 @@ if (typeof window !== 'undefined') {
   // for global variables
   // @ts-ignore
   window._g = {}
+  // for proxy
+  window._p = {}
+  // for count proxy
+  window._c = {}
 }

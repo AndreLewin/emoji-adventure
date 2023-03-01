@@ -7,7 +7,7 @@ const GlobalVariable: React.FC<{ gridId: number, cellIndex: number }> = ({ gridI
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `// Global variables (#.variableName) are common to the whole project\n// Local variables (@.variable) are only available for a cell. The value is persisted between executions.\n\n#.globalCounter = (#.globalCounter ?? 0) + 1\n@.localCounter = (@.localCounter ?? 0) + 1\n#a(\`Number of times you clicked a cell: \${#.globalCounter}\`)\n#a(\`Number of times you clicked this cell: \${@.localCounter}\`)\n\n// Duplicate this script in an other cell to see that the global variable is reused, but the local variable not.\n`
+    const script = `// Global variables (adventure variables) (#.variable) share their value in the whole project\n// Grid variables (@.variable) share their value in the grid and the cells within it\n// Cell variables (^.variable) is only for a specific cell in a specific grid\n// All variable values default at 0\n\n#.adventureCounter++\n@.gridCounter++\n^.cellCounter++\n#a(\`Number of times you clicked a cell: \${#.adventureCounter}\`)\n#a(\`Number of times you clicked a cell in this grid: \${@.gridCounter}\`)\n#a(\`Number of times you clicked on this specific cell: \${^.cellCounter}\`)\n\n// Duplicate this script in an other cell to see that the global variable is reused, but the local variable not.\n`
     updateCellWithAppend({
       gridId,
       cellIndex,

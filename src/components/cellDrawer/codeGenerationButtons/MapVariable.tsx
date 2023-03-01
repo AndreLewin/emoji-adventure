@@ -20,7 +20,7 @@ const MapVariable: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
   return (
     <>
       <span className='container'>
-        <Button onClick={handleClick}>Map variable</Button>
+        <Button onClick={handleClick}>Subscribers (TODO)</Button>
       </span>
       <style jsx>
         {`
