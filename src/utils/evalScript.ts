@@ -9,17 +9,17 @@ export const getRegexes = (
   return [
     [
       "#.",
-      `window._g.`,
+      `window._proxy.`,
       "Global (adventure) variable"
     ],
     [
       "@.",
-      `window._g.${gridId === null ? `` : `gridId${gridId}`}`,
+      `window._proxy.${gridId === null ? `` : `gridId${gridId}`}`,
       "Grid variable (use only in a Grid or Cell)"
     ],
     [
       "^.",
-      `window._g.${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
+      `window._proxy.${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
       "Cell variable (use only in a Cell)"
     ],
     [

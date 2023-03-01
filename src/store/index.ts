@@ -1,6 +1,7 @@
 import { Adventure } from '.prisma/client'
 import create, { GetState, SetState } from 'zustand'
 import { getIndexesToFloodFill, twoIndexesIntoIndexesOfSquare } from '../utils/math'
+import { proxy, subscribers } from './proxy'
 
 export type Cell = {
   color: string
@@ -538,7 +539,9 @@ if (typeof window !== 'undefined') {
   // @ts-ignore
   window._g = {}
   // for proxy
-  window._p = {}
+  // @ts-ignore
+  window._proxy = proxy
   // for count proxy
-  window._c = {}
+  // @ts-ignore
+  window._subscribers = subscribers
 }
