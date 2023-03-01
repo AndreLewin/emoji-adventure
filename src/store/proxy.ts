@@ -35,7 +35,7 @@ const handler = {
   },
 };
 
-export const proxy = new Proxy(proxyTarget, handler);
+export const variableProxy = new Proxy(proxyTarget, handler);
 
 
 // subscriber proxy
@@ -81,17 +81,3 @@ const subscriberHandler = {
 };
 
 export const subscriberProxy = new Proxy(proxyTarget2, subscriberHandler)
-
-// everything is 0 by default
-// because most variable are going to be number (counter and scores)
-// and that why we don't need to initialize them
-
-// # global
-// @ map
-// ^ cell
-
-// $ : subscribe to the value after it
-
-// $#.c : subscriber to global c
-// $@.c : subscriber to map c
-// $^.c :

@@ -14,7 +14,7 @@ export const getRegexes = (
     ],
     [
       "#.",
-      `window._proxy.`,
+      `window._variableProxy.`,
       "Global (adventure) variable"
     ],
     [
@@ -24,7 +24,7 @@ export const getRegexes = (
     ],
     [
       "@.",
-      `window._proxy.${gridId === null ? `` : `gridId${gridId}`}`,
+      `window._variableProxy.${gridId === null ? `` : `gridId${gridId}`}`,
       "Grid variable (use only in a Grid or Cell)"
     ],
     [
@@ -34,7 +34,7 @@ export const getRegexes = (
     ],
     [
       "^.",
-      `window._proxy.${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
+      `window._variableProxy.${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
       "Cell variable (use only in a Cell)"
     ],
     [

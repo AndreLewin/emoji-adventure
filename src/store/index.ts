@@ -1,7 +1,7 @@
 import { Adventure } from '.prisma/client'
 import create, { GetState, SetState } from 'zustand'
 import { getIndexesToFloodFill, twoIndexesIntoIndexesOfSquare } from '../utils/math'
-import { proxy, subscriberProxy, subscribers } from './proxy'
+import { variableProxy, subscriberProxy, subscribers } from './proxy'
 
 export type Cell = {
   color: string
@@ -19,6 +19,11 @@ export type Grid = {
   onViewGScript: string
   onInitGScript: string
   backgroundImage?: string
+}
+
+export type VisibleVariable = {
+  variable: string,
+  displayName?: string
 }
 
 export const defaultGridFactory = (): Omit<Grid, "id"> => {
@@ -65,6 +70,7 @@ const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   // adventure info
   adventure: null,
   isChanged: false,
+  visibleVariables: [],
   map: new Map<string, any>(),
   subscribers: new Map<string, ((newValue?: any) => {})[]>(),
   activeCScriptTab: "onClickCScript",
@@ -167,6 +173,7 @@ export type Store = {
   mapGet: (key: string) => any
   // works as a proxy for reactivity (store set) and to trigger the functions that are subscribed to the key
   mapSet: (key: string, value: any) => void
+  visibleVariables: VisibleVariable[],
   mapSubscribe: (
     key: string,
     callback: (newValue?: any) => {},
@@ -540,11 +547,14 @@ if (typeof window !== 'undefined') {
   window._g = {}
   // for proxy (variables)
   // @ts-ignore
-  window._proxy = proxy
+  window._variableProxy = variableProxy
   // for assigning new subscribers easily
   // @ts-ignore
   window._subscriberProxy = subscriberProxy
   // so the user can see list of subscribers and eventually edit it
   // @ts-ignore
   window._subscribers = subscribers
+  // for assigning new subscribers easily
+  // @ts-ignore
+  window._subscriberProxy = subscriberProxy
 }
