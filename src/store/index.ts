@@ -71,10 +71,15 @@ const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   adventure: null,
   isChanged: false,
   visibleVariables: [],
+  // TODO: remove when proxy variables can be followed
   map: new Map<string, any>(),
+  // TODO: remove when proxy variables can be followed
   subscribers: new Map<string, ((newValue?: any) => {})[]>(),
   activeCScriptTab: "onClickCScript",
-  isInitFinished: false
+  isInitFinished: false,
+  text1: "",
+  text2: "",
+  text3: ""
 })
 
 export type Store = {
@@ -214,6 +219,10 @@ export type Store = {
   activeCScriptTab: "onClickCScript" | "onViewCScript" | "onInitCScript"
   // necessary so view scripts are executed after init scripts
   isInitFinished: boolean
+  // text displayed under the grid
+  text1: string
+  text2: string
+  text3: string
 }
 
 export let gridHistory: Pick<Store, "activeGridId" | "grids">[] = []

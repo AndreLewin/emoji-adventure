@@ -97,9 +97,21 @@ export const getRegexes = (
       "Delete emoji, click script and view script of the cell (equivalent to ^de, ^dcs and ^dvs)"
     ],
     [
+      /\#tt\((.*?)\)/g,
+      `window._s.setState({ text2: $1 })`,
+      "Display text under the grid (second position)",
+      "#tt($1)"
+    ],
+    [
+      /\#t\((.*?)\)/g,
+      `window._s.setState({ text1: $1 })`,
+      "Display text under the grid",
+      "#t($1)"
+    ],
+    [
       /\#\((.*?)\)/g,
-      `window.alert(\`$1\`)`,
-      "Display alert dialog",
+      `window._s.setState({ text1: \`$1\` })`,
+      "Display text under the grid (no quotes needed)",
       "#($1)"
     ],
     [

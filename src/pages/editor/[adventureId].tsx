@@ -19,6 +19,7 @@ import { Button } from "@mantine/core";
 import DisplayMapVariables from "../../components/DisplayMapVariables";
 import GridScripts from "../../components/GridScripts";
 import AdventureScript from "../../components/AdventureScript";
+import DisplayText from "../../components/DisplayText";
 
 const EditorAdventureId: NextPage = () => {
   const { data: sessionData } = useSession()
@@ -101,6 +102,7 @@ const EditorAdventureId: NextPage = () => {
         <Grid />
         <EmojiPicker />
       </div>
+      <DisplayText />
       <DisplayMapVariables />
       <div style={{ paddingTop: "30px" }} />
       <GridSelector />
