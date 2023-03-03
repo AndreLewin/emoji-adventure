@@ -5,6 +5,10 @@ const DisplayText: React.FC<{}> = ({ }) => {
   const text2 = store(state => state.text2)
   const text3 = store(state => state.text3)
 
+  const variables = store(state => state.variables)
+  const subs = store(state => state.subs)
+  const configs = store(state => state.configs)
+
   return (
     <>
       <div className="container">
@@ -16,6 +20,12 @@ const DisplayText: React.FC<{}> = ({ }) => {
         </div>
         <div className="text3">
           {text3}
+          --
+          {JSON.stringify(variables)}
+          --
+          {JSON.stringify(subs)}
+          --
+          {JSON.stringify(configs)}
         </div>
       </div>
       <style jsx>

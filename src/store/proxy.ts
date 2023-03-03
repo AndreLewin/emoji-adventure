@@ -1,36 +1,33 @@
 // import { getRegexes } from "../utils/evalScript";
 
 const proxyTarget = {};
-
-export type Subcriber = {
-  variable: string,
-  callback: (newValue?: any) => {},
-  id?: string
-}
-
-export let subscribers: Subcriber[] = []
-
 const handler = {
-  get(target, prop) {
-    // console.log("target | proxy.ts l8", target)
-    // console.log("prop | proxy.ts l9", prop)
-
-    const value = target[prop]
+  get(_target: any, variable: string) {
+    // @ts-ignore
+    const variables = window._s.getState().variables
+    const value = variables[variable]
     return value === undefined ? 0 : value
   },
-  set(obj, variable, value) {
-    // console.log("obj | proxy.ts l15", obj)
-    // console.log("prop | proxy.ts l16", prop)
-    // console.log("value | proxy.ts l17", value)
-    console.log("variable | proxy.ts l32", variable)
-    console.log("value | proxy.ts l32", value)
+  set(_target, variable: string, value: any) {
+    // @ts-ignore
+    const { oldVariables, subs: subscribers } = window._s.getState()
 
+    const variables = {
+      ...oldVariables,
+      [variable]: value
+    }
 
-    obj[variable] = value
+    // @ts-ignore
+    window._s.setState({ variables })
+
+    console.log("subscribers | proxy.ts l23", subscribers)
+
 
     // trigger subscribers
-    const subscribersForVariable = subscribers.filter(s => s.variable === variable)
-    subscribersForVariable.forEach(subscriber => subscriber.callback(value))
+    const subscribersForVariable = subscribers?.[variable] ?? []
+    console.log("subscribersForVariable | proxy.ts l28", subscribersForVariable)
+
+    subscribersForVariable.forEach(subscriber => subscriber(value))
     return true
   },
 };
@@ -42,19 +39,14 @@ export const variableProxy = new Proxy(proxyTarget, handler);
 // used to simplify shorthands
 // window._subscriberProxy.xxx = yyy will be translated to subscribers.push({ variable: x, callback: y })
 
-let callbackCounter = 0
-
 const proxyTarget2 = {};
 const subscriberHandler = {
-  get() {
-    return "not available"
+  get(_target: any, variable: string) {
+    // @ts-ignore
+    const subscribers = window._s.getState().subs
+    return subscribers?.[variable] ?? []
   },
   set(_object, variable: string, unparsedCallback: (newValue?: any) => {}) {
-    console.log("variable | proxy.ts l32", variable)
-    console.log("value | proxy.ts l32", unparsedCallback)
-
-    callbackCounter++
-
     /*
     // parse the callback for shorthands
     // do not use function functionName() {} because their content is hard to parse
@@ -71,13 +63,62 @@ const subscriberHandler = {
     const newCallback = eval(newCallbackBody)
     */
 
-    subscribers.push({
-      variable,
-      callback: unparsedCallback,
-      id: `${callbackCounter}`
-    })
+    // @ts-ignore
+    const oldSubscribers = window._s.getState().subs
+
+    console.log("unparsedCallback | proxy.ts l64", unparsedCallback)
+
+
+    const subscribersForVariable = (oldSubscribers?.[variable] ?? [])
+
+    subscribersForVariable.push(unparsedCallback)
+
+    console.log("subscribersForVariable | proxy.ts l71", subscribersForVariable)
+
+
+    const subscribers = {
+      ...oldSubscribers,
+      [variable]: subscribersForVariable
+    }
+
+    // @ts-ignore
+    window._s.setState({ subs: subscribers })
     return true
   },
 };
 
 export const subscriberProxy = new Proxy(proxyTarget2, subscriberHandler)
+
+
+// config proxy
+
+export type Config = {
+  isVisible?: boolean,
+  displayName?: string
+}
+
+const proxyTarget3 = {};
+const handler3 = {
+  get(_target: any, variable: string) {
+    // @ts-ignore
+    const configs = window._s.getState().configs
+    return configs?.[variable] ?? {}
+  },
+  set(_target, variable: string, newConfigPartial: any) {
+    // @ts-ignore
+    const oldConfigs = window._s.getState().configs
+    const configs = {
+      ...oldConfigs,
+      [variable]: {
+        ...oldConfigs[variable],
+        ...newConfigPartial
+      }
+    }
+
+    // @ts-ignore
+    window._s.setState({ configs })
+    return true
+  },
+};
+
+export const configProxy = new Proxy(proxyTarget3, handler3);
