@@ -130,21 +130,6 @@ export const getRegexes = (
       "#($1)"
     ],
     [
-      "#mg(",
-      `window._ss().mapGet(`,
-      "Get value of a map variable (e.g. #mg('hp'))."
-    ],
-    [
-      "#ms(",
-      `window._ss().mapSet(`,
-      "Set value of a map variable (e.g. #ms('hp', 10))"
-    ],
-    [
-      "#msb(",
-      `window._ss().mapSubscribe(`,
-      "Add a subscriber to a map variable (e.g. #msb('hp', value => value <= 0 && #(dead) ) )"
-    ],
-    [
       "#g(",
       `window._s.getState(`,
       "Get the state of the Zustand store (all data used by the adventure)"

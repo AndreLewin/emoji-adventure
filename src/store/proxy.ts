@@ -10,7 +10,7 @@ const handler = {
   },
   set(_target, variable: string, value: any) {
     // @ts-ignore
-    const { oldVariables, subs: subscribers } = window._s.getState()
+    const { variables: oldVariables, subscribers } = window._s.getState()
 
     const variables = {
       ...oldVariables,
@@ -19,9 +19,6 @@ const handler = {
 
     // @ts-ignore
     window._s.setState({ variables })
-
-    console.log("subscribers | proxy.ts l23", subscribers)
-
 
     // trigger subscribers
     const subscribersForVariable = subscribers?.[variable] ?? []
@@ -64,7 +61,7 @@ const subscriberHandler = {
     */
 
     // @ts-ignore
-    const oldSubscribers = window._s.getState().subs
+    const oldSubscribers = window._s.getState().subscribers
 
     console.log("unparsedCallback | proxy.ts l64", unparsedCallback)
 
@@ -82,7 +79,7 @@ const subscriberHandler = {
     }
 
     // @ts-ignore
-    window._s.setState({ subs: subscribers })
+    window._s.setState({ subscribers })
     return true
   },
 };

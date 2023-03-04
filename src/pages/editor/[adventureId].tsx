@@ -16,7 +16,6 @@ import store, { emptyHistory, gridHistory, pushToGridHistory } from "../../store
 import SaveAdventure from "../../components/SaveAdventure";
 import Cursor from "../../components/Cursor";
 import { Button } from "@mantine/core";
-import DisplayMapVariables from "../../components/DisplayMapVariables";
 import GridScripts from "../../components/GridScripts";
 import AdventureScript from "../../components/AdventureScript";
 import DisplayText from "../../components/DisplayText";
@@ -103,7 +102,6 @@ const EditorAdventureId: NextPage = () => {
         <EmojiPicker />
       </div>
       <DisplayText />
-      <DisplayMapVariables />
       <div style={{ paddingTop: "30px" }} />
       <GridSelector />
       <GridInfo />

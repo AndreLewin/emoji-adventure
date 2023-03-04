@@ -19,10 +19,9 @@ const ShorthandsInfo: React.FC<{}> = ({ }) => {
           styles={{ header: { position: "absolute", top: 0, right: 0, margin: "5px" } }}
         >
           <div style={{ marginBottom: "10px" }}>
-            {`Variables starting with # or @ are called Shorthands. They are shortcuts to real javascript variables and calls. Shortcuts are converted to javascript just before execution.`}
+            {`Variables starting with #, @ or ^ are called Shorthands. They are shortcuts to real javascript variables and calls. Shortcuts are converted to javascript just before execution.`}
             <div> </div>
-            {`# are global shorthands, they have the same effect whereever they are used. @ are local shorthands, they value or effect is local to the grid or cell where there are used.`}
-            {` Avoid shorthands in a callback of a map variable (the second parameter of window._ss().mapSubscribe). This is because the original context is lost.`}
+            {`# are adventure shorthands, they have the same effect wherever they are used. @ are grid shorthands, their value or effect is local to the grid or cell where there are used. ^ are cell shorthands, their value is only for a specific cell in one grid.`}
             <div> </div>
           </div>
 
