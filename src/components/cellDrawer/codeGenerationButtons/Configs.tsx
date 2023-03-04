@@ -2,12 +2,12 @@ import { Button } from "@mantine/core"
 import { useCallback } from "react"
 import store from "../../../store"
 
-const MapVariable: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
+const Configs: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
   const activeCScriptTab = store(state => state.activeCScriptTab)
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `// Map variables are variables visible under the grid.\n// You can hide a map variable by starting its name with _\n\n#ms("visibleVariable", 10)\n#ms("_invisibleVariable", 10)\nconst visibleVariable = #mg("visibleVariable")\n\n// You can subscribe to a map variable with a callback that will be executed when the value of the variable changes. See "Example Script" on the adventure. If you don't need reactivity, prefer global variables.\n`
+    const script = `// Each variable can have a config object.\n// If you want to change the config object, put % before the variable name.\n// Example: Show the value of a variable to the player with a custom name\n\n%@.cats = { isVisible: true, displayName: "Cats found in this grid" }`
     updateCellWithAppend({
       gridId,
       cellIndex,
@@ -20,7 +20,7 @@ const MapVariable: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
   return (
     <>
       <span className='container'>
-        <Button onClick={handleClick}>Subscribers (TODO)</Button>
+        <Button onClick={handleClick}>Configs</Button>
       </span>
       <style jsx>
         {`
@@ -33,4 +33,4 @@ const MapVariable: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
   )
 }
 
-export default MapVariable
+export default Configs
