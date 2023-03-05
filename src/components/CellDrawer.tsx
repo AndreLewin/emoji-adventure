@@ -110,6 +110,16 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
         {`
           .container {
             padding: 10px;
+
+            max-height: 100vh;
+            overflow-y: scroll;
+
+            /* hide scrollbar */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+          .container::-webkit-scrollbar { 
+            display: none;
           }
         `}
       </style>
