@@ -8,7 +8,7 @@ const handler = {
     const value = variables[variable]
     return value === undefined ? 0 : value
   },
-  set(_target, variable: string, value: any) {
+  set(_target: any, variable: string, value: any) {
     // @ts-ignore
     const { variables: oldVariables, subscribers } = window._s.getState()
 
@@ -24,7 +24,7 @@ const handler = {
     const subscribersForVariable = subscribers?.[variable] ?? []
     console.log("subscribersForVariable | proxy.ts l28", subscribersForVariable)
 
-    subscribersForVariable.forEach(subscriber => subscriber(value))
+    subscribersForVariable.forEach((subscriber: any) => subscriber(value))
     return true
   },
 };
@@ -43,7 +43,7 @@ const subscriberHandler = {
     const subscribers = window._s.getState().subs
     return subscribers?.[variable] ?? []
   },
-  set(_object, variable: string, unparsedCallback: (newValue?: any) => {}) {
+  set(_object: any, variable: string, unparsedCallback: (newValue?: any) => {}) {
     /*
     // parse the callback for shorthands
     // do not use function functionName() {} because their content is hard to parse
@@ -101,7 +101,7 @@ const handler3 = {
     const configs = window._s.getState().configs
     return configs?.[variable] ?? {}
   },
-  set(_target, variable: string, newConfigPartial: any) {
+  set(_target: any, variable: string, newConfigPartial: any) {
     // @ts-ignore
     const oldConfigs = window._s.getState().configs
     const configs = {
