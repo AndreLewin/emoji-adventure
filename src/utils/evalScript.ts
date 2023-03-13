@@ -63,28 +63,24 @@ export const getRegexes = (
       "Get cellId (in a Cell)"
     ],
     [
-      /\^ucs\((.*?)\)/g,
-      `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { onClickCScript: $1 }})`,
-      "Update click script of the cell",
-      "^ucs($1)"
+      "^cs",
+      `window._updateProxy.onClickCScript${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
+      "Update click script of the cell"
     ],
     [
-      /\^uc\((.*?)\)/g,
-      `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { color: $1 }})`,
-      "Update color of the cell",
-      "^uc($1)"
+      "^vs",
+      `window._updateProxy.onViewCScript${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
+      "Update view script of the cell"
     ],
     [
-      /\^ue\((.*?)\)/g,
-      `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { emoji: $1 }})`,
-      "Update emoji/characters of the cell",
-      "^ue($1)"
+      "^c",
+      `window._updateProxy.color_${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
+      "Update color of the cell"
     ],
     [
-      /\^u\((.*?)\)/g,
-      `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: $1})`,
-      "Update the cell (you must provide an update object)",
-      "^u($1)"
+      "^e",
+      `window._updateProxy.emoji_${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
+      "Update emoji/character of the cell"
     ],
     [
       "^dcs",
@@ -109,7 +105,7 @@ export const getRegexes = (
     [
       "^d",
       `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { emoji: "", onClickCScript: "", onViewScript: "" }})`,
-      "Delete emoji, click script and view script of the cell (equivalent to ^de, ^dcs and ^dvs)"
+      "Delete emoji, click script and view script of the cell (equivalent to ^e = '', ^cs = '' and ^vs = '')"
     ],
     [
       /\#tt\((.*?)\)/g,

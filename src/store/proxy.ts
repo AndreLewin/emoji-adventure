@@ -1,5 +1,7 @@
 // import { getRegexes } from "../utils/evalScript";
 
+import { Cell } from ".";
+
 const proxyTarget = {};
 const handler = {
   get(_target: any, variable: string) {
@@ -119,3 +121,34 @@ const handler3 = {
 };
 
 export const configProxy = new Proxy(proxyTarget3, handler3);
+
+
+// update proxy
+
+const proxyTarget4 = {};
+const handler4 = {
+  get(_target: any, variable: string) {
+    const cellProperty = variable.split("_")[0] as keyof Cell
+    const gridId = parseInt(variable.match(/gridId(\d*)/)?.[1]!)
+    const cellIndex = parseInt(variable.match(/cellIndex(\d*)/)?.[1]!)
+    // @ts-ignore
+    const cell = window._s.getState().getCell({ gridId, cellIndex }) as Cell
+    return cell[cellProperty]
+  },
+  set(_target: any, variable: string, value: any) {
+    const cellProperty = variable.split("_")[0] as keyof Cell
+    const gridId = parseInt(variable.match(/gridId(\d*)/)?.[1]!)
+    const cellIndex = parseInt(variable.match(/cellIndex(\d*)/)?.[1]!)
+    // @ts-ignore
+    window._s.getState().updateCell({
+      gridId,
+      cellIndex,
+      cellUpdate: {
+        [cellProperty]: value
+      }
+    })
+    return true
+  },
+};
+
+export const updateProxy = new Proxy(proxyTarget4, handler4);

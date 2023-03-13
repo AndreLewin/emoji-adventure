@@ -1,7 +1,7 @@
 import { Adventure } from '.prisma/client'
 import create, { GetState, SetState } from 'zustand'
 import { getIndexesToFloodFill, twoIndexesIntoIndexesOfSquare } from '../utils/math'
-import { variableProxy, subscriberProxy, Config, configProxy } from './proxy'
+import { variableProxy, subscriberProxy, Config, configProxy, updateProxy } from './proxy'
 
 export type Cell = {
   color: string
@@ -499,4 +499,7 @@ if (typeof window !== 'undefined') {
   // for assigning new config for variable easily
   // @ts-ignore
   window._configProxy = configProxy
+  // for changing the content of a cell easily
+  // @ts-ignore
+  window._updateProxy = updateProxy
 }
