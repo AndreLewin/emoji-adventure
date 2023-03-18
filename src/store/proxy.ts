@@ -46,6 +46,8 @@ const subscriberHandler = {
     return subscribers?.[variable] ?? []
   },
   set(_object: any, variable: string, unparsedCallback: (newValue?: any) => {}) {
+
+
     /*
     // parse the callback for shorthands
     // do not use function functionName() {} because their content is hard to parse

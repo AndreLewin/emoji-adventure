@@ -64,12 +64,12 @@ export const getRegexes = (
     ],
     [
       "^cs",
-      `window._updateProxy.onClickCScript${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
+      `window._updateProxy.onClickCScript_${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
       "Update click script of the cell"
     ],
     [
       "^vs",
-      `window._updateProxy.onViewCScript${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
+      `window._updateProxy.onViewCScript_${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
       "Update view script of the cell"
     ],
     [
