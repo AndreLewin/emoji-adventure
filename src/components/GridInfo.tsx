@@ -41,7 +41,7 @@ const GridInfo: React.FC<{}> = ({ }) => {
           placeholder="Grid title / text"
         />
         <TextInput
-          value={grid.backgroundImage}
+          value={grid.backgroundImage ?? ""}
           onChange={handleBackgroundChange}
           placeholder="Background image url"
         />
