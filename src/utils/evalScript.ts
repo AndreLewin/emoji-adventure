@@ -103,6 +103,11 @@ export const getRegexes = (
       "Delete emoji of the cell"
     ],
     [
+      "^dd",
+      `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { emoji: "", color: "", onClickCScript: "", onViewScript: "" }})`,
+      "Delete emoji, click script and view script of the cell (equivalent to ^e = '', ^c = '', ^cs = '' and ^vs = '')"
+    ],
+    [
       "^d",
       `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { emoji: "", onClickCScript: "", onViewScript: "" }})`,
       "Delete emoji, click script and view script of the cell (equivalent to ^e = '', ^cs = '' and ^vs = '')"
