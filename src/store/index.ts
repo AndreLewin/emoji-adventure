@@ -45,7 +45,7 @@ export const defaultAdventureFactory = (): Omit<Adventure, "id" | "createdAt" | 
       firstGridId: 0,
       onInitAScript: ""
     }),
-    isAccessible: false,
+    isAccessible: true,
     isPublished: false
   }
 }
