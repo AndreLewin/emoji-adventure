@@ -92,22 +92,30 @@ const EditorAdventureId: NextPage = () => {
 
   return (
     <div style={{ "position": "relative" }}>
-      <ToolSelector />
-      <div style={{ display: "flex" }}>
-        <ColorSelector />
-        <EmojiSelector />
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
+        <div>
+          <ToolSelector />
+          <div style={{ display: "flex" }}>
+            <ColorSelector />
+            <EmojiSelector />
+          </div>
+          <div style={{ display: "flex" }}>
+            <Grid />
+            <EmojiPicker />
+          </div>
+          <DisplayText />
+        </div>
+        <div style={{ minWidth: "400px", flexGrow: 1 }}>
+          Grid info
+          <div style={{ paddingTop: "20px" }} />
+          <GridSelector />
+          <GridInfo />
+          <FirstGridSelector />
+          <GridScripts />
+        </div>
       </div>
-      <div style={{ display: "flex" }}>
-        <Grid />
-        <EmojiPicker />
-      </div>
-      <DisplayText />
       <div style={{ paddingTop: "30px" }} />
-      <GridSelector />
-      <GridInfo />
-      <FirstGridSelector />
-      <GridScripts />
-      <div style={{ paddingTop: "30px" }} />
+      Adventure info
       <AdventureScript />
       <div style={{ paddingTop: "30px" }} />
       <SaveAdventure />
