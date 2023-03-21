@@ -146,6 +146,12 @@ export const getRegexes = (
       "Update cell (you have to provide gridId, cellId, and the update object)"
     ],
     [
+      /\#\#a\((.*?)\)/g,
+      `setTimeout(() => { window.alert($1) }, 10)`,
+      "Display alert dialog, delayed after the grid is visually loaded",
+      "##a($1)"
+    ],
+    [
       "#a(",
       `window.alert(`,
       "Display alert dialog (compatible with variables and string interpolation)"

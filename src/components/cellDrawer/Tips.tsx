@@ -26,6 +26,8 @@ const Tips: React.FC<{}> = ({ }) => {
           <div>{`Order of execution of scripts (lifecycle): Adventure On Init > Grids On Init > Cells On Init > Grid on View > Cells on View`}</div>
           <div> </div>
           <div>{`You have access to "window" inside the scripts. So basically you can do anything a website can do. With the exception of Shorthands, everything is pure real Javascript in the browser context.`}</div>
+          <div> </div>
+          <div>{`If you need to use a prompt or confirm window just after the visual load of a grid, you can wrap your code in    setTimeout(() => { YOUR_CODE_HERE }, 10)     in the On View script.`}</div>
         </Modal>
       </span>
       <style jsx>
