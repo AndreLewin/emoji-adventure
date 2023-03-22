@@ -106,8 +106,6 @@ const EditorAdventureId: NextPage = () => {
           <DisplayText />
         </div>
         <div style={{ minWidth: "400px", flexGrow: 1 }}>
-          Grid info
-          <div style={{ paddingTop: "20px" }} />
           <GridSelector />
           <GridInfo />
           <FirstGridSelector />
