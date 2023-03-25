@@ -44,12 +44,18 @@ const GridSelector: React.FC<{}> = ({ }) => {
         >
           Delete Grid
         </Button>
-        <div>
-          <SegmentedControl
-            value={`${activeGridId}`}
-            onChange={handleChange}
-            data={choices}
-          />
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
+          {choices.map((c, i) => {
+            return (
+              <div
+                className={`grid-select ${c.value === `${activeGridId}` ? "selected" : ""}`}
+                key={`grid-button-${c.value}`}
+                onClick={() => handleChange(c.value)}
+              >
+                {c.label}
+              </div>
+            )
+          })}
         </div>
       </div>
 
@@ -70,6 +76,18 @@ const GridSelector: React.FC<{}> = ({ }) => {
         {`
         .container {
           
+        }
+
+        .grid-select {
+          border-radius: 5px;
+          border: 1px solid lightgray;
+          min-width: 27px;
+          text-align: center;
+          cursor: pointer;
+        }
+
+        .selected {
+          background-color: lightgray;
         }
       `}
       </style>
