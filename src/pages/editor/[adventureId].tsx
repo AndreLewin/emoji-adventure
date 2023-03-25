@@ -92,7 +92,7 @@ const EditorAdventureId: NextPage = () => {
 
   return (
     <div style={{ "position": "relative" }}>
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <div className="grid">
         <div>
           <ToolSelector />
           <div style={{ display: "flex" }}>
@@ -105,7 +105,7 @@ const EditorAdventureId: NextPage = () => {
           </div>
           <DisplayText />
         </div>
-        <div style={{ minWidth: "400px", flexGrow: 1 }}>
+        <div>
           <GridSelector />
           <GridInfo />
           <FirstGridSelector />
@@ -130,6 +130,20 @@ const EditorAdventureId: NextPage = () => {
       <div style={{ "position": "absolute", "top": "30px", "left": "20px" }}>
         <Cursor />
       </div>
+
+      <style jsx>
+        {`
+          @media (min-width: 1158px) {
+            .grid {
+              display: grid;
+              gap: 10px;
+
+              grid-template-columns: 758px 1fr;
+              /*grid-template-columns: 758px repeat(auto-fit, minmax(400px, 1fr));*/
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };
