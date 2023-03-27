@@ -7,6 +7,7 @@ import Configs from "./codeGenerationButtons/Configs";
 import UpdateElement from "./codeGenerationButtons/UpdateElement";
 import DeleteElement from "./codeGenerationButtons/DeleteElement";
 import DisplayOnCondition from "./codeGenerationButtons/DisplayOnCondition";
+import PlaySound from "./codeGenerationButtons/PlaySound";
 
 const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
 
@@ -25,6 +26,7 @@ const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = (
         <DeleteElement gridId={gridId} cellIndex={cellIndex} />
         <div />
         <DisplayOnCondition gridId={gridId} cellIndex={cellIndex} />
+        <PlaySound gridId={gridId} cellIndex={cellIndex} />
       </div>
       <style jsx>
         {`
