@@ -11,6 +11,7 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
   const selectedEmoji = store(state => state.selectedEmoji)
   const set = store(state => state.set)
   const mouseDownCellIndex = store(state => state.mouseDownCellIndex)
+  const copiedCell = store(state => state.copiedCell)
 
   const updateCell = store(state => state.updateCell)
   const updateSquare = store(state => state.updateSquare)
@@ -83,6 +84,14 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
         set({ selectedColor: cell.color, selectedTool: "pencil", selectedEmoji: null })
       } else if (selectedTool === "emojiPicker") {
         set({ selectedEmoji: cell.emoji, selectedTool: "pencil", selectedColor: null })
+      } else if (selectedTool === "copyEverything") {
+        set({ copiedCell: cell, selectedTool: "pasteEverything" })
+      } else if (selectedTool === "pasteEverything") {
+        updateCell({
+          gridId,
+          cellIndex,
+          cellUpdate: { ...copiedCell }
+        })
       } else if (selectedTool === "eraser") {
         updateCell({
           gridId,

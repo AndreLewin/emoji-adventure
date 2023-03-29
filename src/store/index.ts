@@ -21,16 +21,20 @@ export type Grid = {
   backgroundImage?: string
 }
 
+export const defaultCellFactory = (): Cell => {
+  return {
+    color: "",
+    emoji: "",
+    onClickCScript: "",
+    onViewCScript: "",
+    onInitCScript: ""
+  }
+}
+
 export const defaultGridFactory = (): Omit<Grid, "id"> => {
   return {
     text: "",
-    cells: (new Array(100)).fill({}).map(() => ({
-      color: "",
-      emoji: "",
-      onClickCScript: "",
-      onViewCScript: "",
-      onInitCScript: ""
-    })),
+    cells: (new Array(100)).fill({}).map(defaultCellFactory),
     onViewGScript: "",
     onInitGScript: ""
   }
@@ -58,6 +62,7 @@ const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   selectedEmoji: null,
   mouseDownCellIndex: null,
   lastEmojis: [],
+  copiedCell: defaultCellFactory(),
   // adventure data
   grids: [{ id: 0, ...defaultGridFactory() }],
   firstGridId: 0,
@@ -170,7 +175,7 @@ export type Store = {
   deleteGrid: (gridIdToDelete: number) => void
   activeGridId: number
   grids: Grid[]
-  selectedTool: "pencil" | "square" | "bucket" | "colorPicker" | "emojiPicker" | "eraser" | "undo" | ""
+  selectedTool: "pencil" | "square" | "bucket" | "colorPicker" | "emojiPicker" | "eraser" | "copyEverything" | "pasteEverything" | "undo" | ""
   isToolCursorVisible: boolean
   // "blue": the color is selected with the color blue
   // "": the eraser of color is selected
@@ -181,6 +186,8 @@ export type Store = {
   mouseDownCellIndex: number | null
   // used by the selector to quickly use last used emojis
   lastEmojis: string[]
+  // the whole cell data stored by "copyEverything"
+  copiedCell: Cell
   // the first grid where the player will play
   firstGridId: number
   // eval when the adventure is loaded
