@@ -7,7 +7,8 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "exp": "set EXP=true && next build && next export && serve out -p 3001"
   },
   "dependencies": {
     "@emotion/react": "11.10.5",
@@ -24,7 +25,7 @@
     "@trpc/next": "10.0.0",
     "@trpc/react-query": "10.0.0",
     "@trpc/server": "10.0.0",
-    "next": "13.0.2",
+    "next": "13.3.0",
     "next-auth": "4.18.8",
     "picmo": "5.7.2",
     "prismjs": "1.29.0",

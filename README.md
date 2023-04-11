@@ -5,6 +5,16 @@
 
 ---
 
+## Static Site Generation of an Adventure
+
+- in `src\app\adventure\[adventureId]\page.tsx`, choose the adventure id(s)
+- run `yarn exp` to build the static files into the `out` folder
+- rename `adventure/xxxx.html` to `index.html` (do the same for the .txt in the same folder)
+- zip `out` into `out.zip`
+- create a new project on itch.io and upload the `out.zip` there
+- in the itch.io config, choose a width of 400px and a height of 500px (or more) 
+
+
 ## Rule of hooks with useQuery (trpc)
 
 You can not use useQuery inside useCallback or useMutation

@@ -7,6 +7,7 @@ import GridViewer from "../components/viewers/GridViewer"
 import store, { emptyHistory, Store } from "../store"
 import { evalScript } from "../utils/evalScript"
 import DisplayText from "../components/DisplayText"
+import Viewers from "../components/viewers/Viewers"
 
 export default function AdventurePage() {
   const router = useRouter()
@@ -82,9 +83,7 @@ export default function AdventurePage() {
 
   return (
     <div className="container">
-      <GridViewer />
-      <GridInfoViewer />
-      <DisplayText />
+      <Viewers />
 
       <style jsx>
         {`
