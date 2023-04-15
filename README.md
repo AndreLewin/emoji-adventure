@@ -9,7 +9,7 @@
 
 - in `src\app\adventure\[adventureId]\page.tsx`, choose the adventure id(s)
 - run `yarn exp` to build the static files into the `out` folder
-- rename `adventure/xxxx.html` to `index.html` (do the same for the .txt in the same folder)
+- rename `adventure/xxxx.html` to `index.html` (you can remove the .txt)
 - remove everything that are not necessary (all "pages" + a lot of the rest, check by changing the name)
 - zip `out` into `out.zip`
 - create a new project on itch.io and upload the `out.zip` there
