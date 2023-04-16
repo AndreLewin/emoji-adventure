@@ -16,21 +16,21 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 
   // put all files from public/exportTemplate inside it (except index.html, because we will change it)
   const addFile = (filePath: any) => {
-    if (filePath === `public\\exportTemplate\\index.html`) return
+    if (filePath === `.\\public\\exportTemplate\\index.html`) return
 
     const stats = fs.statSync(filePath);
 
     if (stats.isFile()) {
       const data = fs.readFileSync(filePath);
-      folder.file(path.relative('public/exportTemplate', filePath), data);
+      folder.file(path.relative('./public/exportTemplate', filePath), data);
     } else if (stats.isDirectory()) {
-      const subFolder = folder.folder(path.relative('public/exportTemplate', filePath));
+      const subFolder = folder.folder(path.relative('./public/exportTemplate', filePath));
       for (const file of fs.readdirSync(filePath)) {
         addFile(path.join(filePath, file));
       }
     }
   };
-  addFile('public/exportTemplate');
+  addFile('./public/exportTemplate');
 
   // add index.html to the virtual folder using the data of the exported adventure
   const oldIndexString = fs.readFileSync('./public/exportTemplate/index.html', 'utf8');
