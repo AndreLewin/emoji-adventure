@@ -174,23 +174,24 @@ fs.readFile(indexHtmlPath, 'utf8', (err, data) => {
       }
     });
 
-    //// because Vercel hides /public/exportTemplate/_next for some reason,
+    //// ??? because Vercel hides /public/exportTemplate/_next for some reason,
+    //// ??? there is still the problem after renaming....
     // so we need to give the directory an other name and changes the references to it
 
     // with node, rename directory `public\exportTemp` in `public\exportTemplate`
     const oldPath = './public/exportTemp/_next';
-    const newPath = './public/exportTemp/next';
+    const newPath = './public/exportTemp/kato';
     fs.renameSync(oldPath, newPath);
 
     // update the references
     // in index.html
     const filePath = './public/exportTemp/index.html';
     const data = fs.readFileSync(filePath, 'utf8');
-    const result = data.replace(/_next\/static/g, 'next/static');
+    const result = data.replace(/_next\/static/g, 'kato/static');
     fs.writeFileSync(filePath, result, 'utf8');
 
     // in next/static/chunks/webpack....js
-    const directoryPath = './public/exportTemp/next/static/chunks';
+    const directoryPath = './public/exportTemp/kato/static/chunks';
     const files2 = fs.readdirSync(directoryPath);
 
     for (let i = 0; i < files2.length; i++) {
@@ -199,7 +200,7 @@ fs.readFile(indexHtmlPath, 'utf8', (err, data) => {
       if (file.match(/^webpack.*\.js$/)) {
         const filePath = path.join(directoryPath, file);
         const fileData = fs.readFileSync(filePath, 'utf8');
-        const result = fileData.replace(/_next/g, 'next');
+        const result = fileData.replace(/_next/g, 'kato');
         fs.writeFileSync(filePath, result);
         break;
       }
