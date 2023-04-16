@@ -8,7 +8,7 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
-    "buildforitch": "set FOR_ITCH=true && next build",
+    "buildforitch": "cross-env FOR_ITCH=true next build",
     "testitchbuild": "npm run buildforitch && serve out -p 3001",
     "makeexporttemplate": "npm run buildforitch && node ./make_exportTemplate_from_itchOut"
   },
@@ -45,6 +45,7 @@
     "@types/react-dom": "18.0.5",
     "@typescript-eslint/eslint-plugin": "5.48.0",
     "@typescript-eslint/parser": "5.48.0",
+    "cross-env": "7.0.3",
     "eslint": "8.26.0",
     "eslint-config-next": "13.1.2",
     "prisma": "4.5.0",

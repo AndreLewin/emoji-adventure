@@ -5,7 +5,10 @@
 
 ---
 
-The script `makeexporttemplate` has to be run on the production server after deployment so the exportTemplate is made available for adventure exports. Vercel can do that automatically. 
+The script `makeexporttemplate` has to be run on the production server after deployment so the exportTemplate is made available for adventure exports.
+
+Vercel does it automatically by running the `build` script
+("build": "next build && npm run makeexporttemplate")
 
 ## Static Site Generation of an Adventure
 
