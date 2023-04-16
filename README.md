@@ -5,18 +5,10 @@
 
 ---
 
-The script `makeexporttemplate` has to be run on the production server after deployment so the exportTemplate is made available for adventure exports.
+The script `makeexporttemplate` has to be run and `/public/exportTemplate` has to be commited before a deployment, so that the behavior in exported games is the same as in the application.
 
-Vercel does it automatically by running the `build` script
-("build": "next build && npm run makeexporttemplate")
+## Export the game and deploy it on itch.io
 
-## Static Site Generation of an Adventure
-
-- in `src\app\adventure\[adventureId]\page.tsx`, choose the adventure id(s)
-- run `yarn exp` to build the static files into the `out` folder
-- rename `adventure/xxxx.html` to `index.html` (you can remove the .txt)
-- remove everything that are not necessary (all "pages" + a lot of the rest, check by changing the name)
-- zip `out` into `out.zip`
 - create a new project on itch.io and upload the `out.zip` there
 - in the itch.io config, choose a width of 400px and a height of 500px (or more) 
 
