@@ -37,7 +37,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   // TODO: check on ownership
   // TODO: fetch adventure (cf api/adventure/[adventureId].ts)
   // TODO: replace title, description and script of index.html
-  let newIndexString = oldIndexString.replace(/DEMO-ADVENTURE/g, adventureId);
+  const newIndexString = oldIndexString.replace(/DEMO-ADVENTURE/g, adventureId);
   folder.file('index.html', newIndexString);
 
   // send the .zip

@@ -5,6 +5,8 @@
 
 ---
 
+The script `makeexporttemplate` has to be run on the production server after deployment so the exportTemplate is made available for adventure exports. Vercel can do that automatically. 
+
 ## Static Site Generation of an Adventure
 
 - in `src\app\adventure\[adventureId]\page.tsx`, choose the adventure id(s)

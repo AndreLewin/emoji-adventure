@@ -1,3 +1,8 @@
+# exportTemplate for aventure export
+# The script `makeexporttemplate` has to be run on the production server after deployment so the exportTemplate is made available for adventure exports.
+/itchOut/
+/public/exportTemplate
+
 .drafts
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
