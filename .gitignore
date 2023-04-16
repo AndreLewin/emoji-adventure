@@ -1,6 +1,7 @@
 # exportTemplate for aventure export
-# The script `makeexporttemplate` has to be run on the production server after deployment so the exportTemplate is made available for adventure exports.
+# The script `makeexporttemplate` has to be run on the production server after deployment so the public/exportTemplate.zip is made available for adventure exports.
 /itchOut/
+/public/exportTemp
 
 .drafts
 

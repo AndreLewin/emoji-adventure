@@ -3,6 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const JSZip = require("jszip");
 
 // remove the directory `public\exportTemp\_next\static\chunks\pages`
 
@@ -174,50 +175,45 @@ fs.readFile(indexHtmlPath, 'utf8', (err, data) => {
       }
     });
 
-    //// ??? because Vercel hides /public/exportTemplate/_next for some reason,
-    //// ??? there is still the problem after renaming....
-    // so we need to give the directory an other name and changes the references to it
+    // zip "public/exportTemp" into "public/exportTemplate.zip"
+    // save in a zip because Vercel hides subdirectory of public/
 
-    // with node, rename directory `public\exportTemp` in `public\exportTemplate`
-    const oldPath = './public/exportTemp/_next';
-    const newPath = './public/exportTemp/kato';
-    fs.renameSync(oldPath, newPath);
+    const zip = new JSZip();
+    const folder = zip.folder('exportTemplate');
 
-    // update the references
-    // in index.html
-    const filePath = './public/exportTemp/index.html';
-    const data = fs.readFileSync(filePath, 'utf8');
-    const result = data.replace(/_next\/static/g, 'kato/static');
-    fs.writeFileSync(filePath, result, 'utf8');
+    // put all files from public/exportTemplate inside it (except index.html, because we will change it)
+    const addFile = (filePath) => {
+      console.log("filePath | [adventureId].ts l19", filePath)
+      const stats = fs.statSync(filePath);
+      console.log("stats | [adventureId].ts l24", stats)
 
-    // in next/static/chunks/webpack....js
-    const directoryPath = './public/exportTemp/kato/static/chunks';
-    const files2 = fs.readdirSync(directoryPath);
+      if (stats.isFile()) {
+        const data = fs.readFileSync(filePath);
+        const relativePath = path.relative('./public/exportTemp', filePath);
+        console.log("relativePath | [adventureId].ts l26", relativePath)
 
-    for (let i = 0; i < files2.length; i++) {
-      const file = files2[i];
+        folder.file(relativePath, data);
+      } else if (stats.isDirectory()) {
+        const relativePath = path.relative('./public/exportTemp', filePath);
+        console.log("relativePath | [adventureId].ts l31", relativePath)
 
-      if (file.match(/^webpack.*\.js$/)) {
-        const filePath = path.join(directoryPath, file);
-        const fileData = fs.readFileSync(filePath, 'utf8');
-        const result = fileData.replace(/_next/g, 'kato');
-        fs.writeFileSync(filePath, result);
-        break;
+        const subFolder = folder.folder(relativePath);
+        const subFiles = fs.readdirSync(filePath);
+        console.log("subFiles | [adventureId].ts l39", subFiles)
+
+        for (const file of subFiles) {
+          addFile(path.join(filePath, file));
+        }
       }
+    };
+    addFile('./public/exportTemp');
+
+    const af = async () => {
+      const buffer = await folder.generateAsync({ type: 'nodebuffer' });
+      fs.writeFileSync('./public/exportTemplate.zip', buffer);
+      console.log('./public/exportTemplate.zip has been saved!');
     }
-
-    // with node, rename directory `public\exportTemp` in `public\exportTemplate`
-    const oldPath2 = './public/exportTemp';
-    const newPath2 = './public/exportTemplate';
-
-    fs.rename(oldPath2, newPath2, (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-
-      console.log(`Successfully built ${newPath2}`);
-    });
+    af()
   });
 });
 
