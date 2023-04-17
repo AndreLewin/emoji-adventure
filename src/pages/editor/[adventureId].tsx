@@ -117,14 +117,18 @@ const EditorAdventureId: NextPage = () => {
       <AdventureScript />
       <div style={{ paddingTop: "30px" }} />
       <SaveAdventure />
-      <div style={{ paddingTop: "30px" }} />
       <a href={`${location?.hostname === "localhost" ? "" : "https://emoji-adventure.vercel.app"}/${adventureId}`} target="_blank" rel="noreferrer">
-        <Button color="gray">
-          {`Play your saved Adventure (make sure it is accessible through the Adventure list first)`}
+        <Button>
+          {`Preview (save first!)`}
+        </Button>
+      </a>
+      <a href={`${location?.hostname === "localhost" ? "" : "https://emoji-adventure.vercel.app"}/api/export/${adventureId}`} target="_blank" rel="noreferrer">
+        <Button>
+          {`Export (save first!)`}
         </Button>
       </a>
       <hr />
-      <Button color="gray" onClick={() => router.push("/editor")}>
+      <Button onClick={() => router.push("/editor")}>
         {`Go to your Adventures (make sure to save your changes before leaving)`}
       </Button>
       <div style={{ "position": "absolute", "top": "30px", "left": "20px" }}>

@@ -38,11 +38,9 @@ const SaveAdventure: React.FC<{}> = ({ }) => {
 
   return (
     <>
-      <div className='container'>
-        <Button disabled={!isChanged} onClick={saveAdventure}>
-          Save Adventure
-        </Button>
-      </div>
+      <Button disabled={!isChanged} onClick={saveAdventure}>
+        Save Adventure
+      </Button>
       <style jsx>
         {`
           .container {
