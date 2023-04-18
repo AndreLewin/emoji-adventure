@@ -2,7 +2,12 @@ import { useCallback, useMemo } from "react"
 import { Cell } from "../../store"
 import { evalScript } from "../../utils/evalScript"
 
-const CellViewer: React.FC<{ cell: Cell, cellIndex: number, gridId: number }> = ({ cell, cellIndex, gridId }) => {
+const CellViewer: React.FC<{
+  cell: Cell,
+  cellIndex: number,
+  gridId: number,
+  areClickSquaresHidden: boolean
+}> = ({ cell, cellIndex, gridId, areClickSquaresHidden }) => {
   const handleMouseDown = useCallback<any>((event: MouseEvent) => {
     const { buttons } = event
     if (buttons === 1) {
@@ -19,7 +24,7 @@ const CellViewer: React.FC<{ cell: Cell, cellIndex: number, gridId: number }> = 
   return (
     <>
       <div
-        className={`container ${hasAScript ? "gradient-border" : ""}`}
+        className={`container ${(hasAScript && !areClickSquaresHidden) ? "gradient-border" : ""}`}
         style={{
           "backgroundColor": cell.color,
           "cursor": cell.onClickCScript !== "" ? "pointer" : "default"

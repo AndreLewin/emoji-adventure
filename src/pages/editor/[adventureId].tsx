@@ -4,7 +4,7 @@ import ColorSelector from "../../components/selectors/ColorSelector";
 import EmojiSelector from "../../components/selectors/EmojiSelector";
 import Grid from "../../components/Grid";
 import EmojiPicker from "../../components/selectors/EmojiPicker";
-import GridSelector from "../../components/selectors/GridSelector";
+import GridButtons from "../../components/selectors/GridButtons";
 import FirstGridSelector from "../../components/selectors/FirstGridSelector";
 import GridInfo from "../../components/GridInfo";
 import { useEffect, useState } from "react";
@@ -106,14 +106,14 @@ const EditorAdventureId: NextPage = () => {
           <DisplayText />
         </div>
         <div>
-          <GridSelector />
+          <GridButtons />
           <GridInfo />
-          <FirstGridSelector />
           <GridScripts />
         </div>
       </div>
       <div style={{ paddingTop: "30px" }} />
       Adventure info
+      <FirstGridSelector />
       <AdventureScript />
       <div style={{ paddingTop: "30px" }} />
       <SaveAdventure />

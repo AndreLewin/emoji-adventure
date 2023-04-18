@@ -1,8 +1,9 @@
 import { Button, Modal, SegmentedControl, SegmentedControlItem } from "@mantine/core"
 import { useCallback, useMemo, useState } from "react"
 import store, { Grid } from "../../store"
+import GridSettings from "./gridButtons/GridSettings"
 
-const GridSelector: React.FC<{}> = ({ }) => {
+const GridButtons: React.FC<{}> = ({ }) => {
   const activeGridId = store(state => state.activeGridId)
   const grids = store(state => state.grids)
   const createGrid = store(state => state.createGrid)
@@ -31,19 +32,23 @@ const GridSelector: React.FC<{}> = ({ }) => {
   return (
     <>
       <div className='container'>
-        <Button color="teal" onClick={() => createGrid({})}>
-          Create Grid
-        </Button>
-        <Button color="teal" onClick={() => createGrid({ idOfGridToCopy: activeGridId })}>
-          Duplicate Grid
-        </Button>
-        <Button
-          color="red"
-          disabled={grids.length <= 1}
-          onClick={() => setIsDeleteConfirmModalOpened(true)}
-        >
-          Delete Grid
-        </Button>
+        <div style={{ display: "flex" }}>
+          <Button color="teal" onClick={() => createGrid({})}>
+            Create Grid
+          </Button>
+          <Button color="teal" onClick={() => createGrid({ idOfGridToCopy: activeGridId })}>
+            Duplicate Grid
+          </Button>
+          <Button
+            color="red"
+            disabled={grids.length <= 1}
+            onClick={() => setIsDeleteConfirmModalOpened(true)}
+          >
+            Delete Grid
+          </Button>
+          <GridSettings />
+        </div>
+
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {choices.map((c, i) => {
             return (
@@ -82,6 +87,8 @@ const GridSelector: React.FC<{}> = ({ }) => {
           border-radius: 5px;
           border: 1px solid lightgray;
           min-width: 27px;
+          height: 32px;
+          padding: 3px;
           text-align: center;
           cursor: pointer;
         }
@@ -95,4 +102,4 @@ const GridSelector: React.FC<{}> = ({ }) => {
   )
 }
 
-export default GridSelector
+export default GridButtons

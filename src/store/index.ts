@@ -19,6 +19,7 @@ export type Grid = {
   onViewGScript: string
   onInitGScript: string
   backgroundImage?: string
+  areClickSquaresHidden?: boolean
 }
 
 export const defaultCellFactory = (): Cell => {
@@ -158,12 +159,7 @@ export type Store = {
     gridId
   }: {
     gridId: number
-    gridUpdate: {
-      text?: string
-      onViewGScript?: string
-      onInitGScript?: string
-      backgroundImage?: string
-    }
+    gridUpdate: Partial<Grid>
   }) => void
   createGrid: ({
     name,
@@ -413,12 +409,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     gridUpdate
   }: {
     gridId: number
-    gridUpdate: {
-      text?: string
-      onViewGScript?: string
-      onInitGScript?: string
-      backgroundImage?: string
-    }
+    gridUpdate: Partial<Grid>
   }) => {
     const { grids } = get()
     const gridIndex = grids.findIndex(g => g.id === gridId)
