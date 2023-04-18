@@ -99,13 +99,7 @@ export type Store = {
   }: {
     gridId: number,
     cellIndex: number,
-    cellUpdate: {
-      color?: string,
-      emoji?: string,
-      onClickCScript?: string,
-      onViewCScript?: string,
-      onInitCScript?: string
-    }
+    cellUpdate: Partial<Cell>
   }) => void
   updateCellWithAppend: ({
     gridId,
@@ -114,13 +108,7 @@ export type Store = {
   }: {
     gridId: number,
     cellIndex: number,
-    cellUpdate: {
-      color?: string,
-      emoji?: string,
-      onClickCScript?: string
-      onViewCScript?: string,
-      onInitCScript?: string
-    }
+    cellUpdate: Partial<Cell>
   }) => void
   updateSquare: ({
     gridId,
@@ -131,13 +119,7 @@ export type Store = {
     gridId: number,
     cellIndex1: number,
     cellIndex2: number,
-    cellUpdate: {
-      color?: string,
-      emoji?: string,
-      onClickCScript?: string
-      onViewCScript?: string,
-      onInitCScript?: string
-    }
+    cellUpdate: Partial<Cell>
   }) => void
   floodFill: ({
     gridId,
@@ -146,13 +128,7 @@ export type Store = {
   }: {
     gridId: number,
     cellIndex: number,
-    cellUpdate: {
-      color?: string,
-      emoji?: string,
-      onClickCScript?: string
-      onViewCScript?: string,
-      onInitCScript?: string
-    }
+    cellUpdate: Partial<Cell>
   }) => void
   pickEmoji: (pickedEmoji: string) => void
   updateGrid: ({
@@ -251,13 +227,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
   }: {
     gridId: number,
     cellIndex: number,
-    cellUpdate: {
-      color?: string,
-      emoji?: string,
-      onClickCScript?: string
-      onViewCScript?: string,
-      onInitCScript?: string
-    }
+    cellUpdate: Partial<Cell>
   }) {
     const { grids } = get()
     const grid = grids.find(g => g.id === gridId)
@@ -277,13 +247,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
   }: {
     gridId: number,
     cellIndex: number,
-    cellUpdate: {
-      color?: string,
-      emoji?: string,
-      onClickCScript?: string
-      onViewCScript?: string,
-      onInitCScript?: string
-    }
+    cellUpdate: Partial<Cell>
   }) {
     const { grids } = get()
     const grid = grids.find(g => g.id === gridId)
@@ -320,13 +284,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     gridId: number,
     cellIndex1: number,
     cellIndex2: number,
-    cellUpdate: {
-      color?: string,
-      emoji?: string,
-      onClickCScript?: string,
-      onViewCScript?: string,
-      onInitCScript?: string
-    }
+    cellUpdate: Partial<Cell>
   }) => {
     const { grids } = get()
     const grid = grids.find(g => g.id === gridId)
@@ -355,13 +313,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
   }: {
     gridId: number,
     cellIndex: number,
-    cellUpdate: {
-      color?: string,
-      emoji?: string,
-      onClickCScript?: string
-      onViewCScript?: string,
-      onInitCScript?: string
-    }
+    cellUpdate: Partial<Cell>
   }) => {
     const { grids } = get()
     const grid = grids.find(g => g.id === gridId)
