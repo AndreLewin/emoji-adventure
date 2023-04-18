@@ -23,7 +23,7 @@ const GridScripts: React.FC<{}> = ({ }) => {
   const [activeGScriptTab, setActiveGScriptTab] = useState<"onViewGScript" | "onInitGScript">("onViewGScript")
 
   const gridScript = useMemo<string>(() => {
-    return grid[activeGScriptTab]
+    return grid[activeGScriptTab] ?? ""
   }, [grid, activeGScriptTab])
 
   const setScript = useCallback<any>((script: string) => {

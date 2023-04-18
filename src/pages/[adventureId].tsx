@@ -45,7 +45,7 @@ export default function AdventurePage() {
       const grids = dataParsed.grids as Store["grids"]
       const firstGridId = dataParsed.firstGridId as Store["firstGridId"]
       const activeGridId = dataParsed.firstGridId as Store["activeGridId"]
-      const onInitAScript = dataParsed.onInitAScript as Store["onInitAScript"]
+      const onInitAScript = dataParsed?.onInitAScript ?? "" as Store["onInitAScript"]
 
       store.setState({
         grids,
@@ -59,11 +59,11 @@ export default function AdventurePage() {
       // adventure
       evalScript(onInitAScript)
       // grids
-      grids.forEach(g => evalScript(g.onInitGScript, { gridId: g.id }))
+      grids.forEach(g => evalScript(g?.onInitGScript ?? "", { gridId: g.id }))
       // cells
       grids.forEach(g => {
         g.cells.forEach((c, index) => {
-          evalScript(c.onInitCScript, { gridId: g.id, cellIndex: index })
+          evalScript(c?.onInitCScript ?? "", { gridId: g.id, cellIndex: index })
         })
       })
       store.setState({ isInitFinished: true })

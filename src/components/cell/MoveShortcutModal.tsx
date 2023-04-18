@@ -34,7 +34,7 @@ const MoveShortcutModal: React.FC<{
       return gridsExceptActiveOne.map(grid => {
         return {
           value: `${grid.id}`,
-          label: `${grid.id}: ${grid.text}`
+          label: `${grid.id}: ${grid?.text ?? ""}`
         }
       })
     }, [grids])

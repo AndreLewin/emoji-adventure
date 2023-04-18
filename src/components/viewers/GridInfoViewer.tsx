@@ -14,7 +14,7 @@ const GridInfoViewer: React.FC<{}> = ({ }) => {
     <>
       <div className='container'>
         <div className="grid-text">
-          {grid.text}
+          {grid?.text ?? ""}
         </div>
       </div>
 

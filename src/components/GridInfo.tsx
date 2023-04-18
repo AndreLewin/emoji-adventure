@@ -33,7 +33,7 @@ const GridInfo: React.FC<{}> = ({ }) => {
     <>
       <div className='container'>
         <TextInput
-          value={grid.text}
+          value={grid?.text ?? ""}
           onChange={handleTextChange}
           placeholder="Grid title / text"
         />

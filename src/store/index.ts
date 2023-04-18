@@ -14,10 +14,10 @@ export type Cell = {
 export type Grid = {
   // an id is necessary so it can be referenced from scripts
   id: number
-  text: string
   cells: Cell[]
-  onViewGScript: string
-  onInitGScript: string
+  text?: string
+  onViewGScript?: string
+  onInitGScript?: string
   backgroundImage?: string
   areClickSquaresHidden?: boolean
 }
@@ -34,10 +34,7 @@ export const defaultCellFactory = (): Cell => {
 
 export const defaultGridFactory = (): Omit<Grid, "id"> => {
   return {
-    text: "",
-    cells: (new Array(100)).fill({}).map(defaultCellFactory),
-    onViewGScript: "",
-    onInitGScript: ""
+    cells: (new Array(100)).fill({}).map(defaultCellFactory)
   }
 }
 
@@ -163,7 +160,7 @@ export type Store = {
   // the first grid where the player will play
   firstGridId: number
   // eval when the adventure is loaded
-  onInitAScript: string
+  onInitAScript?: string
   adventure: Omit<Adventure, "data"> | null
   // in the editor, turns true if a change is made
   isChanged: boolean

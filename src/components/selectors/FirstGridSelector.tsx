@@ -8,8 +8,9 @@ const FirstGridSelector: React.FC<{}> = ({ }) => {
 
   const choices = useMemo<SelectItem[]>(() => {
     return grids.map(g => {
+      const text = g?.text ?? ""
       return {
-        label: `${g.id}: ${g.text.length <= 10 ? g.text : (g.text.substring(0, 10) + '...')}`,
+        label: `${g.id}: ${text.length <= 10 ? text : (text.substring(0, 10) + '...')}`,
         value: `${g.id}`
       }
     })

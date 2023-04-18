@@ -16,7 +16,7 @@ const GridViewer: React.FC<{}> = ({ }) => {
 
     // execute view scripts
     // grid
-    evalScript(grid.onViewGScript, { gridId: grid.id })
+    evalScript(grid?.onViewGScript ?? "", { gridId: grid.id })
     // cells
     grid.cells.forEach((c, index) => evalScript(c.onViewCScript, { gridId: grid.id, cellIndex: index }))
   }, [grid, isInitFinished])
