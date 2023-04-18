@@ -6,9 +6,9 @@ import { variableProxy, subscriberProxy, Config, configProxy, updateProxy } from
 export type Cell = {
   color: string
   emoji: string
-  onClickCScript: string
-  onViewCScript: string
-  onInitCScript: string
+  onClickCScript?: string
+  onViewCScript?: string
+  onInitCScript?: string
 }
 
 export type Grid = {
@@ -25,10 +25,7 @@ export type Grid = {
 export const defaultCellFactory = (): Cell => {
   return {
     color: "",
-    emoji: "",
-    onClickCScript: "",
-    onViewCScript: "",
-    onInitCScript: ""
+    emoji: ""
   }
 }
 
@@ -253,16 +250,16 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     const newCell = { ...grid.cells[cellIndex]! }
 
     if (cellUpdate.emoji !== undefined) {
-      newCell.emoji += cellUpdate.emoji
+      newCell.emoji = (newCell?.emoji ?? "") + cellUpdate.emoji
     }
     if (cellUpdate.onClickCScript !== undefined) {
-      newCell.onClickCScript += (newCell.onClickCScript === "" ? "" : "\n") + cellUpdate.onClickCScript
+      newCell.onClickCScript = (newCell?.onClickCScript ?? "") + ((newCell?.onClickCScript ?? "") === "" ? "" : "\n") + cellUpdate.onClickCScript
     }
     if (cellUpdate.onViewCScript !== undefined) {
-      newCell.onViewCScript += (newCell.onViewCScript === "" ? "" : "\n") + cellUpdate.onViewCScript
+      newCell.onViewCScript = (newCell?.onViewCScript ?? "") + ((newCell?.onViewCScript ?? "") === "" ? "" : "\n") + cellUpdate.onViewCScript
     }
     if (cellUpdate.onInitCScript !== undefined) {
-      newCell.onInitCScript += (newCell.onInitCScript === "" ? "" : "\n") + cellUpdate.onInitCScript
+      newCell.onInitCScript = (newCell?.onInitCScript ?? "") + ((newCell?.onInitCScript ?? "") === "" ? "" : "\n") + cellUpdate.onInitCScript
     }
 
     grid.cells[cellIndex]! = {
@@ -387,12 +384,10 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       gridToCopy = {
         ...matchingGrid,
         cells: matchingGrid.cells.map(c => {
+          // don't keep the scripts
+          const { onClickCScript, onViewCScript, onInitCScript, ...rest } = c
           return {
-            ...c,
-            // don't keep scripts 
-            onClickCScript: "",
-            onViewCScript: "",
-            onInitCScript: ""
+            ...rest
           }
         })
       }

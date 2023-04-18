@@ -35,7 +35,7 @@ const Scripts: React.FC<{}> = ({ }) => {
           </Tabs.List>
         </Tabs>
         <Editor
-          value={onInitAScript}
+          value={onInitAScript ?? ""}
           placeholder="Script to execute when the adventure is loaded (good place for map subscribers and global functions)"
           onValueChange={script => set({ onInitAScript: script })}
           highlight={script => highlight(script, languages.js)}

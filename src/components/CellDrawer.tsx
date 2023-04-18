@@ -74,7 +74,7 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
         </Tabs>
 
         <Editor
-          value={script}
+          value={script ?? ""}
           placeholder={
             activeCScriptTab === "onClickCScript" ?
               "Script to execute when the cell is clicked" :

@@ -56,7 +56,7 @@ const GridScripts: React.FC<{}> = ({ }) => {
           </Tabs.List>
         </Tabs>
         <Editor
-          value={gridScript}
+          value={gridScript ?? ""}
           placeholder={
             activeGScriptTab === "onViewGScript" ?
               "Script to execute when the grid comes into view" :

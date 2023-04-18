@@ -176,7 +176,7 @@ export const getRegexes = (
 }
 
 export const evalScript = (
-  script: string,
+  script: string | undefined,
   {
     gridId,
     cellIndex
@@ -187,7 +187,7 @@ export const evalScript = (
     cellIndex?: number
   } = {}
 ) => {
-  if (script === "") return
+  if (script === "" || typeof script === "undefined") return
   // will unravel shorthands
 
   const regexes = getRegexes(gridId, cellIndex)
