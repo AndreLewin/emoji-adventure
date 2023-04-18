@@ -4,8 +4,8 @@ import { getIndexesToFloodFill, twoIndexesIntoIndexesOfSquare } from '../utils/m
 import { variableProxy, subscriberProxy, Config, configProxy, updateProxy } from './proxy'
 
 export type Cell = {
-  color: string
-  emoji: string
+  color?: string
+  emoji?: string
   onClickCScript?: string
   onViewCScript?: string
   onInitCScript?: string
@@ -22,12 +22,7 @@ export type Grid = {
   areClickSquaresHidden?: boolean
 }
 
-export const defaultCellFactory = (): Cell => {
-  return {
-    color: "",
-    emoji: ""
-  }
-}
+export const defaultCellFactory = (): Cell => { return {} }
 
 export const defaultGridFactory = (): Omit<Grid, "id"> => {
   return {
@@ -319,11 +314,11 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     let cellIndexesToChange: number[] = []
     const isChangingColor = cellUpdate?.color !== undefined
     if (isChangingColor) {
-      cellIndexesToChange = getIndexesToFloodFill(cellIndex, grid.cells.map(c => c.color))
+      cellIndexesToChange = getIndexesToFloodFill(cellIndex, grid.cells.map(c => c?.color ?? ""))
     }
     const isChangingEmoji = cellUpdate?.emoji !== undefined
     if (isChangingEmoji) {
-      cellIndexesToChange = getIndexesToFloodFill(cellIndex, grid.cells.map(c => c.emoji))
+      cellIndexesToChange = getIndexesToFloodFill(cellIndex, grid.cells.map(c => c?.emoji ?? ""))
     }
 
     cellIndexesToChange.forEach((cellIndex) => {

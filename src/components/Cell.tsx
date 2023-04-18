@@ -26,13 +26,13 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
     // left click holded
     if (buttons === 1) {
       if (selectedTool === "pencil") {
-        if (selectedColor !== null && cell.color !== selectedColor) {
+        if (selectedColor !== null && (cell?.color ?? "") !== selectedColor) {
           updateCell({
             gridId,
             cellIndex,
             cellUpdate: { color: selectedColor }
           })
-        } else if (selectedEmoji !== null && cell.emoji !== selectedEmoji) {
+        } else if (selectedEmoji !== null && (cell?.emoji ?? "") !== selectedEmoji) {
           updateCell({
             gridId,
             cellIndex,
@@ -81,9 +81,9 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
           }
         })
       } else if (selectedTool === "colorPicker") {
-        set({ selectedColor: cell.color, selectedTool: "pencil", selectedEmoji: null })
+        set({ selectedColor: cell?.color ?? "", selectedTool: "pencil", selectedEmoji: null })
       } else if (selectedTool === "emojiPicker") {
-        set({ selectedEmoji: cell.emoji, selectedTool: "pencil", selectedColor: null })
+        set({ selectedEmoji: cell?.emoji ?? "", selectedTool: "pencil", selectedColor: null })
       } else if (selectedTool === "copyEverything") {
         set({ copiedCell: cell, selectedTool: "pasteEverything" })
       } else if (selectedTool === "pasteEverything") {
@@ -175,7 +175,7 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
         <div className={`full ${hasAViewScript ? "view-script-style" : ""}`}>
           <div className={`full ${hasAClickScript ? "click-script-style" : ""}`}>
             <span className="emoji-wrapper">
-              {cell.emoji}
+              {cell?.emoji ?? ""}
             </span>
           </div>
         </div>

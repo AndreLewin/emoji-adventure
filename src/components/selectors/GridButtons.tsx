@@ -68,7 +68,7 @@ const GridButtons: React.FC<{}> = ({ }) => {
       <Modal
         opened={isDeleteConfirmModalOpened}
         onClose={() => setIsDeleteConfirmModalOpened(false)}
-        title={`Are you sure to delete the grid ${activeGridId}: ${grid.text}?`}
+        title={`Are you sure to delete the grid ${activeGridId}: ${grid?.text ?? ""}?`}
       >
         <Button
           color="red"
