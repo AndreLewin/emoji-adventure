@@ -67,7 +67,7 @@ const DisplayText: React.FC<{}> = ({ }) => {
       <style jsx>
         {`
           .container {
-            
+            width: 400px;
           }
         `}
       </style>

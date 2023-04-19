@@ -3,7 +3,7 @@ import { useCallback, useState } from "react"
 import { getHotkeyHandler } from '@mantine/hooks'
 import store from "../../../store"
 
-const DisplayText: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
+const Alert: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
 
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false)
   const [textToDisplay, setTextToDisplay] = useState<string>("")
@@ -30,7 +30,7 @@ const DisplayText: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
   return (
     <>
       <span className='container'>
-        <Button onClick={() => setIsModalOpened(true)}>Display text</Button>
+        <Button onClick={() => setIsModalOpened(true)}>Alert</Button>
         <Modal
           opened={isModalOpened}
           onClose={() => { setIsModalOpened(false), setTextToDisplay("") }}
@@ -51,7 +51,7 @@ const DisplayText: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
             fullWidth
             mt="md"
           >
-            Confirm
+            Confirm (CTRL + ENTER)
           </Button>
         </Modal>
       </span>
@@ -66,4 +66,4 @@ const DisplayText: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
   )
 }
 
-export default DisplayText
+export default Alert

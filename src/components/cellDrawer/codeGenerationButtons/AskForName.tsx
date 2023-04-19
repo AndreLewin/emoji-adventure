@@ -20,7 +20,7 @@ const AskForName: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, c
   return (
     <>
       <span className='container'>
-        <Button onClick={handleClick}>Ask for name</Button>
+        <Button color="gray" onClick={handleClick}>Ask for name</Button>
       </span>
       <style jsx>
         {`

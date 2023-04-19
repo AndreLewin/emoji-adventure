@@ -2,12 +2,12 @@ import { Button } from "@mantine/core"
 import { useCallback } from "react"
 import store from "../../../store"
 
-const UpdateElement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
+const Text: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
   const activeCScriptTab = store(state => state.activeCScriptTab)
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `// Update emoji\n^e = "🦊"\n// Update color\n^c = "brown"\n// Update click script\n// ^cs = ""`
+    const script = `#t("First text field")\n#(First text field with short syntax)\n#tt("Second text field")\n`
     updateCellWithAppend({
       gridId,
       cellIndex,
@@ -20,7 +20,7 @@ const UpdateElement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId
   return (
     <>
       <span className='container'>
-        <Button onClick={handleClick}>Update element</Button>
+        <Button onClick={handleClick}>Text</Button>
       </span>
       <style jsx>
         {`
@@ -33,4 +33,4 @@ const UpdateElement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId
   )
 }
 
-export default UpdateElement
+export default Text
