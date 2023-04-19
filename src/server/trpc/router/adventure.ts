@@ -28,13 +28,21 @@ export const adventureRouter = router({
       })
     }),
   create: publicProcedure
-    .mutation(async ({ ctx }) => {
+    .input(
+      z.object({
+        name: z.string().optional(),
+        description: z.string().optional(),
+        emojiFavicon: z.string().optional()
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
       const userId = ctx?.session?.user?.id ?? null
       if (userId === null) {
         return -1
       }
       const newAdventure: Omit<Adventure, "id" | "createdAt" | "updatedAt"> = {
         ...defaultAdventureFactory(),
+        ...input,
         userId
       }
       return await ctx.prisma.adventure.create({
@@ -75,7 +83,8 @@ export const adventureRouter = router({
           description: z.string().optional(),
           data: z.string().optional(),
           isAccessible: z.boolean().optional(),
-          isPublished: z.boolean().optional()
+          isPublished: z.boolean().optional(),
+          emojiFavicon: z.string().optional()
         })
       }),
     )

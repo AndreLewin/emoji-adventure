@@ -1,4 +1,4 @@
-import { Button } from "@mantine/core";
+import { Button, Modal, TextInput } from "@mantine/core";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -16,6 +16,11 @@ const Editor: NextPage = () => {
   const allAdventuresQuery = trpc.adventure.findMany.useQuery()
   const allAdventures = allAdventuresQuery.data ?? []
   const ownAdventures = allAdventures.filter(a => a.userId === userId)
+
+  const [isAdventureCreationModalOpen, setIsAdventureCreationModalOpen] = useState<boolean>(false)
+
+  const [name, setName] = useState<string>("")
+  const [description, setDescription] = useState<string>("")
 
   useEffect(() => {
     setIsClientSide(true)
@@ -42,9 +47,31 @@ const Editor: NextPage = () => {
         </Button>
       }
 
-      <Button color="teal" onClick={() => createAdventureMutation.mutate()}>
-        Create Adventure
+      <Button color="teal" onClick={() => setIsAdventureCreationModalOpen(true)}>
+        New Adventure
       </Button>
+
+      {isAdventureCreationModalOpen && (
+        <Modal
+          opened={isAdventureCreationModalOpen}
+          onClose={() => setIsAdventureCreationModalOpen(false)}
+          styles={{ header: { position: "absolute", top: 0, right: 0, margin: "5px" } }}
+        >
+          <TextInput
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            placeholder="Name"
+          />
+          <TextInput
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            placeholder="Description"
+          />
+          <Button onClick={() => createAdventureMutation.mutate({ name, description })}>
+            Create Adventure
+          </Button>
+        </Modal>
+      )}
 
       <hr />
       Your adventures:
