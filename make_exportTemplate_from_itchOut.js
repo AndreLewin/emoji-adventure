@@ -144,121 +144,98 @@ const cssFolderPath = './public/exportTemp/_next/static/css';
 
 const cssFilesUsed = [];
 
-fs.readFile(indexHtmlPath, 'utf8', (err, data) => {
-  if (err) {
-    console.error(err);
-    return;
+const data = fs.readFileSync(indexHtmlPath, 'utf8');
+
+const regex = /<link.*?href="(.*?)".*?>/g;
+let match;
+
+while ((match = regex.exec(data)) !== null) {
+  const cssFilePath = match[1];
+
+  if (cssFilePath.endsWith('.css')) {
+    cssFilesUsed.push(cssFilePath.split('/').pop());
   }
+}
 
-  const regex = /<link.*?href="(.*?)".*?>/g;
-  let match;
+const files = fs.readdirSync(cssFolderPath);
 
-  while ((match = regex.exec(data)) !== null) {
-    const cssFilePath = match[1];
+files.forEach((file) => {
+  const cssFilePath = path.join(cssFolderPath, file);
 
-    if (cssFilePath.endsWith('.css')) {
-      cssFilesUsed.push(cssFilePath.split('/').pop());
-    }
+  if (file.endsWith('.css') && !cssFilesUsed.includes(file)) {
+    fs.unlinkSync(cssFilePath);
   }
-
-  fs.readdir(cssFolderPath, (err, files) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-
-    files.forEach((file) => {
-      const cssFilePath = path.join(cssFolderPath, file);
-
-      if (file.endsWith('.css') && !cssFilesUsed.includes(file)) {
-        fs.unlinkSync(cssFilePath);
-      }
-    });
-
-    // zip "public/exportTemp" into "public/exportTemplate.zip"
-    // save in a zip because Vercel hides subdirectory of public/
-
-    const zip = new JSZip();
-    const folder = zip.folder('exportTemplate');
-
-    // put all files from public/exportTemplate inside it (except index.html, because we will change it)
-    const addFile = (filePath) => {
-      console.log("filePath | [adventureId].ts l19", filePath)
-      const stats = fs.statSync(filePath);
-      console.log("stats | [adventureId].ts l24", stats)
-
-      if (stats.isFile()) {
-        const data = fs.readFileSync(filePath);
-        const relativePath = path.relative('./public/exportTemp', filePath);
-        console.log("relativePath | [adventureId].ts l26", relativePath)
-
-        folder.file(relativePath, data);
-      } else if (stats.isDirectory()) {
-        const relativePath = path.relative('./public/exportTemp', filePath);
-        console.log("relativePath | [adventureId].ts l31", relativePath)
-
-        const subFolder = folder.folder(relativePath);
-        const subFiles = fs.readdirSync(filePath);
-        console.log("subFiles | [adventureId].ts l39", subFiles)
-
-        for (const file of subFiles) {
-          addFile(path.join(filePath, file));
-        }
-      }
-    };
-    addFile('./public/exportTemp');
-
-    const af = async () => {
-      const buffer = await folder.generateAsync({ type: 'nodebuffer' });
-      fs.writeFileSync('./public/exportTemplate.zip', buffer);
-      console.log('./public/exportTemplate.zip has been saved!');
-    }
-    af()
-  });
 });
 
-// TODO: remove the unused chunks/*.js to make the export template smaller
+// find the name of script file that is used as a chunk by app/adventure/[adventureId]
+const data3 = fs.readFileSync(indexHtmlPath, 'utf8');
+
+const regex3 = /(\w*-\w*)\\",\\"\w*:app\/adventure\/\[adventureId\]/;
+const match3 = regex3.exec(data3);
+const pageScriptName = match3[1];
+
+// find the other scripts that are still used (they are inside script-s elements)
+// so that we can remove the unused chunks/*.js to make the export template smaller
 // read `public\exportTemp\index.html` to find all js files that are used inside it. Then remove all js files inside `public\exportTemp\_next\static\chunks` that are not used.
 
-// this last part was deactivated because it's hard to detect the usage of some .js files
-// like in \"chunks\":[\"862:862-76ac2828155d9e46\",\"488:app/adventure/[adventureId]/page-774bb1b7c45f98e0\"],
+const jsFolderPath = './public/exportTemp/_next/static/chunks';
 
+const jsFilesUsed = [`${pageScriptName}.js`];
 
+const data2 = fs.readFileSync(indexHtmlPath, 'utf8');
 
-// const jsFolderPath = './public/exportTemp/_next/static/chunks';
+const regex2 = /<script.*?src="(.*?)".*?><\/script>/g;
+let match2;
 
-// const jsFilesUsed = [];
+while ((match2 = regex2.exec(data2)) !== null) {
+  const jsFilePath = match2[1];
 
-// fs.readFile(indexHtmlPath, 'utf8', (err, data) => {
-//   if (err) {
-//     console.error(err);
-//     return;
-//   }
+  if (jsFilePath.endsWith('.js')) {
+    jsFilesUsed.push(jsFilePath.split('/').pop());
+  }
+}
 
-//   const regex = /<script.*?src="(.*?)".*?><\/script>/g;
-//   let match;
+const files2 = fs.readdirSync(jsFolderPath);
 
-//   while ((match = regex.exec(data)) !== null) {
-//     const jsFilePath = match[1];
+files2.forEach((file) => {
+  const jsFilePath = path.join(jsFolderPath, file);
 
-//     if (jsFilePath.endsWith('.js')) {
-//       jsFilesUsed.push(jsFilePath.split('/').pop());
-//     }
-//   }
+  if (file.endsWith('.js') && !jsFilesUsed.includes(file)) {
+    fs.unlinkSync(jsFilePath);
+  }
+});
 
-//   fs.readdir(jsFolderPath, (err, files) => {
-//     if (err) {
-//       console.error(err);
-//       return;
-//     }
+// zip "public/exportTemp" into "public/exportTemplate.zip"
+// save in a zip because Vercel hides subdirectory of public/
 
-//     files.forEach((file) => {
-//       const jsFilePath = path.join(jsFolderPath, file);
+const zip = new JSZip();
+const folder = zip.folder('exportTemplate');
 
-//       if (file.endsWith('.js') && !jsFilesUsed.includes(file)) {
-//         fs.unlinkSync(jsFilePath);
-//       }
-//     });
-//   });
-// });
+// put all files from public/exportTemplate inside it (except index.html, because we will change it)
+const addFile = (filePath) => {
+  const stats = fs.statSync(filePath);
 
+  if (stats.isFile()) {
+    const data = fs.readFileSync(filePath);
+    const relativePath = path.relative('./public/exportTemp', filePath);
+
+    folder.file(relativePath, data);
+  } else if (stats.isDirectory()) {
+    const relativePath = path.relative('./public/exportTemp', filePath);
+
+    const subFolder = folder.folder(relativePath);
+    const subFiles = fs.readdirSync(filePath);
+
+    for (const file of subFiles) {
+      addFile(path.join(filePath, file));
+    }
+  }
+};
+addFile('./public/exportTemp');
+
+const af = async () => {
+  const buffer = await folder.generateAsync({ type: 'nodebuffer' });
+  fs.writeFileSync('./public/exportTemplate.zip', buffer);
+  console.log('./public/exportTemplate.zip has been saved!');
+}
+af()
