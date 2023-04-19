@@ -194,7 +194,7 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     if (gridHistory.length > 1) {
       gridHistory.pop()
       const oldGridToUse = gridHistory[gridHistory.length - 1]!
-      get().set(oldGridToUse)
+      get().set(JSON.parse(JSON.stringify(oldGridToUse)))
     }
   },
   getCell({
@@ -419,7 +419,7 @@ export default store;
 // easier debugging from the browser
 if (typeof window !== 'undefined') {
   // @ts-ignore
-  window._h = gridHistory
+  window._h = () => gridHistory
   // @ts-ignore
   window._s = store
   // @ts-ignore
