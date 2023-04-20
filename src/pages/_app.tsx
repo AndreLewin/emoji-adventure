@@ -9,6 +9,7 @@ import { trpc } from "../utils/trpc";
 import "../styles/globals.css";
 import { useEffect, useState } from "react";
 import store, { pushToGridHistory } from "../store";
+import { NotificationsProvider } from "@mantine/notifications";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -39,8 +40,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
               colorScheme: 'light',
             }}
           >
-
-            <Component {...pageProps} />
+            <NotificationsProvider>
+              <Component {...pageProps} />
+            </NotificationsProvider>
           </MantineProvider>
         </SessionProvider>
       }
