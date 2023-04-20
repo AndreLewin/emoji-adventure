@@ -7,7 +7,7 @@ import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
 import store from '../store';
 import { Button, Tabs } from '@mantine/core';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { evalScript } from '../utils/evalScript';
 
 const Scripts: React.FC<{}> = ({ }) => {
@@ -28,6 +28,9 @@ const Scripts: React.FC<{}> = ({ }) => {
         >
           <Tabs.List>
             <Tabs.Tab
+              style={{
+                "background": ((onInitAScript ?? "") !== "") ? "linear-gradient(to bottom left, #ffffff75, #32328775)" : "",
+              }}
               value="onInitAScript"
             >
               On Init
@@ -36,7 +39,7 @@ const Scripts: React.FC<{}> = ({ }) => {
         </Tabs>
         <Editor
           value={onInitAScript ?? ""}
-          placeholder="Script to execute when the adventure is loaded (good place for map subscribers and global functions)"
+          placeholder="Script to execute when the adventure is loaded (good place for adventure subscribers and global functions)"
           onValueChange={script => set({ onInitAScript: script })}
           highlight={script => highlight(script, languages.js)}
           padding={10}

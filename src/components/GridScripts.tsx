@@ -35,6 +35,13 @@ const GridScripts: React.FC<{}> = ({ }) => {
     })
   }, [activeGScriptTab, updateGrid, activeGridId])
 
+  const hasViewScript = useMemo<boolean>(() => {
+    return (grid?.onViewGScript ?? "") !== ""
+  }, [grid])
+  const hasInitScript = useMemo<boolean>(() => {
+    return (grid?.onInitGScript ?? "") !== ""
+  }, [grid])
+
   return (
     <>
       <div className='container'>
@@ -44,11 +51,19 @@ const GridScripts: React.FC<{}> = ({ }) => {
         >
           <Tabs.List>
             <Tabs.Tab
+              style={{
+                "background": hasViewScript ? "linear-gradient(to bottom, #42892975, #b3a05875)" : "",
+                "opacity": (activeGScriptTab === "onViewGScript") ? 1 : 0.7
+              }}
               value="onViewGScript"
             >
               On View
             </Tabs.Tab>
             <Tabs.Tab
+              style={{
+                "background": hasInitScript ? "linear-gradient(to bottom left, #ffffff75, #32328775)" : "",
+                "opacity": (activeGScriptTab === "onInitGScript") ? 1 : 0.7
+              }}
               value="onInitGScript"
             >
               On Init
@@ -60,7 +75,7 @@ const GridScripts: React.FC<{}> = ({ }) => {
           placeholder={
             activeGScriptTab === "onViewGScript" ?
               "Script to execute when the grid comes into view" :
-              "Script to execute when the adventure is loaded (shorthands use grid context) (good place for map subscribers)"
+              "Script to execute when the adventure is loaded (shorthands use grid context) (good place for grid subscribers)"
           }
           onValueChange={script => setScript(script)}
           highlight={script => highlight(script, languages.js)}

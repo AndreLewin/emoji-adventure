@@ -35,6 +35,16 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
     })
   }, [activeCScriptTab, updateCell, gridId, cellIndex])
 
+  const hasClickScript = useMemo<boolean>(() => {
+    return (cell?.onClickCScript ?? "") !== ""
+  }, [cell])
+  const hasViewScript = useMemo<boolean>(() => {
+    return (cell?.onViewCScript ?? "") !== ""
+  }, [cell])
+  const hasInitScript = useMemo<boolean>(() => {
+    return (cell?.onInitCScript ?? "") !== ""
+  }, [cell])
+
   return (
     <Drawer
       opened={isDrawerOpened}
@@ -53,19 +63,28 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
         >
           <Tabs.List>
             <Tabs.Tab
-              style={{ "background": "linear-gradient(to right, #d53a9d75, #3593f775)" }}
+              style={{
+                "background": hasClickScript ? "linear-gradient(to right, #d53a9d75, #3593f775)" : "",
+                "opacity": (activeCScriptTab === "onClickCScript") ? 1 : 0.7
+              }}
               value="onClickCScript"
             >
               On Click
             </Tabs.Tab>
             <Tabs.Tab
-              style={{ "background": "linear-gradient(to bottom, #42892975, #b3a05875)" }}
+              style={{
+                "background": hasViewScript ? "linear-gradient(to bottom, #42892975, #b3a05875)" : "",
+                "opacity": (activeCScriptTab === "onViewCScript") ? 1 : 0.7
+              }}
               value="onViewCScript"
             >
               On View
             </Tabs.Tab>
             <Tabs.Tab
-              style={{ "background": "linear-gradient(to bottom left, #ffffff75, #32328775)" }}
+              style={{
+                "background": hasInitScript ? "linear-gradient(to bottom left, #ffffff75, #32328775)" : "",
+                "opacity": (activeCScriptTab === "onInitCScript") ? 1 : 0.7
+              }}
               value="onInitCScript"
             >
               On Init
@@ -80,7 +99,7 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
               "Script to execute when the cell is clicked" :
               activeCScriptTab === "onViewCScript" ?
                 "Script to execute when the grid containing the cell comes into view" :
-                "Script to execute when the adventure is loaded (shorthands use cell context) (good place for map subscribers)"
+                "Script to execute when the adventure is loaded (shorthands use cell context) (good place for cell subscribers)"
           }
           onValueChange={script => setScript(script)}
           highlight={script => highlight(script, languages.js)}
