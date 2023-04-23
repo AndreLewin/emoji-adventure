@@ -1,7 +1,7 @@
 import { Adventure } from '.prisma/client'
 import create, { GetState, SetState } from 'zustand'
 import { getIndexesToFloodFill, twoIndexesIntoIndexesOfSquare } from '../utils/math'
-import { variableProxy, subscriberProxy, Config, configProxy, updateProxy } from './proxy'
+import { variableProxy, subscriberProxy, Config, configProxy, updateProxy, dataProxy } from './proxy'
 
 export type Cell = {
   color?: string
@@ -345,6 +345,16 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       set({ lastEmojis })
     }
   },
+  getGrid: ({
+    gridId
+  }: {
+    gridId: number
+  }) => {
+    const { grids } = get()
+    const grid = grids.find(g => g.id === gridId)
+    if (typeof grid === "undefined") return null
+    return grid
+  },
   updateGrid: ({
     gridId,
     gridUpdate
@@ -436,7 +446,10 @@ if (typeof window !== 'undefined') {
   // for assigning new config for variable easily
   // @ts-ignore
   window._configProxy = configProxy
-  // for changing the content of a cell easily
+  // for changing the content of the current cell easily
   // @ts-ignore
   window._updateProxy = updateProxy
+  // for changing data (of cell, grid or adventure)
+  // @ts-ignore
+  window._dataProxy = dataProxy
 }

@@ -4,9 +4,37 @@ export const getRegexes = (
   // if present, cell context
   cellIndex?: number | string
 ): ([string | RegExp, string, string?, string?])[] => {
-  // I tried to use $ instead of !, but the $ triggers the undo feature of 'react-simple-code-editor' (on BÉPO keyboard)
-  // so... avoid using _ in your normal variables :shrug:
   return [
+    [
+      /\^\$\[(.*?)\]/g,
+      `window._dataProxy[\`_${gridId ?? "???"}_${cellIndex ?? "???"}\`+$1]`,
+      "Local cell data"
+    ],
+    [
+      "^$",
+      `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}`,
+      "Local cell data"
+    ],
+    [
+      /@\$\[(.*?)\]/g,
+      `window._dataProxy[\`_${gridId ?? "???"}_\`+$1]`,
+      "Local grid data"
+    ],
+    [
+      "@$",
+      `window._dataProxy._${gridId ?? "???"}_`,
+      "Local grid data"
+    ],
+    [
+      /\#\$\[(.*?)\]/g,
+      `window._dataProxy[\`_\`+$1]`,
+      "Adventure data"
+    ],
+    [
+      "#$",
+      `window._dataProxy._`,
+      "Adventure data"
+    ],
     [
       "$#.",
       `window._subscriberProxy.`,
