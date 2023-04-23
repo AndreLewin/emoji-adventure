@@ -91,54 +91,34 @@ export const getRegexes = (
       "Get cellId (in a Cell)"
     ],
     [
-      "^cs",
-      `window._updateProxy.onClickCScript_${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
-      "Update click script of the cell"
-    ],
-    [
-      "^vs",
-      `window._updateProxy.onViewCScript_${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
-      "Update view script of the cell"
-    ],
-    [
-      "^c",
-      `window._updateProxy.color_${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
-      "Update color of the cell"
-    ],
-    [
-      "^e",
-      `window._updateProxy.emoji_${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
-      "Update emoji/character of the cell"
-    ],
-    [
       "^dcs",
-      `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { onClickCScript: "" }})`,
+      `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}cs = ""`,
       "Delete click script of the cell (no () needed)"
     ],
     [
       "^dvs",
-      `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { onViewCScript: "" }})`,
+      `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}vs = ""`,
       "Delete view script of the cell"
     ],
     [
       "^dc",
-      `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { color: "" }})`,
+      `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}c = ""`,
       "Delete color of the cell"
     ],
     [
       "^de",
-      `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { emoji: "" }})`,
+      `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}e = ""`,
       "Delete emoji of the cell"
     ],
     [
       "^dd",
-      `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { emoji: "", color: "", onClickCScript: "", onViewScript: "" }})`,
-      "Delete emoji, click script and view script of the cell (equivalent to ^e = '', ^c = '', ^cs = '' and ^vs = '')"
+      `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}e = ""; window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}c = ""; window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}cs = ""; window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}vs = "";`,
+      "Delete emoji, click script and view script of the cell (equivalent to ^$e = '', ^$c = '', ^$cs = '' and ^$vs = '')"
     ],
     [
       "^d",
-      `window._ss().updateCell({ gridId: ${gridId ?? "0"}, cellIndex: ${cellIndex ?? "0"}, cellUpdate: { emoji: "", onClickCScript: "", onViewScript: "" }})`,
-      "Delete emoji, click script and view script of the cell (equivalent to ^e = '', ^cs = '' and ^vs = '')"
+      `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}e = ""; window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}cs = ""; window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}vs = "";`,
+      "Delete emoji, click script and view script of the cell (equivalent to ^$e = '', ^$cs = '' and ^$vs = '')"
     ],
     [
       /\#tt\((.*?)\)/g,
