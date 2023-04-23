@@ -170,11 +170,11 @@ const handler5 = {
       const cell = window._s.getState().getCell({ gridId, cellIndex }) as Cell
       const { color: c, emoji: e, onClickCScript: cs, onInitCScript: is, onViewCScript: vs } = cell
       const cellWithShortNames: { [key: string]: any } = {
-        c: c ?? "",
-        e: e ?? "",
-        cs: cs ?? "",
-        is: is ?? "",
-        vs: vs ?? "",
+        c,
+        e,
+        cs,
+        is,
+        vs,
         ...cell
       }
       return property === "" ? cellWithShortNames : cellWithShortNames[property]
@@ -184,8 +184,8 @@ const handler5 = {
       const grid = window._s.getState().getGrid({ gridId }) as Grid
       const { onViewGScript: vs, onInitGScript: is } = grid
       const gridWithShortNames: { [key: string]: any } = {
-        is: is ?? "",
-        vs: vs ?? "",
+        is,
+        vs,
         ...grid
       }
       return property === "" ? gridWithShortNames : gridWithShortNames[property]
@@ -195,7 +195,7 @@ const handler5 = {
       const adventure = window._s.getState()
       const { onInitAScript: is } = adventure
       const gridWithShortNames: { [key: string]: any } = {
-        is: is ?? "",
+        is,
         grids: adventure.grids,
         ...adventure
       }
