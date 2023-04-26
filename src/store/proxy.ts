@@ -183,7 +183,7 @@ const getIndexesFromString = (string: string): number[] => {
   const indexes: number[] = []
 
   const numberAtBeginRegex = /^\d+/
-  const firstLetterAtBeginRegex = /^[ATX]/
+  const firstLetterAtBeginRegex = /^[atx]/
 
   let checkOnNumberNotLetter = true
 
@@ -197,14 +197,14 @@ const getIndexesFromString = (string: string): number[] => {
     if (checkOnNumberNotLetter) {
       const newNumber = parseInt(match)
       if (tempNumber !== null) {
-        if (tempLetter === "A") {
+        if (tempLetter === "a") {
           indexes.push(tempNumber)
           indexes.push(newNumber)
-        } else if (tempLetter === "T") {
+        } else if (tempLetter === "t") {
           for (let i = tempNumber; i <= newNumber; i++) {
             indexes.push(i)
           }
-        } else if (tempLetter === "X") {
+        } else if (tempLetter === "x") {
           const squareIndexes = twoIndexesIntoIndexesOfSquare(tempNumber, newNumber, 10, 10)
           squareIndexes.forEach(v => indexes.push(v))
         }
@@ -249,16 +249,15 @@ grid
 const proxyTarget5 = {};
 const handler5 = {
   get(_target: any, variable: string) {
-    // TODO: instead of forcing a small letter for the first letter of the property,
-    // do a look ahead "not ending with [ATX]" for the first and second group
-    const regex = /(?:\_([\dATX]*))?(?:\_([\dATX]*))?([a-z][a-zA-Z]*)/
+    // const regex = /(?:\_([\datx]*))?(?:\_([\datx]*))?([a-zA-Z_$]*)/
+    const regex = /(?:\_((?:(?![atx]$)[\datx])*))?(?:\_((?:(?![atx]$)[\datx])*))?([a-zA-Z_$]*)/
     const match = regex.exec(variable)
 
     let cellIndex: number | null = null
     let cellIndexes: number[] = []
 
     const cellIndexString = match?.[2] ?? ""
-    const hasCellIdStringALetter = /[ATX]/.test(cellIndexString)
+    const hasCellIdStringALetter = /[atx]/.test(cellIndexString)
     if (hasCellIdStringALetter) {
       cellIndexes = getIndexesFromString(cellIndexString)
     } else {
@@ -269,7 +268,7 @@ const handler5 = {
     let gridIds: number[] = []
 
     const gridIdString = match?.[1] ?? ""
-    const hasGridIdStringALetter = /[ATX]/.test(gridIdString)
+    const hasGridIdStringALetter = /[atx]/.test(gridIdString)
     if (hasGridIdStringALetter) {
       gridIds = getIndexesFromString(gridIdString)
     } else {
@@ -413,17 +412,14 @@ const handler5 = {
     throw "Unexpected way of using #$, @$ or ^$. Please check the documentation."
   },
   set(_target: any, variable: string, value: any) {
-    // TODO: instead of forcing a small letter for the first letter of the property,
-    // do a look ahead "not ending with [ATX]" for the first and second group
-    // also, put ATX back to small characters atx (better for code readability)
-    const regex = /(?:\_([\dATX]*))?(?:\_([\dATX]*))?([a-z][a-zA-Z]*)/
+    const regex = /(?:\_((?:(?![atx]$)[\datx])*))?(?:\_((?:(?![atx]$)[\datx])*))?([a-zA-Z_$]*)/
     const match = regex.exec(variable)
 
     let cellIndex: number | null = null
     let cellIndexes: number[] = []
 
     const cellIndexString = match?.[2] ?? ""
-    const hasCellIdStringALetter = /[ATX]/.test(cellIndexString)
+    const hasCellIdStringALetter = /[atx]/.test(cellIndexString)
     if (hasCellIdStringALetter) {
       cellIndexes = getIndexesFromString(cellIndexString)
     } else {
@@ -434,7 +430,7 @@ const handler5 = {
     let gridIds: number[] = []
 
     const gridIdString = match?.[1] ?? ""
-    const hasGridIdStringALetter = /[ATX]/.test(gridIdString)
+    const hasGridIdStringALetter = /[atx]/.test(gridIdString)
     if (hasGridIdStringALetter) {
       gridIds = getIndexesFromString(gridIdString)
     } else {
