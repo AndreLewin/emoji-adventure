@@ -1,6 +1,7 @@
 // import { getRegexes } from "../utils/evalScript";
 
-import { Cell } from ".";
+import { Cell, Grid } from ".";
+import { twoIndexesIntoIndexesOfSquare } from "../utils/math";
 
 const proxyTarget = {};
 const handler = {
@@ -130,7 +131,7 @@ export const configProxy = new Proxy(proxyTarget3, handler3);
 // TODO: handle map update with this syntax: $12
 // TODO: handle adventure update with thi syntax: $ 
 
-const convertCellPropertyName = (n: string): string => {
+const shorthenCellPropertyName = (n: string): string => {
   if (n === "c") return "color"
   if (n === "e") return "emoji"
   if (n === "cs") return "onClickCScript"
@@ -139,58 +140,157 @@ const convertCellPropertyName = (n: string): string => {
   return n
 }
 
-const convertGridPropertyName = (n: string): string => {
+const lengthenCellPropertyName = (n: string): string => {
+  if (n === "color") return "c"
+  if (n === "emoji") return "e"
+  if (n === "onClickCScript") return "cs"
+  if (n === "onInitCScript") return "is"
+  if (n === "onViewCScript") return "vs"
+  return n
+}
+
+const shorthenGridPropertyName = (n: string): string => {
   if (n === "vs") return "onViewGScript"
   if (n === "is") return "onInitGScript"
   return n
 }
 
-const convertAdventurePropertyName = (n: string): string => {
+const lengthenGridPropertyName = (n: string): string => {
+  if (n === "onViewGScript") return "vs"
+  if (n === "onInitGScript") return "is"
+  return n
+}
+
+const shorthenAdventurePropertyName = (n: string): string => {
   if (n === "is") return "onInitAScript"
   return n
 }
 
+const lengthenAdventurePropertyName = (n: string): string => {
+  if (n === "onInitAScript") return "is"
+  return n
+}
+
+// 1t3 -> [1, 2, 3]
+// 2a9a12 -> [2, 9, 12]
+// 0x11 -> [0, 1, 10, 11]
+// 0x11a22 -> [0, 1, 10, 11, 22]
+// 0x11a88x99 -> [0, 1, 10, 11, 88, 89, 98, 99]
+const getIndexesFromString = (string: string): number[] => {
+  let tempNumber: number | null = null
+  let tempLetter = ""
+  let remainingString = string
+  const indexes: number[] = []
+
+  const numberAtBeginRegex = /^\d+/
+  const firstLetterAtBeginRegex = /^[ATX]/
+
+  let checkOnNumberNotLetter = true
+
+  while (remainingString.length > 0) {
+    const match = remainingString.match(checkOnNumberNotLetter ? numberAtBeginRegex : firstLetterAtBeginRegex)?.[0]
+
+    if (match === undefined) {
+      break;
+    }
+
+    if (checkOnNumberNotLetter) {
+      const newNumber = parseInt(match)
+      if (tempNumber !== null) {
+        if (tempLetter === "A") {
+          indexes.push(tempNumber)
+          indexes.push(newNumber)
+        } else if (tempLetter === "T") {
+          for (let i = tempNumber; i <= newNumber; i++) {
+            indexes.push(i)
+          }
+        } else if (tempLetter === "X") {
+          const squareIndexes = twoIndexesIntoIndexesOfSquare(tempNumber, newNumber, 10, 10)
+          squareIndexes.forEach(v => indexes.push(v))
+        }
+      }
+      tempNumber = newNumber
+    } else {
+      tempLetter = match
+    }
+
+    remainingString = remainingString.replace(match, "")
+    checkOnNumberNotLetter = !checkOnNumberNotLetter
+  }
+
+  return Array.from(new Set(indexes))
+}
+
+/*
+cells mode
+cell mode
+grids mode
+grid mode
+adventure mode
+
+gridId
+-> {{}}
+gridId + cellIndex
+-> {{}}
+gridId + cellIndexes
+-> {{}}
+gridIds
+-> [{{}}, {{}}]
+gridIds + cellIndex
+-> [{{}}, {{}}]
+gridIds + cellIndexes
+-> [{{}}, {{}}]
+
+grid
+
+
+*/
+
 const proxyTarget5 = {};
 const handler5 = {
   get(_target: any, variable: string) {
-    const regex = /(?:\_(\d*))?(?:\_(\d*))?([a-z]*)/
+    // TODO: instead of forcing a small letter for the first letter of the property,
+    // do a look ahead "not ending with [ATX]" for the first and second group
+    const regex = /(?:\_([\dATX]*))?(?:\_([\dATX]*))?([a-z][a-zA-Z]*)/
     const match = regex.exec(variable)
-    const gridId = parseInt(match?.[1] ?? "")
-    const cellIndex = parseInt(match?.[2] ?? "")
+
+    let cellIndex: number | null = null
+    let cellIndexes: number[] = []
+
+    const cellIndexString = match?.[2] ?? ""
+    const hasCellIdStringALetter = /[ATX]/.test(cellIndexString)
+    if (hasCellIdStringALetter) {
+      cellIndexes = getIndexesFromString(cellIndexString)
+    } else {
+      cellIndex = parseInt(match?.[2] ?? "")
+    }
+
+    let gridId: number | null = null
+    let gridIds: number[] = []
+
+    const gridIdString = match?.[1] ?? ""
+    const hasGridIdStringALetter = /[ATX]/.test(gridIdString)
+    if (hasGridIdStringALetter) {
+      gridIds = getIndexesFromString(gridIdString)
+    } else {
+      gridId = parseInt(match?.[1] ?? "")
+    }
+
     const property = match?.[3] ?? ""
 
-    console.log("gridId | proxy.ts l173", gridId)
-    console.log("cellIndex | proxy.ts l174", cellIndex)
-    console.log("property | proxy.ts l175", property)
+    console.log("cellIndex | proxy.ts l241", cellIndex)
+    console.log("cellIndexes | proxy.ts l242", cellIndexes)
+    console.log("gridId | proxy.ts l243", gridId)
+    console.log("gridIds | proxy.ts l244", gridIds)
+    console.log("property | proxy.ts l247", property)
 
+    const hasCellIndexes = cellIndexes.length > 0
+    const hasCellIndex = cellIndex !== null && !Number.isNaN(cellIndex)
+    const hasGridIds = gridIds.length > 0
+    const hasGridId = gridId !== null && !Number.isNaN(gridId)
 
-    if (!Number.isNaN(cellIndex) && !Number.isNaN(gridId)) {
-      // cell mode
-      // @ts-ignore
-      const cell = window._s.getState().getCell({ gridId, cellIndex }) as Cell
-      const { color: c, emoji: e, onClickCScript: cs, onInitCScript: is, onViewCScript: vs } = cell
-      const cellWithShortNames: { [key: string]: any } = {
-        c,
-        e,
-        cs,
-        is,
-        vs,
-        ...cell
-      }
-      return property === "" ? cellWithShortNames : cellWithShortNames[property]
-    } else if (!Number.isNaN(gridId)) {
-      // grid mode
-      // @ts-ignore
-      const grid = window._s.getState().getGrid({ gridId }) as Grid
-      const { onViewGScript: vs, onInitGScript: is } = grid
-      const gridWithShortNames: { [key: string]: any } = {
-        is,
-        vs,
-        ...grid
-      }
-      return property === "" ? gridWithShortNames : gridWithShortNames[property]
-    } else {
-      // adventure mode
+    if (!hasGridId && !hasGridIds) {
+      // return only adventure data
       // @ts-ignore
       const adventure = window._s.getState()
       const { onInitAScript: is } = adventure
@@ -201,20 +301,192 @@ const handler5 = {
       }
       return property === "" ? gridWithShortNames : gridWithShortNames[property]
     }
+
+    if (hasGridId) {
+      if (!hasCellIndex && !hasCellIndexes) {
+        // return only grid data
+        // @ts-ignore
+        const grid = window._s.getState().getGrid({ gridId }) as Grid
+        // TODO: refactor to add function "addShortGridPropertyNames"
+        const { onViewGScript: vs, onInitGScript: is } = grid
+        const gridWithShortNames: { [key: string]: any } = {
+          is,
+          vs,
+          ...grid
+        }
+        return property === "" ? gridWithShortNames : gridWithShortNames[property]
+      }
+
+      if (hasCellIndex) {
+        // return only cell data
+        // @ts-ignore
+        const cell = window._s.getState().getCell({ gridId, cellIndex }) as Cell
+        // TODO: refactor to add function "addShortCellPropertyNames"
+        const { color: c, emoji: e, onClickCScript: cs, onInitCScript: is, onViewCScript: vs } = cell
+        const cellWithShortNames: { [key: string]: any } = {
+          c,
+          e,
+          cs,
+          is,
+          vs,
+          ...cell
+        }
+        return property === "" ? cellWithShortNames : cellWithShortNames[property]
+      }
+
+      if (hasCellIndexes) {
+        // return data of the selected cells in the selected grid
+        return cellIndexes.map(cellIndex => {
+          // @ts-ignore
+          const cell = window._s.getState().getCell({ gridId, cellIndex }) as Cell
+          const { color: c, emoji: e, onClickCScript: cs, onInitCScript: is, onViewCScript: vs } = cell
+          const cellWithShortNames: { [key: string]: any } = {
+            c,
+            e,
+            cs,
+            is,
+            vs,
+            ...cell
+          }
+          return property === "" ? cellWithShortNames : cellWithShortNames[property]
+        })
+      }
+    }
+
+    if (hasGridIds) {
+      if (!hasCellIndex && !hasCellIndexes) {
+        // return only grids data
+        return gridIds.map(gridId => {
+          // @ts-ignore
+          const grid = window._s.getState().getGrid({ gridId }) as Grid
+          const { onViewGScript: vs, onInitGScript: is } = grid
+          const gridWithShortNames: { [key: string]: any } = {
+            is,
+            vs,
+            ...grid
+          }
+          return property === "" ? gridWithShortNames : gridWithShortNames[property]
+        })
+      }
+
+      if (hasCellIndex) {
+        // return an array of cell data (one element per grid)
+        return gridIds.map(gridId => {
+          // @ts-ignore
+          const cell = window._s.getState().getCell({ gridId, cellIndex }) as Cell
+          // TODO: refactor to add function "addShortCellPropertyNames"
+          const { color: c, emoji: e, onClickCScript: cs, onInitCScript: is, onViewCScript: vs } = cell
+          const cellWithShortNames: { [key: string]: any } = {
+            c,
+            e,
+            cs,
+            is,
+            vs,
+            ...cell
+          }
+          return property === "" ? cellWithShortNames : cellWithShortNames[property]
+        })
+      }
+
+      if (hasCellIndexes) {
+        // return an array of cells data (basically an array of array)
+        // the parent array is for each grid
+        // the child array is for each cell
+        return gridIds.map(gridId => {
+          return cellIndexes.map(cellIndex => {
+            // @ts-ignore
+            const cell = window._s.getState().getCell({ gridId, cellIndex }) as Cell
+            const { color: c, emoji: e, onClickCScript: cs, onInitCScript: is, onViewCScript: vs } = cell
+            const cellWithShortNames: { [key: string]: any } = {
+              c,
+              e,
+              cs,
+              is,
+              vs,
+              ...cell
+            }
+            return property === "" ? cellWithShortNames : cellWithShortNames[property]
+          })
+        })
+      }
+    }
+    throw "Unexpected way of using #$, @$ or ^$. Please check the documentation."
   },
   set(_target: any, variable: string, value: any) {
-    const regex = /(?:\_(\d*))?(?:\_(\d*))?([a-z]*)/
+    // TODO: instead of forcing a small letter for the first letter of the property,
+    // do a look ahead "not ending with [ATX]" for the first and second group
+    // also, put ATX back to small characters atx (better for code readability)
+    const regex = /(?:\_([\dATX]*))?(?:\_([\dATX]*))?([a-z][a-zA-Z]*)/
     const match = regex.exec(variable)
-    const gridId = parseInt(match?.[1] ?? "")
-    const cellIndex = parseInt(match?.[2] ?? "")
+
+    let cellIndex: number | null = null
+    let cellIndexes: number[] = []
+
+    const cellIndexString = match?.[2] ?? ""
+    const hasCellIdStringALetter = /[ATX]/.test(cellIndexString)
+    if (hasCellIdStringALetter) {
+      cellIndexes = getIndexesFromString(cellIndexString)
+    } else {
+      cellIndex = parseInt(match?.[2] ?? "")
+    }
+
+    let gridId: number | null = null
+    let gridIds: number[] = []
+
+    const gridIdString = match?.[1] ?? ""
+    const hasGridIdStringALetter = /[ATX]/.test(gridIdString)
+    if (hasGridIdStringALetter) {
+      gridIds = getIndexesFromString(gridIdString)
+    } else {
+      gridId = parseInt(match?.[1] ?? "")
+    }
+
     const property = match?.[3] ?? ""
 
-    console.log("gridId | proxy.ts l173", gridId)
-    console.log("cellIndex | proxy.ts l174", cellIndex)
-    console.log("property | proxy.ts l175", property)
+    console.log("cellIndex | proxy.ts l241", cellIndex)
+    console.log("cellIndexes | proxy.ts l242", cellIndexes)
+    console.log("gridId | proxy.ts l243", gridId)
+    console.log("gridIds | proxy.ts l244", gridIds)
+    console.log("property | proxy.ts l247", property)
 
-    if (!Number.isNaN(cellIndex) && !Number.isNaN(gridId)) {
-      // cell mode
+    const hasCellIndexes = cellIndexes.length > 0
+    const hasCellIndex = cellIndex !== null && !Number.isNaN(cellIndex)
+    const hasGridIds = gridIds.length > 0
+    const hasGridId = gridId !== null && !Number.isNaN(gridId)
+
+    const setAdventureData = () => {
+      let adventureUpdate: { [key: string]: any } = {}
+      if (property === "") {
+        const { is: onInitAScript, ...rest } = value
+        adventureUpdate = {
+          onInitAScript,
+          ...rest
+        }
+      } else {
+        adventureUpdate[shorthenAdventurePropertyName(property)] = value
+      }
+      // @ts-ignore
+      window._s.setState(adventureUpdate)
+    }
+
+    const setGridData = (id: number) => {
+      let gridUpdate: { [key: string]: any } = {}
+
+      if (property === "") {
+        const { vs: onViewGScript, is: onInitGScript, ...rest } = value
+        gridUpdate = {
+          onViewGScript,
+          onInitGScript,
+          ...rest
+        }
+      } else {
+        gridUpdate[shorthenGridPropertyName(property)] = value
+      }
+      // @ts-ignore
+      window._s.getState().updateGrid({ id, gridUpdate })
+    }
+
+    const setCellData = (gridId: number, cellIndex: number) => {
       let cellUpdate: { [key: string]: any } = {}
 
       if (property === "") {
@@ -228,41 +500,25 @@ const handler5 = {
           ...rest
         }
       } else {
-        cellUpdate[convertCellPropertyName(property)] = value
+        cellUpdate[shorthenCellPropertyName(property)] = value
       }
       // @ts-ignore
       window._s.getState().updateCell({ gridId, cellIndex, cellUpdate })
-    } else if (!Number.isNaN(gridId)) {
-      // grid mode
-      let gridUpdate: { [key: string]: any } = {}
+    }
 
-      if (property === "") {
-        const { vs: onViewGScript, is: onInitGScript, ...rest } = value
-        gridUpdate = {
-          onViewGScript,
-          onInitGScript,
-          ...rest
-        }
-      } else {
-        gridUpdate[convertGridPropertyName(property)] = value
-      }
-      // @ts-ignore
-      window._s.getState().updateGrid({ gridId, gridUpdate })
-    } else {
-      // adventure mode
-      let adventureUpdate: { [key: string]: any } = {}
+    if (!hasGridId && !hasGridIds) setAdventureData()
+    if (hasGridId) {
+      if (!hasCellIndex && !hasCellIndexes) setGridData(gridId!)
+      if (hasCellIndex) setCellData(gridId!, cellIndex!)
+      if (hasCellIndexes) cellIndexes.forEach(cellIndex => setCellData(gridId!, cellIndex))
+    }
 
-      if (property === "") {
-        const { is: onInitAScript, ...rest } = value
-        adventureUpdate = {
-          onInitAScript,
-          ...rest
-        }
-      } else {
-        adventureUpdate[convertAdventurePropertyName(property)] = value
-      }
-      // @ts-ignore
-      window._s.setState(adventureUpdate)
+    if (hasGridIds) {
+      if (!hasCellIndex && !hasCellIndexes) gridIds!.forEach(setGridData)
+      if (hasCellIndex) gridIds.forEach(gridId => setCellData(gridId, cellIndex!))
+      if (hasCellIndexes) gridIds.forEach(gridId => {
+        cellIndexes.forEach(cellIndex => setCellData(gridId!, cellIndex))
+      })
     }
 
     return true
