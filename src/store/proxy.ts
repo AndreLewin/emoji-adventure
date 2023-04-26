@@ -221,30 +221,6 @@ const getIndexesFromString = (string: string): number[] => {
   return Array.from(new Set(indexes))
 }
 
-/*
-cells mode
-cell mode
-grids mode
-grid mode
-adventure mode
-
-gridId
--> {{}}
-gridId + cellIndex
--> {{}}
-gridId + cellIndexes
--> {{}}
-gridIds
--> [{{}}, {{}}]
-gridIds + cellIndex
--> [{{}}, {{}}]
-gridIds + cellIndexes
--> [{{}}, {{}}]
-
-grid
-
-
-*/
 
 const proxyTarget5 = {};
 const handler5 = {
@@ -277,6 +253,9 @@ const handler5 = {
 
     const property = match?.[3] ?? ""
 
+    // react thing that triggers the proxy for some reason
+    if (property === "$$typeof") return "react"
+
     console.log("cellIndex | proxy.ts l241", cellIndex)
     console.log("cellIndexes | proxy.ts l242", cellIndexes)
     console.log("gridId | proxy.ts l243", gridId)
@@ -288,7 +267,7 @@ const handler5 = {
     const hasGridIds = gridIds.length > 0
     const hasGridId = gridId !== null && !Number.isNaN(gridId)
 
-    if (!hasGridId && !hasGridIds) {
+    const getAdventureData = () => {
       // return only adventure data
       // @ts-ignore
       const adventure = window._s.getState()
@@ -301,114 +280,61 @@ const handler5 = {
       return property === "" ? gridWithShortNames : gridWithShortNames[property]
     }
 
+    const getGridData = (gridId: number) => {
+      console.log("gridId | proxy.ts l281", gridId)
+
+      // return only grid data
+      // @ts-ignore
+      const grid = window._s.getState().getGrid({ gridId }) as Grid
+      // TODO: refactor to add function "addShortGridPropertyNames"
+      const { onViewGScript: vs, onInitGScript: is } = grid
+      const gridWithShortNames: { [key: string]: any } = {
+        is,
+        vs,
+        ...grid
+      }
+      return property === "" ? gridWithShortNames : gridWithShortNames[property]
+    }
+
+    const getCellData = (gridId: number, cellIndex: number) => {
+      // return only cell data
+      // @ts-ignore
+      const cell = window._s.getState().getCell({ gridId, cellIndex }) as Cell
+      // TODO: refactor to add function "addShortCellPropertyNames"
+      const { color: c, emoji: e, onClickCScript: cs, onInitCScript: is, onViewCScript: vs } = cell
+      const cellWithShortNames: { [key: string]: any } = {
+        c,
+        e,
+        cs,
+        is,
+        vs,
+        ...cell
+      }
+      return property === "" ? cellWithShortNames : cellWithShortNames[property]
+    }
+
+    console.log("hasGridId | proxy.ts l313", hasGridId)
+    console.log("hasGridIds | proxy.ts l314", hasGridIds)
+    console.log("hasCellIndex | proxy.ts l315", hasCellIndex)
+    console.log("hasCellIndexes | proxy.ts l316", hasCellIndexes)
+
+
+    if (!hasGridId && !hasGridIds) return getAdventureData()
     if (hasGridId) {
-      if (!hasCellIndex && !hasCellIndexes) {
-        // return only grid data
-        // @ts-ignore
-        const grid = window._s.getState().getGrid({ gridId }) as Grid
-        // TODO: refactor to add function "addShortGridPropertyNames"
-        const { onViewGScript: vs, onInitGScript: is } = grid
-        const gridWithShortNames: { [key: string]: any } = {
-          is,
-          vs,
-          ...grid
-        }
-        return property === "" ? gridWithShortNames : gridWithShortNames[property]
-      }
-
-      if (hasCellIndex) {
-        // return only cell data
-        // @ts-ignore
-        const cell = window._s.getState().getCell({ gridId, cellIndex }) as Cell
-        // TODO: refactor to add function "addShortCellPropertyNames"
-        const { color: c, emoji: e, onClickCScript: cs, onInitCScript: is, onViewCScript: vs } = cell
-        const cellWithShortNames: { [key: string]: any } = {
-          c,
-          e,
-          cs,
-          is,
-          vs,
-          ...cell
-        }
-        return property === "" ? cellWithShortNames : cellWithShortNames[property]
-      }
-
-      if (hasCellIndexes) {
-        // return data of the selected cells in the selected grid
-        return cellIndexes.map(cellIndex => {
-          // @ts-ignore
-          const cell = window._s.getState().getCell({ gridId, cellIndex }) as Cell
-          const { color: c, emoji: e, onClickCScript: cs, onInitCScript: is, onViewCScript: vs } = cell
-          const cellWithShortNames: { [key: string]: any } = {
-            c,
-            e,
-            cs,
-            is,
-            vs,
-            ...cell
-          }
-          return property === "" ? cellWithShortNames : cellWithShortNames[property]
-        })
-      }
+      if (!hasCellIndex && !hasCellIndexes) return getGridData(gridId!)
+      if (hasCellIndex) return getCellData(gridId!, cellIndex!)
+      if (hasCellIndexes) return cellIndexes.map(cellIndex => getCellData(gridId!, cellIndex))
     }
-
     if (hasGridIds) {
-      if (!hasCellIndex && !hasCellIndexes) {
-        // return only grids data
-        return gridIds.map(gridId => {
-          // @ts-ignore
-          const grid = window._s.getState().getGrid({ gridId }) as Grid
-          const { onViewGScript: vs, onInitGScript: is } = grid
-          const gridWithShortNames: { [key: string]: any } = {
-            is,
-            vs,
-            ...grid
-          }
-          return property === "" ? gridWithShortNames : gridWithShortNames[property]
-        })
-      }
-
-      if (hasCellIndex) {
-        // return an array of cell data (one element per grid)
-        return gridIds.map(gridId => {
-          // @ts-ignore
-          const cell = window._s.getState().getCell({ gridId, cellIndex }) as Cell
-          // TODO: refactor to add function "addShortCellPropertyNames"
-          const { color: c, emoji: e, onClickCScript: cs, onInitCScript: is, onViewCScript: vs } = cell
-          const cellWithShortNames: { [key: string]: any } = {
-            c,
-            e,
-            cs,
-            is,
-            vs,
-            ...cell
-          }
-          return property === "" ? cellWithShortNames : cellWithShortNames[property]
-        })
-      }
-
+      if (!hasCellIndex && !hasCellIndexes) return gridIds!.map(getGridData)
+      if (hasCellIndex) return gridIds.map(gridId => getCellData(gridId, cellIndex!))
       if (hasCellIndexes) {
-        // return an array of cells data (basically an array of array)
-        // the parent array is for each grid
-        // the child array is for each cell
         return gridIds.map(gridId => {
-          return cellIndexes.map(cellIndex => {
-            // @ts-ignore
-            const cell = window._s.getState().getCell({ gridId, cellIndex }) as Cell
-            const { color: c, emoji: e, onClickCScript: cs, onInitCScript: is, onViewCScript: vs } = cell
-            const cellWithShortNames: { [key: string]: any } = {
-              c,
-              e,
-              cs,
-              is,
-              vs,
-              ...cell
-            }
-            return property === "" ? cellWithShortNames : cellWithShortNames[property]
-          })
+          return cellIndexes.map(cellIndex => getCellData(gridId!, cellIndex))
         })
       }
     }
+
     throw "Unexpected way of using #$, @$ or ^$. Please check the documentation."
   },
   set(_target: any, variable: string, value: any) {
@@ -508,7 +434,6 @@ const handler5 = {
       if (hasCellIndex) setCellData(gridId!, cellIndex!)
       if (hasCellIndexes) cellIndexes.forEach(cellIndex => setCellData(gridId!, cellIndex))
     }
-
     if (hasGridIds) {
       if (!hasCellIndex && !hasCellIndexes) gridIds!.forEach(setGridData)
       if (hasCellIndex) gridIds.forEach(gridId => setCellData(gridId, cellIndex!))
