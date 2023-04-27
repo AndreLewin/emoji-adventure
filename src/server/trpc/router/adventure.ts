@@ -32,7 +32,9 @@ export const adventureRouter = router({
       z.object({
         name: z.string().optional(),
         description: z.string().optional(),
-        emojiFavicon: z.string().optional()
+        emojiFavicon: z.string().optional(),
+        areTitlesHiddenByDefault: z.boolean().optional(),
+        areClickSquaresHiddenByDefault: z.boolean().optional()
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -84,7 +86,9 @@ export const adventureRouter = router({
           data: z.string().optional(),
           isAccessible: z.boolean().optional(),
           isPublished: z.boolean().optional(),
-          emojiFavicon: z.string().optional()
+          emojiFavicon: z.string().optional(),
+          areTitlesHiddenByDefault: z.boolean().optional(),
+          areClickSquaresHiddenByDefault: z.boolean().optional()
         })
       }),
     )

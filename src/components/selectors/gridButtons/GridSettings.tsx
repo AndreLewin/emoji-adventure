@@ -15,12 +15,10 @@ const GridSettings: React.FC<{}> = ({ }) => {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
-  const handleClickSquaresHiddeChange = useCallback<any>((value: boolean) => {
+  const handleChange = useCallback<any>((gridUpdate: Partial<Grid>) => {
     updateGrid({
       gridId: grid.id,
-      gridUpdate: {
-        areClickSquaresHidden: value
-      }
+      gridUpdate
     })
   }, [grid])
 
@@ -38,9 +36,14 @@ const GridSettings: React.FC<{}> = ({ }) => {
             onClose={() => setIsModalOpen(false)}
           >
             <Checkbox
+              label="Hide grid titles"
+              checked={grid.areTitlesHidden ?? false}
+              onChange={() => handleChange({ areTitlesHidden: !grid.areTitlesHidden })}
+            />
+            <Checkbox
               label="Hide borders around cells with click script"
               checked={grid.areClickSquaresHidden ?? false}
-              onChange={() => handleClickSquaresHiddeChange(!grid.areClickSquaresHidden)}
+              onChange={() => handleChange({ areClickSquaresHidden: !grid.areClickSquaresHidden })}
             />
           </Modal>
         )}

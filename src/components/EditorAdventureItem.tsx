@@ -32,14 +32,16 @@ const EditorAdventureItem: React.FC<{ adventure: AdventurePartial }> = ({ advent
   })
 
   const handleSaveAdventure = useCallback<any>(() => {
-    const { name, description, isAccessible, isPublished } = localAdventure
+    const { name, description, isAccessible, isPublished, areTitlesHiddenByDefault, areClickSquaresHiddenByDefault } = localAdventure
     updateMutation.mutate({
       id: adventure.id ?? "404",
       data: {
         name,
         description,
         isAccessible,
-        isPublished
+        isPublished,
+        areTitlesHiddenByDefault,
+        areClickSquaresHiddenByDefault
       }
     })
   }, [savedAdventure, localAdventure])
@@ -91,15 +93,25 @@ const EditorAdventureItem: React.FC<{ adventure: AdventurePartial }> = ({ advent
               onChange={(event) => setLocalAdventure({ ...localAdventure, description: event.target.value })}
               placeholder="Adventure description"
             />
-            <Checkbox
+            {/* <Checkbox
               label="Is accessible to everyone via link"
               checked={localAdventure.isAccessible}
               onChange={(event) => setLocalAdventure({ ...localAdventure, isAccessible: event.currentTarget.checked })}
-            />
-            <Checkbox
+            /> */}
+            {/* <Checkbox
               label="Is published on home page"
               checked={localAdventure.isPublished}
               onChange={(event) => setLocalAdventure({ ...localAdventure, isPublished: event.currentTarget.checked })}
+            /> */}
+            <Checkbox
+              label="Hide grid titles when playing by default"
+              checked={localAdventure.areTitlesHiddenByDefault}
+              onChange={(event) => setLocalAdventure({ ...localAdventure, areTitlesHiddenByDefault: !localAdventure.areTitlesHiddenByDefault })}
+            />
+            <Checkbox
+              label="Hide borders around cells with click script by default"
+              checked={localAdventure.areClickSquaresHiddenByDefault}
+              onChange={(event) => setLocalAdventure({ ...localAdventure, areClickSquaresHiddenByDefault: !localAdventure.areClickSquaresHiddenByDefault })}
             />
             <Button disabled={!isLocalAdventureChanged} onClick={handleSaveAdventure}>
               Save

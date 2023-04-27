@@ -13,9 +13,11 @@ const GridInfoViewer: React.FC<{}> = ({ }) => {
   return (
     <>
       <div className='container'>
-        <div className="grid-text">
-          {grid?.text ?? ""}
-        </div>
+        {!grid.areTitlesHidden &&
+          <div className="grid-text">
+            {grid?.text ?? ""}
+          </div>
+        }
       </div>
 
       <style jsx>

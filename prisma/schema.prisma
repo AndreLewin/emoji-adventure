@@ -15,17 +15,19 @@ datasource db {
 }
 
 model Adventure {
-  id           String   @id @default(cuid())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  name         String
-  description  String
-  data         String
+  id                             String   @id @default(cuid())
+  createdAt                      DateTime @default(now())
+  updatedAt                      DateTime @updatedAt
+  name                           String
+  description                    String
+  data                           String
   // other users can play the adventure using the link adventure/xxxx
-  isAccessible Boolean  @default(false)
-  isPublished  Boolean  @default(false)
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isAccessible                   Boolean  @default(false)
+  isPublished                    Boolean  @default(false)
+  areTitlesHiddenByDefault       Boolean  @default(false)
+  areClickSquaresHiddenByDefault Boolean  @default(false)
+  userId                         String
+  user                           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Grid {

@@ -20,6 +20,7 @@ export type Grid = {
   onInitGScript?: string
   backgroundImage?: string
   areClickSquaresHidden?: boolean
+  areTitlesHidden?: boolean
 }
 
 export const defaultCellFactory = (): Cell => { return {} }
@@ -40,7 +41,9 @@ export const defaultAdventureFactory = (): Omit<Adventure, "id" | "createdAt" | 
       onInitAScript: ""
     }),
     isAccessible: true,
-    isPublished: false
+    isPublished: false,
+    areTitlesHiddenByDefault: false,
+    areClickSquaresHiddenByDefault: false
   }
 }
 
@@ -379,7 +382,9 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     name?: string
     idOfGridToCopy?: number
   }) => {
-    const { grids } = get()
+    const { grids, adventure } = get()
+    const { areTitlesHiddenByDefault, areClickSquaresHiddenByDefault } = adventure ?? {}
+
     const nextGridId = Math.max(...grids.map(g => g.id)) + 1
 
     let gridToCopy = {}
@@ -402,6 +407,8 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
       ...defaultGridFactory(),
       ...(idOfGridToCopy !== undefined ? gridToCopy : {}),
       ...(name !== undefined ? { text: name } : {}),
+      ...(areTitlesHiddenByDefault ? { areTitlesHidden: true } : {}),
+      ...(areClickSquaresHiddenByDefault ? { areClickSquaresHidden: true } : {}),
       id: nextGridId
     }
 

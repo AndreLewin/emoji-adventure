@@ -1,4 +1,4 @@
-import { Button, Modal, TextInput } from "@mantine/core";
+import { Button, Checkbox, Modal, TextInput } from "@mantine/core";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -21,6 +21,8 @@ const Editor: NextPage = () => {
 
   const [name, setName] = useState<string>("")
   const [description, setDescription] = useState<string>("")
+  const [areTitlesHiddenByDefault, setAreTitlesHiddenByDefault] = useState<boolean>(false)
+  const [areClickSquaresHiddenByDefault, setAreClickSquaresHiddenByDefault] = useState<boolean>(false)
 
   useEffect(() => {
     setIsClientSide(true)
@@ -67,7 +69,20 @@ const Editor: NextPage = () => {
             onChange={(event) => setDescription(event.target.value)}
             placeholder="Description"
           />
-          <Button onClick={() => createAdventureMutation.mutate({ name, description })}>
+          <Checkbox
+            label="Hide grid titles when playing by default"
+            checked={areTitlesHiddenByDefault}
+            onChange={() => setAreTitlesHiddenByDefault(v => !v)}
+          />
+          <Checkbox
+            label="Hide borders around cells with click script by default"
+            checked={areClickSquaresHiddenByDefault}
+            onChange={() => setAreClickSquaresHiddenByDefault(v => !v)}
+          />
+          <Button onClick={() => createAdventureMutation.mutate({
+            name,
+            description
+          })}>
             Create Adventure
           </Button>
         </Modal>
