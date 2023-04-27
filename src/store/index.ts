@@ -449,4 +449,13 @@ if (typeof window !== 'undefined') {
   // for changing data (of cell, grid or adventure)
   // @ts-ignore
   window._dataProxy = dataProxy
+  // ask for confirmation when closing tab if there is an unsaved change
+  window.addEventListener('beforeunload', (e) => {
+    // @ts-ignore
+    const isChanged = window._ss().isChanged
+    if (isChanged) {
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  })
 }
