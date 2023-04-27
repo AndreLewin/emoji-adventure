@@ -128,9 +128,6 @@ export const configProxy = new Proxy(proxyTarget3, handler3);
 
 // data proxy
 
-// TODO: handle map update with this syntax: $12
-// TODO: handle adventure update with thi syntax: $ 
-
 const shorthenCellPropertyName = (n: string): string => {
   if (n === "c") return "color"
   if (n === "e") return "emoji"
@@ -176,10 +173,14 @@ const lengthenAdventurePropertyName = (n: string): string => {
 // 0x11 -> [0, 1, 10, 11]
 // 0x11a22 -> [0, 1, 10, 11, 22]
 // 0x11a88x99 -> [0, 1, 10, 11, 88, 89, 98, 99]
-const getIndexesFromString = (string: string): number[] => {
+// 0tt0 -> [0, 1, 2, ..., indexOfLastGrid]
+// 3tt0 -> [3, 4, 5, ..., indexOfLastGrid]
+const getIndexesFromString = (string: string, indexOfLastGrid: number): number[] => {
+  const newString = string.replace("tt0", `t${indexOfLastGrid}`)
+
   let tempNumber: number | null = null
   let tempLetter = ""
-  let remainingString = string
+  let remainingString = newString
   const indexes: number[] = []
 
   const numberAtBeginRegex = /^\d+/
@@ -232,10 +233,13 @@ const handler5 = {
     let cellIndex: number | null = null
     let cellIndexes: number[] = []
 
+    // @ts-ignore
+    const indexOfLastGrid = window._ss().grids.length - 1
+
     const cellIndexString = match?.[2] ?? ""
     const hasCellIdStringALetter = /[atx]/.test(cellIndexString)
     if (hasCellIdStringALetter) {
-      cellIndexes = getIndexesFromString(cellIndexString)
+      cellIndexes = getIndexesFromString(cellIndexString, indexOfLastGrid)
     } else {
       cellIndex = parseInt(match?.[2] ?? "")
     }
@@ -246,7 +250,7 @@ const handler5 = {
     const gridIdString = match?.[1] ?? ""
     const hasGridIdStringALetter = /[atx]/.test(gridIdString)
     if (hasGridIdStringALetter) {
-      gridIds = getIndexesFromString(gridIdString)
+      gridIds = getIndexesFromString(gridIdString, indexOfLastGrid)
     } else {
       gridId = parseInt(match?.[1] ?? "")
     }
@@ -286,7 +290,6 @@ const handler5 = {
       // return only grid data
       // @ts-ignore
       const grid = window._s.getState().getGrid({ gridId }) as Grid
-      // TODO: refactor to add function "addShortGridPropertyNames"
       const { onViewGScript: vs, onInitGScript: is } = grid
       const gridWithShortNames: { [key: string]: any } = {
         is,
@@ -300,7 +303,6 @@ const handler5 = {
       // return only cell data
       // @ts-ignore
       const cell = window._s.getState().getCell({ gridId, cellIndex }) as Cell
-      // TODO: refactor to add function "addShortCellPropertyNames"
       const { color: c, emoji: e, onClickCScript: cs, onInitCScript: is, onViewCScript: vs } = cell
       const cellWithShortNames: { [key: string]: any } = {
         c,
@@ -344,10 +346,13 @@ const handler5 = {
     let cellIndex: number | null = null
     let cellIndexes: number[] = []
 
+    // @ts-ignore
+    const indexOfLastGrid = window._ss().grids.length - 1
+
     const cellIndexString = match?.[2] ?? ""
     const hasCellIdStringALetter = /[atx]/.test(cellIndexString)
     if (hasCellIdStringALetter) {
-      cellIndexes = getIndexesFromString(cellIndexString)
+      cellIndexes = getIndexesFromString(cellIndexString, indexOfLastGrid)
     } else {
       cellIndex = parseInt(match?.[2] ?? "")
     }
@@ -358,7 +363,7 @@ const handler5 = {
     const gridIdString = match?.[1] ?? ""
     const hasGridIdStringALetter = /[atx]/.test(gridIdString)
     if (hasGridIdStringALetter) {
-      gridIds = getIndexesFromString(gridIdString)
+      gridIds = getIndexesFromString(gridIdString, indexOfLastGrid)
     } else {
       gridId = parseInt(match?.[1] ?? "")
     }
