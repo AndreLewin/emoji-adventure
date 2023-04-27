@@ -1,7 +1,7 @@
 import { Adventure } from '.prisma/client'
 import create, { GetState, SetState } from 'zustand'
 import { getIndexesToFloodFill, twoIndexesIntoIndexesOfSquare } from '../utils/math'
-import { variableProxy, subscriberProxy, Config, configProxy, dataProxy } from './proxy'
+import { variableProxy, subscriberProxy, visibleVariablesProxy, dataProxy } from './proxy'
 
 export type Cell = {
   color?: string
@@ -70,7 +70,7 @@ const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   text3: "",
   variables: {},
   subscribers: {},
-  configs: {}
+  visibleVariables: {}
 })
 
 export type Store = {
@@ -169,7 +169,7 @@ export type Store = {
   text3: string
   variables: { [key: string]: any }
   subscribers: { [key: string]: ((v: any) => any)[] }
-  configs: { [key: string]: Config }
+  visibleVariables: { [key: string]: string }
 }
 
 export let gridHistory: Pick<Store, "activeGridId" | "grids">[] = []
@@ -452,7 +452,7 @@ if (typeof window !== 'undefined') {
   window._subscriberProxy = subscriberProxy
   // for assigning new config for variable easily
   // @ts-ignore
-  window._configProxy = configProxy
+  window._visibleVariablesProxy = visibleVariablesProxy
   // for changing data (of cell, grid or adventure)
   // @ts-ignore
   window._dataProxy = dataProxy

@@ -42,7 +42,7 @@ export const getRegexes = (
     ],
     [
       "%#.",
-      `window._configProxy.`,
+      `window._visibleVariablesProxy.`,
       "Config global (adventure) variable (such for displaying or display name)"
     ],
     [
@@ -57,7 +57,7 @@ export const getRegexes = (
     ],
     [
       "%@.",
-      `window._configProxy.${gridId === null ? `` : `gridId${gridId}`}`,
+      `window._visibleVariablesProxy.${gridId === null ? `` : `gridId${gridId}`}`,
       "Config grid variable (use only in a Grid or Cell)"
     ],
     [
@@ -72,7 +72,7 @@ export const getRegexes = (
     ],
     [
       "%^.",
-      `window._configProxy.${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
+      `window._visibleVariablesProxy.${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
       "Config cell variable (use only in a Cell)"
     ],
     [

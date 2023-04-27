@@ -7,26 +7,27 @@ const DisplayText: React.FC<{}> = ({ }) => {
   const text3 = store(state => state.text3)
 
   const variables = store(state => state.variables)
-  const configs = store(state => state.configs)
+  const visibleVariables = store(state => state.visibleVariables)
 
   const activeGridId = store(state => state.activeGridId)
 
   const inventoryText = useMemo<string>(() => {
-    const visibleVariables: {
+    const vVariables: {
       variable: string,
       displayName?: string
     }[] = []
-    for (const [variable, value] of Object.entries(configs)) {
-      if (value?.isVisible === true) {
-        visibleVariables.push({
+
+    for (const [variable, value] of Object.entries(visibleVariables)) {
+      if (value !== "") {
+        vVariables.push({
           variable,
-          displayName: value.displayName
+          displayName: value
         })
       }
     }
 
     let inventoryText = ""
-    visibleVariables.forEach(v => {
+    vVariables.forEach(v => {
       const { variable, displayName } = v
       const variableGridId = variable.match(/gridId(\d*)/)?.[1] ?? null
       // const variableCellIndex = variable.match(/cellIndex(\d*)/)?.[1] ?? null
@@ -46,7 +47,7 @@ const DisplayText: React.FC<{}> = ({ }) => {
       inventoryText += `${nameToDisplay}: ${variableValue}\n`
     })
     return inventoryText
-  }, [variables, configs, activeGridId])
+  }, [variables, visibleVariables, activeGridId])
 
   return (
     <>

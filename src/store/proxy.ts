@@ -92,38 +92,30 @@ const subscriberHandler = {
 export const subscriberProxy = new Proxy(proxyTarget2, subscriberHandler)
 
 
-// config proxy
-
-export type Config = {
-  isVisible?: boolean,
-  displayName?: string
-}
+// visible variables proxy
 
 const proxyTarget3 = {};
 const handler3 = {
   get(_target: any, variable: string) {
     // @ts-ignore
-    const configs = window._s.getState().configs
-    return configs?.[variable] ?? {}
+    const visibleVariables = window._s.getState().visibleVariables
+    return visibleVariables?.[variable] ?? ""
   },
-  set(_target: any, variable: string, newConfigPartial: any) {
+  set(_target: any, variable: string, name: string) {
     // @ts-ignore
-    const oldConfigs = window._s.getState().configs
-    const configs = {
-      ...oldConfigs,
-      [variable]: {
-        ...oldConfigs[variable],
-        ...newConfigPartial
-      }
+    const oldVisibleVariables = window._s.getState().visibleVariables
+    const visibleVariables = {
+      ...oldVisibleVariables,
+      [variable]: name
     }
 
     // @ts-ignore
-    window._s.setState({ configs })
+    window._s.setState({ visibleVariables })
     return true
-  },
+  }
 };
 
-export const configProxy = new Proxy(proxyTarget3, handler3);
+export const visibleVariablesProxy = new Proxy(proxyTarget3, handler3);
 
 
 // data proxy
