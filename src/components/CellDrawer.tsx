@@ -124,6 +124,9 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
 
         <Tips />
         <ShorthandsInfo />
+        <div style={{ position: "absolute", top: "0px", right: "5px" }}>
+          {`#$${gridId}_${cellIndex}`}
+        </div>
       </div>
       <style jsx>
         {`
