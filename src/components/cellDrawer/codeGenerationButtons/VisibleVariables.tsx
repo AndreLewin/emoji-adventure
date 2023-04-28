@@ -2,12 +2,12 @@ import { Button } from "@mantine/core"
 import { useCallback } from "react"
 import store from "../../../store"
 
-const Configs: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
+const VisibleVariables: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
   const activeCScriptTab = store(state => state.activeCScriptTab)
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `// Each variable can have a config object.\n// If you want to change the config object, put % before the variable name.\n// Example: Show the value of a variable to the player with a custom name\n\n%@.cats = { isVisible: true, displayName: "Cats found in this grid" }`
+    const script = `// Make the following variable visible\n%@.cats = "🐈 found here"\n// Make it invisible again\n%@.cats = ""\n`
     updateCellWithAppend({
       gridId,
       cellIndex,
@@ -20,7 +20,7 @@ const Configs: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cell
   return (
     <>
       <span className='container'>
-        <Button onClick={handleClick}>Configs</Button>
+        <Button onClick={handleClick}>Visible variables</Button>
       </span>
       <style jsx>
         {`
@@ -33,4 +33,4 @@ const Configs: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cell
   )
 }
 
-export default Configs
+export default VisibleVariables
