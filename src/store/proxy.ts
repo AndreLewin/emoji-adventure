@@ -221,6 +221,8 @@ const handler5 = {
     // const regex = /(?:\_([\datx]*))?(?:\_([\datx]*))?([a-zA-Z_$]*)/
     const regex = /(?:\_((?:(?![atx]$)[\datx])*))?(?:\_((?:(?![atx]$)[\datx])*))?([a-zA-Z_$]*)/
     const match = regex.exec(variable)
+    console.log("variable | proxy.ts l224", variable)
+    console.log("match | proxy.ts l225", match)
 
     let cellIndex: number | null = null
     let cellIndexes: number[] = []
@@ -277,11 +279,11 @@ const handler5 = {
     }
 
     const getGridData = (gridId: number) => {
-      console.log("gridId | proxy.ts l281", gridId)
-
       // return only grid data
       // @ts-ignore
       const grid = window._s.getState().getGrid({ gridId }) as Grid
+      // grid can be null if the grid was deleted
+      if (grid === null) return null
       const { onViewGScript: vs, onInitGScript: is } = grid
       const gridWithShortNames: { [key: string]: any } = {
         is,
@@ -334,6 +336,9 @@ const handler5 = {
   set(_target: any, variable: string, value: any) {
     const regex = /(?:\_((?:(?![atx]$)[\datx])*))?(?:\_((?:(?![atx]$)[\datx])*))?([a-zA-Z_$]*)/
     const match = regex.exec(variable)
+
+    console.log("variable | proxy.ts l224", variable)
+    console.log("match | proxy.ts l225", match)
 
     let cellIndex: number | null = null
     let cellIndexes: number[] = []
@@ -388,7 +393,7 @@ const handler5 = {
       window._s.setState(adventureUpdate)
     }
 
-    const setGridData = (id: number) => {
+    const setGridData = (gridId: number) => {
       let gridUpdate: { [key: string]: any } = {}
 
       if (property === "") {
@@ -402,7 +407,7 @@ const handler5 = {
         gridUpdate[shorthenGridPropertyName(property)] = value
       }
       // @ts-ignore
-      window._s.getState().updateGrid({ id, gridUpdate })
+      window._s.getState().updateGrid({ gridId, gridUpdate })
     }
 
     const setCellData = (gridId: number, cellIndex: number) => {

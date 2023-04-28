@@ -7,9 +7,9 @@ import AskForName from "./codeGenerationButtons/AskForName";
 import GlobalVariable from "./codeGenerationButtons/GlobalVariable";
 import Subscribers from "./codeGenerationButtons/Subscribers";
 import VisibleVariables from "./codeGenerationButtons/VisibleVariables";
-import UpdateElement from "./codeGenerationButtons/UpdateElement";
-import DeleteElement from "./codeGenerationButtons/DeleteElement";
-import UpdateOtherCell from "./codeGenerationButtons/UpdateOtherCell";
+import LocalCell from "./codeGenerationButtons/LocalCell";
+import LocalGrid from "./codeGenerationButtons/LocalGrid";
+import LocalAdventure from "./codeGenerationButtons/LocalAdventure";
 import DisplayOnCondition from "./codeGenerationButtons/DisplayOnCondition";
 import PlaySound from "./codeGenerationButtons/PlaySound";
 
@@ -30,9 +30,9 @@ const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = (
         <VisibleVariables gridId={gridId} cellIndex={cellIndex} />
         <Subscribers gridId={gridId} cellIndex={cellIndex} />
         <div />
-        <UpdateElement gridId={gridId} cellIndex={cellIndex} />
-        <DeleteElement gridId={gridId} cellIndex={cellIndex} />
-        <UpdateOtherCell gridId={gridId} cellIndex={cellIndex} />
+        <LocalCell gridId={gridId} cellIndex={cellIndex} />
+        <LocalGrid gridId={gridId} cellIndex={cellIndex} />
+        <LocalAdventure gridId={gridId} cellIndex={cellIndex} />
         <div />
         <DisplayOnCondition gridId={gridId} cellIndex={cellIndex} />
         <PlaySound gridId={gridId} cellIndex={cellIndex} />
