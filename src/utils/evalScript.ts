@@ -8,7 +8,8 @@ export const getRegexes = (
     [
       /\^\$\[(.*?)\]/g,
       `window._dataProxy[\`_${gridId ?? "???"}_${cellIndex ?? "???"}\`+$1]`,
-      "Local cell data"
+      "Local cell data",
+      "^$[$1]"
     ],
     [
       "^$",
@@ -18,7 +19,8 @@ export const getRegexes = (
     [
       /@\$\[(.*?)\]/g,
       `window._dataProxy[\`_${gridId ?? "???"}_\`+$1]`,
-      "Local grid data"
+      "Local grid data",
+      "@$[$1]"
     ],
     [
       "@$",
@@ -28,7 +30,8 @@ export const getRegexes = (
     [
       /\#\$\[(.*?)\]/g,
       `window._dataProxy[\`_\`+$1]`,
-      "Adventure data"
+      "Adventure data",
+      "#$[$1]"
     ],
     [
       "#$",

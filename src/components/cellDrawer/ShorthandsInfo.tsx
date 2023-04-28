@@ -27,24 +27,22 @@ const ShorthandsInfo: React.FC<{}> = ({ }) => {
 
           <Table withColumnBorders>
             <tbody>
-              <div>
-                <tr>
-                  <th>Shorthand</th>
-                  <th>Full command</th>
-                  <th>Function</th>
-                </tr>
-                {
-                  regexes.map((regex, id) => {
-                    return (
-                      <tr key={`regex-${id}`}>
-                        <td>{regex[3] ?? regex[0] as string}</td>
-                        <td>{regex[1]}</td>
-                        <td>{regex[2]}</td>
-                      </tr>
-                    )
-                  })
-                }
-              </div>
+              <tr>
+                <th>Shorthand</th>
+                <th>Full command</th>
+                <th>Function</th>
+              </tr>
+              {
+                regexes.map((regex, id) => {
+                  return (
+                    <tr key={`regex-${id}`}>
+                      <td>{regex[3] ?? regex[0] as string}</td>
+                      <td>{regex[1]}</td>
+                      <td>{regex[2]}</td>
+                    </tr>
+                  )
+                })
+              }
             </tbody>
           </Table>
         </Modal>
