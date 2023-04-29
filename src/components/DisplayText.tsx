@@ -51,17 +51,17 @@ const DisplayText: React.FC<{}> = ({ }) => {
 
   return (
     <>
-      <div className="container">
-        <div className="text1">
+      <div className="container" id="text-container">
+        <div className="text1" id="text1">
           {text1}
         </div>
-        <div className="text2">
+        <div className="text2" id="text2">
           {text2}
         </div>
-        <div className="text3">
+        <div className="text3" id="text3">
           {text3}
         </div>
-        <div className="inventory">
+        <div className="inventory" id="inventory">
           {inventoryText}
         </div>
       </div>

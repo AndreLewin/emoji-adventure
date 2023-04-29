@@ -23,9 +23,11 @@ const GridViewer: React.FC<{}> = ({ }) => {
 
   return (
     <div>
-      <div className="container"
+      <div
+        className="container"
         style={{ backgroundImage: `url(${grid.backgroundImage ?? ""})` }}
         onContextMenu={(e) => { e.preventDefault() }}
+        id="grid"
       >
         {grid.cells.map((c, index) => {
           return <CellViewer cell={c} key={index} gridId={activeGridId} cellIndex={index} areClickSquaresHidden={grid.areClickSquaresHidden ?? false} />

@@ -26,6 +26,7 @@ const GridComponent: React.FC<{}> = ({ }) => {
   return (
     <div>
       <div
+        id="grid"
         className="container"
         style={{ "cursor": selectedTool !== '' ? "pointer" : "default" }}
         onMouseLeave={() => handleMouseLeave()}
