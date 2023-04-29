@@ -218,8 +218,7 @@ const getIndexesFromString = (string: string, indexOfLastGrid: number): number[]
 const proxyTarget5 = {};
 const handler5 = {
   get(_target: any, variable: string) {
-    // const regex = /(?:\_([\datx]*))?(?:\_([\datx]*))?([a-zA-Z_$]*)/
-    const regex = /(?:\_((?:(?![atx]$)[\datx])*))?(?:\_((?:(?![atx]$)[\datx])*))?([a-zA-Z_$]*)/
+    const regex = /(?:_)([\datx]*\d)?(?:_)?([\datx]*\d)?(.*)/
     const match = regex.exec(variable)
     console.log("variable | proxy.ts l224", variable)
     console.log("match | proxy.ts l225", match)
@@ -334,7 +333,7 @@ const handler5 = {
     throw "Unexpected way of using #$, @$ or ^$. Please check the documentation."
   },
   set(_target: any, variable: string, value: any) {
-    const regex = /(?:\_((?:(?![atx]$)[\datx])*))?(?:\_((?:(?![atx]$)[\datx])*))?([a-zA-Z_$]*)/
+    const regex = /(?:_)([\datx]*\d)?(?:_)?([\datx]*\d)?(.*)/
     const match = regex.exec(variable)
 
     console.log("variable | proxy.ts l224", variable)
