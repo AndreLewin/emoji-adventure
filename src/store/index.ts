@@ -466,7 +466,7 @@ if (typeof window !== 'undefined') {
       e.returnValue = '';
     }
   })
-  // global functions
-  // @ts-ignore
   window._move = move
+  // list of intervals to remove before each grid transition
+  window._gridIntervals = []
 }
