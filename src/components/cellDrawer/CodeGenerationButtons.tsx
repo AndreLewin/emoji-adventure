@@ -13,6 +13,9 @@ import LocalAdventure from "./codeGenerationButtons/LocalAdventure";
 import DisplayOnCondition from "./codeGenerationButtons/DisplayOnCondition";
 import PlaySound from "./codeGenerationButtons/PlaySound";
 import MoveCell from "./codeGenerationButtons/MoveCell";
+import Movement from "./codeGenerationButtons/Movement";
+import Intervals from "./codeGenerationButtons/Intervals";
+import Chronometer from "./codeGenerationButtons/Chronometer";
 
 const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
 
@@ -39,6 +42,9 @@ const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = (
         <PlaySound gridId={gridId} cellIndex={cellIndex} />
         <div />
         <MoveCell gridId={gridId} cellIndex={cellIndex} />
+        <Movement gridId={gridId} cellIndex={cellIndex} />
+        <Intervals gridId={gridId} cellIndex={cellIndex} />
+        <Chronometer gridId={gridId} cellIndex={cellIndex} />
       </div>
       <style jsx>
         {`

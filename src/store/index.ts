@@ -2,7 +2,7 @@ import { Adventure } from '.prisma/client'
 import create, { GetState, SetState } from 'zustand'
 import { getIndexesToFloodFill, twoIndexesIntoIndexesOfSquare } from '../utils/math'
 import { variableProxy, subscriberProxy, visibleVariablesProxy, dataProxy } from './proxy'
-import { move } from '../utils/globalFunctions'
+import { addToGridIntervals, clearGridIntervals, move } from '../utils/globalFunctions'
 
 export type Cell = {
   color?: string
@@ -469,4 +469,6 @@ if (typeof window !== 'undefined') {
   window._move = move
   // list of intervals to remove before each grid transition
   window._gridIntervals = []
+  window._clearGridIntervals = clearGridIntervals
+  window._i = addToGridIntervals
 }

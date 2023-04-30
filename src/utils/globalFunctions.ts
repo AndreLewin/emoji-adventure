@@ -59,3 +59,14 @@ export const move = ({
     _cellIndex: cellIndexToMoveTo
   }
 }
+
+export const clearGridIntervals = () => {
+  const gridIntervals = window._gridIntervals
+  gridIntervals.forEach(gI => clearInterval(gI))
+  window._gridIntervals = []
+}
+
+export const addToGridIntervals = (f: Function, timer: number = 1000) => {
+  const newIntervalId = setInterval(f, timer)
+  window._gridIntervals.push(newIntervalId)
+}
