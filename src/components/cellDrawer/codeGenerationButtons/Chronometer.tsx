@@ -7,8 +7,13 @@ const Chronometer: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `//
-// WIP`
+    const script = `// adventure chronometer
+%#.chronometer = "Time playing the adventure (s)"
+setInterval(() => #.chronometer++, 1000)
+
+// grid chronometer
+%@.chronometer = "Time in this grid (s)"
+_i(() => @.chronometer++)`
     updateCellWithAppend({
       gridId,
       cellIndex,
@@ -21,7 +26,7 @@ const Chronometer: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
   return (
     <>
       <span className='container'>
-        <Button color="gray" onClick={handleClick}>Chronometer (WIP)</Button>
+        <Button color="gray" onClick={handleClick}>Chronometer</Button>
       </span>
       <style jsx>
         {`
