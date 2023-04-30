@@ -12,6 +12,7 @@ import LocalGrid from "./codeGenerationButtons/LocalGrid";
 import LocalAdventure from "./codeGenerationButtons/LocalAdventure";
 import DisplayOnCondition from "./codeGenerationButtons/DisplayOnCondition";
 import PlaySound from "./codeGenerationButtons/PlaySound";
+import MoveCell from "./codeGenerationButtons/MoveCell";
 
 const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
 
@@ -36,6 +37,8 @@ const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = (
         <div />
         <DisplayOnCondition gridId={gridId} cellIndex={cellIndex} />
         <PlaySound gridId={gridId} cellIndex={cellIndex} />
+        <div />
+        <MoveCell gridId={gridId} cellIndex={cellIndex} />
       </div>
       <style jsx>
         {`

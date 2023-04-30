@@ -2,6 +2,7 @@ import { Adventure } from '.prisma/client'
 import create, { GetState, SetState } from 'zustand'
 import { getIndexesToFloodFill, twoIndexesIntoIndexesOfSquare } from '../utils/math'
 import { variableProxy, subscriberProxy, visibleVariablesProxy, dataProxy } from './proxy'
+import { move } from '../utils/globalFunctions'
 
 export type Cell = {
   color?: string
@@ -465,4 +466,7 @@ if (typeof window !== 'undefined') {
       e.returnValue = '';
     }
   })
+  // global functions
+  // @ts-ignore
+  window._move = move
 }

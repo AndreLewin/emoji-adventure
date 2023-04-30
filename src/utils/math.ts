@@ -53,28 +53,46 @@ export const getCellIndexFromCellPosition = ({ line, column }: { line: number, c
   return ((line - 1) * 10) + (column - 1)
 }
 
-export const getIndexOfUp = (cellIndex: number): number | null => {
-  const { line, column } = getCellPositionFromCellIndex(cellIndex)
-  if (line === 1) return null
-  return getCellIndexFromCellPosition({ line: line - 1, column })
-}
+export const getRelativeCellIndex = ({
+  cellIndex,
+  direction,
+  distance = 1,
+  isRound = false
+}: {
+  cellIndex: number,
+  direction: "up" | "right" | "down" | "left",
+  distance?: number,
+  isRound?: boolean
+}): number | null => {
+  let { line, column } = getCellPositionFromCellIndex(cellIndex)
 
-export const getIndexOfDown = (cellIndex: number): number | null => {
-  const { line, column } = getCellPositionFromCellIndex(cellIndex)
-  if (line === 10) return null
-  return getCellIndexFromCellPosition({ line: line + 1, column })
-}
+  if (direction === "up") {
+    line = line - distance
+    if (line <= 0 && !isRound) return null
+    while (line <= 0) {
+      line += 10
+    }
+  } else if (direction === "right") {
+    column = column + distance
+    if (column > 10 && !isRound) return null
+    while (column > 10) {
+      column -= 10
+    }
+  } else if (direction === "down") {
+    line = line + distance
+    if (line > 10 && !isRound) return null
+    while (line > 10) {
+      line -= 10
+    }
+  } else if (direction === "left") {
+    column = column - distance
+    if (column <= 0 && !isRound) return null
+    while (column <= 0) {
+      column += 10
+    }
+  }
 
-export const getIndexOfLeft = (cellIndex: number): number | null => {
-  const { line, column } = getCellPositionFromCellIndex(cellIndex)
-  if (column === 1) return null
-  return getCellIndexFromCellPosition({ line, column: column - 1 })
-}
-
-export const getIndexOfRight = (cellIndex: number): number | null => {
-  const { line, column } = getCellPositionFromCellIndex(cellIndex)
-  if (column === 10) return null
-  return getCellIndexFromCellPosition({ line, column: column + 1 })
+  return getCellIndexFromCellPosition({ line, column })
 }
 
 // https://en.wikipedia.org/wiki/Flood_fill
@@ -92,13 +110,13 @@ export const getIndexesToFloodFill = (targetIndex: number, gridValues: string[])
     if (value !== targetValue) return
     indexesWithTargetValue.push(index)
 
-    const indexUp = getIndexOfUp(index)
+    const indexUp = getRelativeCellIndex({ cellIndex: index, direction: "up" })
     if (indexUp !== null) checkIndexThenLookAround(indexUp)
-    const indexDown = getIndexOfDown(index)
+    const indexDown = getRelativeCellIndex({ cellIndex: index, direction: "down" })
     if (indexDown !== null) checkIndexThenLookAround(indexDown)
-    const indexRight = getIndexOfRight(index)
+    const indexRight = getRelativeCellIndex({ cellIndex: index, direction: "right" })
     if (indexRight !== null) checkIndexThenLookAround(indexRight)
-    const indexLeft = getIndexOfLeft(index)
+    const indexLeft = getRelativeCellIndex({ cellIndex: index, direction: "left" })
     if (indexLeft !== null) checkIndexThenLookAround(indexLeft)
   }
 

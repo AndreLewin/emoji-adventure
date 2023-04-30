@@ -20,7 +20,7 @@ const Subscribers: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
   return (
     <>
       <span className='container'>
-        <Button onClick={handleClick}>Subscribers</Button>
+        <Button onClick={handleClick}>Variable subscribers</Button>
       </span>
       <style jsx>
         {`
