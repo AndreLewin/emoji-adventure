@@ -70,3 +70,59 @@ export const addToGridIntervals = (f: Function, timer: number = 1000) => {
   const newIntervalId = setInterval(f, timer)
   window._gridIntervals.push(newIntervalId)
 }
+
+export const sleep = (delay: number): Promise<void> => {
+  return new Promise(resolve => setTimeout(resolve, delay))
+}
+
+// await _movement({ gridId: 0, cellIndex: 0, code: "RDLU"})
+// console.log("kat")
+export const movement = async ({
+  gridId,
+  cellIndex,
+  code,
+  delay = 500,
+  isRound = false
+}: {
+  gridId: number
+  cellIndex: number,
+  code: string,
+  delay?: number,
+  isRound?: boolean
+}) => {
+  let lastCell: any = null
+
+  // TODO: handle loops (* at the end)
+
+  // TODO: if the activeGrid is not this one, break!
+  while (code.length > 0) {
+    const firstLetter = code[0]
+    code = code.slice(1)
+
+    let direction: "up" | "right" | "down" | "left" = "right"
+    if (firstLetter === "U") {
+      direction = "up"
+    } else if (firstLetter === "R") {
+      direction = "right"
+    } else if (firstLetter === "D") {
+      direction = "down"
+    } else if (firstLetter === "L") {
+      direction = "left"
+    } else {
+      throw new Error(`Direction of ${firstLetter} unknown`)
+    }
+
+    await sleep(delay)
+
+    // first move
+    if (lastCell === null) {
+      lastCell = move({ gridId, cellIndex, direction, isRound })
+    } else {
+      lastCell = move({ gridId: lastCell._gridId, cellIndex: lastCell._cellIndex, direction, isRound })
+    }
+
+    // no need to move anymore if the cell is not more visible
+    if (lastCell === null) break
+  }
+}
+

@@ -208,5 +208,13 @@ export const evalScript = (
     newScript = newScript.replaceAll(regex[0], regex[1])
   })
 
-  eval(newScript)
+  // in order to be able to use "await" in scripts
+  const asyncScript = `
+    const af = async () => {
+      ${newScript}
+    }
+    af()
+  `
+
+  eval(asyncScript);
 }
