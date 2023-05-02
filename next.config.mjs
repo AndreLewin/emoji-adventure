@@ -7,7 +7,10 @@
 
 /** @type {import("next").NextConfig} */
 const config = {
-  reactStrictMode: true,
+  // reactStrictMode is incompatible with move script in On View
+  // the movement would be triggered two times, so the destination cell would be
+  // immediately overwritten by an empty cell
+  reactStrictMode: false,
   swcMinify: true,
   experimental: { appDir: true }
 };

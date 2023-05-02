@@ -75,8 +75,6 @@ export const sleep = (delay: number): Promise<void> => {
   return new Promise(resolve => setTimeout(resolve, delay))
 }
 
-// await _movement({ gridId: 0, cellIndex: 0, code: "RDLU"})
-// console.log("kat")
 export const movement = async ({
   gridId,
   cellIndex,
@@ -90,14 +88,46 @@ export const movement = async ({
   delay?: number,
   isRound?: boolean
 }) => {
+  const shouldLoop = code[code.length - 1] === "*"
+  let partToLoop = ""
+  if (shouldLoop) {
+    code = code.slice(0, -1)
+    partToLoop = code
+  }
+
   let lastCell: any = null
 
-  // TODO: handle loops (* at the end)
+  // if the grid where the movement takes place is not visible, don't move!
+  // @ts-ignore
+  let activeGridId = window._ss().activeGridId as number
 
-  // TODO: if the activeGrid is not this one, break!
-  while (code.length > 0) {
+  while (code.length > 0 && activeGridId === gridId) {
+    await sleep(delay)
+
     const firstLetter = code[0]
     code = code.slice(1)
+
+    // wait
+    if (firstLetter === "W") continue
+    // disappear
+    if (firstLetter === "X") {
+      const realGridId = lastCell._gridId ?? gridId
+      const realCellIndex = lastCell._cellIndex ?? cellIndex
+      // @ts-ignore
+      const cell = (window._ss().grids?.[realGridId]?.cells?.[realCellIndex] ?? null) as Cell
+      const { color, ...rest } = cell
+      // remove everything from the cell, except the color
+      const restWithUndefined = Object.fromEntries(Object.entries(rest).map(([key, value]) => [key, undefined]))
+      // @ts-ignore
+      window._ss().updateCell({
+        gridId: realGridId,
+        cellIndex: realCellIndex,
+        cellUpdate: {
+          ...restWithUndefined,
+        }
+      })
+      break
+    }
 
     let direction: "up" | "right" | "down" | "left" = "right"
     if (firstLetter === "U") {
@@ -112,10 +142,10 @@ export const movement = async ({
       throw new Error(`Direction of ${firstLetter} unknown`)
     }
 
-    await sleep(delay)
-
     // first move
     if (lastCell === null) {
+      console.log("cellIndex | globalFunctions.ts l157", cellIndex)
+
       lastCell = move({ gridId, cellIndex, direction, isRound })
     } else {
       lastCell = move({ gridId: lastCell._gridId, cellIndex: lastCell._cellIndex, direction, isRound })
@@ -123,6 +153,15 @@ export const movement = async ({
 
     // no need to move anymore if the cell is not more visible
     if (lastCell === null) break
+
+    // @ts-ignore
+    activeGridId = window._ss().activeGridId as number
+
+    if (shouldLoop) {
+      if (code.length === 0) {
+        code = partToLoop
+      }
+    }
   }
 }
 
