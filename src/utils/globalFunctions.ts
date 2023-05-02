@@ -97,12 +97,18 @@ export const movement = async ({
 
   let lastCell: any = null
 
-  // if the grid where the movement takes place is not visible, don't move!
-  // @ts-ignore
-  let activeGridId = window._ss().activeGridId as number
-
-  while (code.length > 0 && activeGridId === gridId) {
+  while (code.length > 0) {
     await sleep(delay)
+
+    /*
+    //// probably not worth the complications of resetting the cell position
+    // if the grid where the movement takes place is not visible, stop!
+    // @ts-ignore
+    const activeGridId = window._ss().activeGridId as number
+    if (activeGridId !== gridId) {
+      break;
+    }
+    */
 
     const firstLetter = code[0]
     code = code.slice(1)
@@ -153,9 +159,6 @@ export const movement = async ({
 
     // no need to move anymore if the cell is not more visible
     if (lastCell === null) break
-
-    // @ts-ignore
-    activeGridId = window._ss().activeGridId as number
 
     if (shouldLoop) {
       if (code.length === 0) {
