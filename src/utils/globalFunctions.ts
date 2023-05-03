@@ -166,5 +166,7 @@ export const movement = async ({
       }
     }
   }
+  // gives time for the cell to be updated before the rest of a script is executed (after await _movement)
+  await sleep(10)
 }
 

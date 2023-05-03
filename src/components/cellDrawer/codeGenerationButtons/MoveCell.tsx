@@ -26,7 +26,11 @@ _move({ gridId: 0, cellIndex: 31, direction: "up", distance: 8, isRound: true })
 // console.log(destinationCell)
 
 // move the current cell to the right
-// _move({ gridId: @gi, cellIndex: ^ci, direction: "right" })`
+// _move({ gridId: @gi, cellIndex: ^ci, direction: "right" })
+
+// you can use shorthands to automatically target the current cell or grid
+// WIP
+`
     updateCellWithAppend({
       gridId,
       cellIndex,
