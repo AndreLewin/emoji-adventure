@@ -29,7 +29,8 @@ _move({ gridId: 0, cellIndex: 31, direction: "up", distance: 8, isRound: true })
 // _move({ gridId: @gi, cellIndex: ^ci, direction: "right" })
 
 // you can use shorthands to automatically target the current cell or grid
-// WIP
+// ^m({ direction: "right" })
+// @m({ cellIndex: ^ci, direction: "right" })
 `
     updateCellWithAppend({
       gridId,

@@ -34,7 +34,12 @@ const Movement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cel
 // #t("I'm doing the reversed movement")
 
 // you can use shorthands to automatically target the current cell or grid
-// WIP`
+// ^mm({ code: "R" })
+// @mm({ cellIndex: ^ci, code: "R" })
+
+// if you use ^mm, you can also directly type the code (but then you can't change the other properties)
+// ^mm("R")
+`
     updateCellWithAppend({
       gridId,
       cellIndex,

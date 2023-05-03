@@ -182,7 +182,27 @@ export const getRegexes = (
       `window._clearGridIntervals(); window._s.setState({ activeGridId: $1 })`,
       "Move to specified gridId",
       "#m($1)"
-    ]
+    ],
+    [
+      "@mm(",
+      `window._getMovementPrefilled({ gridId: ${gridId} })(`,
+      "Movement prefilled with gridId"
+    ],
+    [
+      "^mm(",
+      `window._getMovementPrefilled({ gridId: ${gridId}, cellIndex: ${cellIndex} })(`,
+      "Movement prefilled with gridId and cellIndex"
+    ],
+    [
+      "@m(",
+      `window._getMovePrefilled({ gridId: ${gridId} })(`,
+      "Move prefilled with gridId"
+    ],
+    [
+      "^m(",
+      `window._getMovePrefilled({ gridId: ${gridId}, cellIndex: ${cellIndex} })(`,
+      "Move prefilled with gridId and cellIndex"
+    ],
   ]
 }
 

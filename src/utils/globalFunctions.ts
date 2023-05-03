@@ -1,22 +1,25 @@
 import { Cell } from "../store"
 import { getRelativeCellIndex } from "./math"
 
+type MoveProperties = {
+  gridId: number
+  cellIndex: number,
+  direction: "up" | "right" | "down" | "left",
+  distance?: number,
+  isRound?: boolean
+}
+
 export const move = ({
   gridId,
   cellIndex,
   direction,
   distance = 1,
   isRound = false
-}: {
-  gridId: number
-  cellIndex: number,
-  direction: "up" | "right" | "down" | "left",
-  distance?: number,
-  isRound?: boolean
-}) => {
+}: MoveProperties) => {
   // @ts-ignore
   const cell = (window._ss().grids?.[gridId]?.cells?.[cellIndex] ?? null) as Cell | null
   if (cell === null) throw new Error(`No cell found for gridId ${gridId} cellIndex ${cellIndex}`)
+  if (!["up", "right", "down", "left"].includes(direction)) throw new Error(`Invalid direction value`)
 
   const cellIndexToMoveTo = getRelativeCellIndex({
     cellIndex,
@@ -60,6 +63,15 @@ export const move = ({
   }
 }
 
+export const getMovePrefilled = (partialMoveObject1: Partial<MoveProperties>) => {
+  return (partialMoveObject2: Partial<MoveProperties>) => {
+    move({
+      ...partialMoveObject1,
+      ...partialMoveObject2
+    } as MoveProperties)
+  }
+}
+
 export const clearGridIntervals = () => {
   const gridIntervals = window._gridIntervals
   gridIntervals.forEach(gI => clearInterval(gI))
@@ -75,19 +87,21 @@ export const sleep = (delay: number): Promise<void> => {
   return new Promise(resolve => setTimeout(resolve, delay))
 }
 
+type MovementProperties = {
+  gridId: number
+  cellIndex: number,
+  code: string,
+  delay?: number,
+  isRound?: boolean
+}
+
 export const movement = async ({
   gridId,
   cellIndex,
   code,
   delay = 500,
   isRound = false
-}: {
-  gridId: number
-  cellIndex: number,
-  code: string,
-  delay?: number,
-  isRound?: boolean
-}) => {
+}: MovementProperties) => {
   const shouldLoop = code[code.length - 1] === "*"
   let partToLoop = ""
   if (shouldLoop) {
@@ -170,3 +184,19 @@ export const movement = async ({
   await sleep(10)
 }
 
+export const getMovementPrefilled = (partialMovementObject1: Partial<MovementProperties>) => {
+  return (partialMovementObject2: Partial<MovementProperties> | string) => {
+    // shortcut for strings codes
+    if (typeof partialMovementObject2 === "string") {
+      return movement({
+        ...partialMovementObject1,
+        code: partialMovementObject2
+      } as MovementProperties)
+    }
+
+    return movement({
+      ...partialMovementObject1,
+      ...partialMovementObject2
+    } as MovementProperties)
+  }
+}
