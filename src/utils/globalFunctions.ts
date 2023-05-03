@@ -78,7 +78,7 @@ export const clearGridIntervals = () => {
   window._gridIntervals = []
 }
 
-export const addToGridIntervals = (f: Function, timer: number = 1000) => {
+export const addToGridIntervals = (f: Function, timer = 1000) => {
   const newIntervalId = setInterval(f, timer)
   window._gridIntervals.push(newIntervalId)
 }
