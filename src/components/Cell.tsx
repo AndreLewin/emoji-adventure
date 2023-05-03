@@ -43,7 +43,7 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
         updateCell({
           gridId,
           cellIndex,
-          cellUpdate: { color: "", emoji: "" }
+          cellReplacement: {}
         })
       }
     }
