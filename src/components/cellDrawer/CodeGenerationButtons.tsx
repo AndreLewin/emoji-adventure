@@ -12,6 +12,7 @@ import LocalGrid from "./codeGenerationButtons/LocalGrid";
 import LocalAdventure from "./codeGenerationButtons/LocalAdventure";
 import DisplayOnCondition from "./codeGenerationButtons/DisplayOnCondition";
 import PlaySound from "./codeGenerationButtons/PlaySound";
+import FetchData from "./codeGenerationButtons/FetchData";
 import MoveCell from "./codeGenerationButtons/MoveCell";
 import Movement from "./codeGenerationButtons/Movement";
 import Intervals from "./codeGenerationButtons/Intervals";
@@ -40,6 +41,7 @@ const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = (
         <div />
         <DisplayOnCondition gridId={gridId} cellIndex={cellIndex} />
         <PlaySound gridId={gridId} cellIndex={cellIndex} />
+        <FetchData gridId={gridId} cellIndex={cellIndex} />
         <div />
         <MoveCell gridId={gridId} cellIndex={cellIndex} />
         <Movement gridId={gridId} cellIndex={cellIndex} />

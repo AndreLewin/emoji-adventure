@@ -28,6 +28,10 @@ const Tips: React.FC<{}> = ({ }) => {
           <div>{`You have access to "window" inside the scripts. So basically you can do anything a website can do. With the exception of Shorthands, everything is pure real Javascript in the browser context.`}</div>
           <div> </div>
           <div>{`If you need to use a prompt or confirm window just after the visual load of a grid, you can wrap your code in    setTimeout(() => { YOUR_CODE_HERE }, 10)     in the On View script.`}</div>
+          <div> </div>
+          <div>{`You can await x milliseconds before the execution of the next line of code by using "await _sleep(x)" where x is the number of milliseconds.`}</div>
+          <div> </div>
+          <div>{`You can generate a random number between min and max (included) using this function: "await _random(min, max)".`}</div>
         </Modal>
       </span>
       <style jsx>

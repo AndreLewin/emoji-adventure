@@ -198,3 +198,7 @@ export const getMovementPrefilled = (partialMovementObject1: Partial<MovementPro
     } as MovementProperties)
   }
 }
+
+export const random = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}

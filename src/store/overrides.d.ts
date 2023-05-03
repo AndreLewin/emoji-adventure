@@ -8,4 +8,5 @@ interface Window {
   _movement: Function
   _getMovementPrefilled: Function
   _evalScript: Function
+  _random: Function
 }
