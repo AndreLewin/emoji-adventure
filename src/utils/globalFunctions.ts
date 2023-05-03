@@ -29,33 +29,34 @@ export const move = ({
   })
 
   // place everything in the destination cell, except the color
+  // @ts-ignore
+  const destinationCell = (window._ss().grids?.[gridId]?.cells?.[cellIndexToMoveTo]) as Cell
   const { color, ...rest } = cell
   if (cellIndexToMoveTo !== null) {
     // @ts-ignore
     window._ss().updateCell({
       gridId,
       cellIndex: cellIndexToMoveTo,
-      cellUpdate: {
-        ...rest,
+      cellReplacement: {
+        color: destinationCell.color,
+        ...rest
       }
     })
   }
 
   // remove everything from the origin cell, except the color
-  const restWithUndefined = Object.fromEntries(Object.entries(rest).map(([key, value]) => [key, undefined]))
   // @ts-ignore
   window._ss().updateCell({
     gridId,
     cellIndex,
-    cellUpdate: {
-      ...restWithUndefined,
+    cellReplacement: {
+      color: cell.color
     }
   })
 
   // return destination cell (useful if we want to do something after moving)
   if (cellIndexToMoveTo === null) return null
-  // @ts-ignore
-  const destinationCell = (window._ss().grids?.[gridId]?.cells?.[cellIndexToMoveTo]) as Cell
+
   return {
     ...destinationCell,
     _gridId: gridId,
@@ -135,15 +136,12 @@ export const movement = async ({
       const realCellIndex = lastCell._cellIndex ?? cellIndex
       // @ts-ignore
       const cell = (window._ss().grids?.[realGridId]?.cells?.[realCellIndex] ?? null) as Cell
-      const { color, ...rest } = cell
-      // remove everything from the cell, except the color
-      const restWithUndefined = Object.fromEntries(Object.entries(rest).map(([key, value]) => [key, undefined]))
       // @ts-ignore
       window._ss().updateCell({
         gridId: realGridId,
         cellIndex: realCellIndex,
-        cellUpdate: {
-          ...restWithUndefined,
+        cellReplacement: {
+          color: cell.color
         }
       })
       break

@@ -89,11 +89,13 @@ export type Store = {
   updateCell: ({
     gridId,
     cellIndex,
-    cellUpdate
+    cellUpdate,
+    cellReplacement
   }: {
     gridId: number,
     cellIndex: number,
-    cellUpdate: Partial<Cell>
+    cellUpdate?: Partial<Cell>,
+    cellReplacement?: Cell,
   }) => void
   updateCellWithAppend: ({
     gridId,
@@ -217,20 +219,30 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
   updateCell({
     gridId,
     cellIndex,
-    cellUpdate
+    cellUpdate,
+    cellReplacement
   }: {
     gridId: number,
     cellIndex: number,
-    cellUpdate: Partial<Cell>
+    cellUpdate?: Partial<Cell>,
+    cellReplacement?: Cell,
   }) {
     const { grids } = get()
     const grid = grids.find(g => g.id === gridId)
     if (typeof grid === "undefined") return console.error(`grid ${gridId} not found in the store`)
     if (cellIndex >= 100) return console.error(`cellIndex ${cellIndex} does not exist (must be 0-100)`)
-    grid.cells[cellIndex]! = {
-      ...grid.cells[cellIndex]!,
-      ...cellUpdate
+
+    if (typeof cellReplacement !== "undefined") {
+      grid.cells[cellIndex]! = JSON.parse(JSON.stringify(cellReplacement))
     }
+
+    if (typeof cellUpdate !== "undefined") {
+      grid.cells[cellIndex]! = {
+        ...grid.cells[cellIndex]!,
+        ...cellUpdate
+      }
+    }
+
     get().set({ grids: [...grids] })
     pushToGridHistory(get())
   },

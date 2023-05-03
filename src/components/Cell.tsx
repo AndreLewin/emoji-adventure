@@ -90,13 +90,13 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
         updateCell({
           gridId,
           cellIndex,
-          cellUpdate: { ...copiedCell }
+          cellReplacement: copiedCell
         })
       } else if (selectedTool === "eraser") {
         updateCell({
           gridId,
           cellIndex,
-          cellUpdate: { color: "", emoji: "" }
+          cellReplacement: {}
         })
       }
     } else if (buttons === 2 || buttons === 3) {
@@ -121,7 +121,7 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
           updateCell({
             gridId,
             cellIndex: endCellIndex,
-            cellUpdate: { ...cellToCopy }
+            cellReplacement: cellToCopy
           })
         }
       }
