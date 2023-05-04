@@ -6,7 +6,10 @@ type MoveProperties = {
   cellIndex: number,
   direction: "up" | "right" | "down" | "left",
   distance?: number,
-  isRound?: boolean
+  isRound?: boolean,
+  moveColor?: boolean,
+  // the original content of the cell will reappear if moved out of it
+  keepOriginalContent?: boolean
 }
 
 export const move = ({
@@ -14,7 +17,9 @@ export const move = ({
   cellIndex,
   direction,
   distance = 1,
-  isRound = false
+  isRound = false,
+  moveColor = false,
+  keepOriginalContent = true
 }: MoveProperties) => {
   // @ts-ignore
   const cell = (window._ss().grids?.[gridId]?.cells?.[cellIndex] ?? null) as Cell | null
@@ -28,30 +33,31 @@ export const move = ({
     isRound
   })
 
-  // place everything in the destination cell, except the color
+  // place everything in the destination cell
   // @ts-ignore
   const destinationCell = (window._ss().grids?.[gridId]?.cells?.[cellIndexToMoveTo]) as Cell
   const { color, ...rest } = cell
   if (cellIndexToMoveTo !== null) {
+    const cellReplacement = moveColor ? {} : { color: destinationCell.color, ...rest }
+    // @ts-ignore
+    if (keepOriginalContent) cellReplacement.original = JSON.parse(JSON.stringify(destinationCell))
     // @ts-ignore
     window._ss().updateCell({
       gridId,
       cellIndex: cellIndexToMoveTo,
-      cellReplacement: {
-        color: destinationCell.color,
-        ...rest
-      }
+      cellReplacement
     })
   }
 
-  // remove everything from the origin cell, except the color
+  // remove everything from the origin cell
+  let cellReplacement = moveColor ? {} : { color: cell.color }
+  // @ts-ignore
+  if (keepOriginalContent && typeof cell.original === "object") cellReplacement = { ...cellReplacement, ...cell.original }
   // @ts-ignore
   window._ss().updateCell({
     gridId,
     cellIndex,
-    cellReplacement: {
-      color: cell.color
-    }
+    cellReplacement
   })
 
   // return destination cell (useful if we want to do something after moving)
@@ -93,7 +99,9 @@ type MovementProperties = {
   cellIndex: number,
   code: string,
   delay?: number,
-  isRound?: boolean
+  isRound?: boolean,
+  moveColor?: boolean,
+  keepOriginalContent?: boolean
 }
 
 export const movement = async ({
@@ -101,7 +109,9 @@ export const movement = async ({
   cellIndex,
   code,
   delay = 500,
-  isRound = false
+  isRound = false,
+  moveColor = false,
+  keepOriginalContent = true
 }: MovementProperties) => {
   const shouldLoop = code[code.length - 1] === "*"
   let partToLoop = ""
@@ -136,13 +146,14 @@ export const movement = async ({
       const realCellIndex = lastCell._cellIndex ?? cellIndex
       // @ts-ignore
       const cell = (window._ss().grids?.[realGridId]?.cells?.[realCellIndex] ?? null) as Cell
+      let cellReplacement = moveColor ? {} : { color: cell.color }
+      // @ts-ignore
+      if (keepOriginalContent && typeof cell.original === "object") cellReplacement = { ...cellReplacement, ...cell.original }
       // @ts-ignore
       window._ss().updateCell({
         gridId: realGridId,
         cellIndex: realCellIndex,
-        cellReplacement: {
-          color: cell.color
-        }
+        cellReplacement
       })
       break
     }
@@ -164,9 +175,9 @@ export const movement = async ({
     if (lastCell === null) {
       console.log("cellIndex | globalFunctions.ts l157", cellIndex)
 
-      lastCell = move({ gridId, cellIndex, direction, isRound })
+      lastCell = move({ gridId, cellIndex, direction, isRound, moveColor, keepOriginalContent })
     } else {
-      lastCell = move({ gridId: lastCell._gridId, cellIndex: lastCell._cellIndex, direction, isRound })
+      lastCell = move({ gridId: lastCell._gridId, cellIndex: lastCell._cellIndex, direction, isRound, moveColor, keepOriginalContent })
     }
 
     // no need to move anymore if the cell is not more visible

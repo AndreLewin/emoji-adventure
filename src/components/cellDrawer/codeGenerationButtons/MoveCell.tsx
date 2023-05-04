@@ -21,6 +21,9 @@ _move({ gridId: 0, cellIndex: 1, direction: "down", distance: 3 })
 // if you want the cell to appear on the opposite side, use the isRound property
 _move({ gridId: 0, cellIndex: 31, direction: "up", distance: 8, isRound: true })
 
+// if you want the color of the cell to move too, add the moveColor property
+// _move({ gridId: 0, cellIndex: 1, direction: "down", moveColor: true })
+
 // the function _move returns the destination cell with updated data
 // const destinationCell = _move({ gridId: 0, cellIndex: 0, direction: "left" })
 // console.log(destinationCell)

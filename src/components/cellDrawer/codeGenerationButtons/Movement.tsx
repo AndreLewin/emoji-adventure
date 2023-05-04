@@ -25,6 +25,9 @@ const Movement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cel
 // if a content goes outside the grid, it will disappear, unless you use the isRound property
 // _movement({ gridId: @gi, cellIndex: ^ci, code: "R*", isRound: true })
 
+// if you want the color of the cell to move too, add the moveColor property
+// _movement({ gridId: @gi, cellIndex: ^ci, code: "RRR", moveColor: true })
+
 // by default, _movement does not block the execution of the rest of the script
 // if you want to execute code only when a movement is finish, you have to await it
 // await _movement({ gridId: @gi, cellIndex: ^ci, code: "RRDDLLUU" })
