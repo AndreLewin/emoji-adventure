@@ -25,7 +25,6 @@ const handler = {
 
     // trigger subscribers
     const subscribersForVariable = subscribers?.[variable] ?? []
-    console.log("subscribersForVariable | proxy.ts l28", subscribersForVariable)
 
     subscribersForVariable.forEach((subscriber: any) => subscriber(value))
     return true
@@ -67,16 +66,8 @@ const subscriberHandler = {
 
     // @ts-ignore
     const oldSubscribers = window._s.getState().subscribers
-
-    console.log("unparsedCallback | proxy.ts l64", unparsedCallback)
-
-
     const subscribersForVariable = (oldSubscribers?.[variable] ?? [])
-
     subscribersForVariable.push(unparsedCallback)
-
-    console.log("subscribersForVariable | proxy.ts l71", subscribersForVariable)
-
 
     const subscribers = {
       ...oldSubscribers,
@@ -220,8 +211,6 @@ const handler5 = {
   get(_target: any, variable: string) {
     const regex = /(?:_)([\datx]*\d)?(?:_)?([\datx]*\d)?(.*)/
     const match = regex.exec(variable)
-    console.log("variable | proxy.ts l224", variable)
-    console.log("match | proxy.ts l225", match)
 
     let cellIndex: number | null = null
     let cellIndexes: number[] = []
@@ -252,12 +241,6 @@ const handler5 = {
 
     // react thing that triggers the proxy for some reason
     if (property === "$$typeof") return "react"
-
-    console.log("cellIndex | proxy.ts l241", cellIndex)
-    console.log("cellIndexes | proxy.ts l242", cellIndexes)
-    console.log("gridId | proxy.ts l243", gridId)
-    console.log("gridIds | proxy.ts l244", gridIds)
-    console.log("property | proxy.ts l247", property)
 
     const hasCellIndexes = cellIndexes.length > 0
     const hasCellIndex = cellIndex !== null && !Number.isNaN(cellIndex)
@@ -308,12 +291,6 @@ const handler5 = {
       return property === "" ? cellWithShortNames : cellWithShortNames[property]
     }
 
-    console.log("hasGridId | proxy.ts l313", hasGridId)
-    console.log("hasGridIds | proxy.ts l314", hasGridIds)
-    console.log("hasCellIndex | proxy.ts l315", hasCellIndex)
-    console.log("hasCellIndexes | proxy.ts l316", hasCellIndexes)
-
-
     if (!hasGridId && !hasGridIds) return getAdventureData()
     if (hasGridId) {
       if (!hasCellIndex && !hasCellIndexes) return getGridData(gridId!)
@@ -335,9 +312,6 @@ const handler5 = {
   set(_target: any, variable: string, value: any) {
     const regex = /(?:_)([\datx]*\d)?(?:_)?([\datx]*\d)?(.*)/
     const match = regex.exec(variable)
-
-    console.log("variable | proxy.ts l224", variable)
-    console.log("match | proxy.ts l225", match)
 
     let cellIndex: number | null = null
     let cellIndexes: number[] = []
@@ -365,12 +339,6 @@ const handler5 = {
     }
 
     const property = match?.[3] ?? ""
-
-    console.log("cellIndex | proxy.ts l241", cellIndex)
-    console.log("cellIndexes | proxy.ts l242", cellIndexes)
-    console.log("gridId | proxy.ts l243", gridId)
-    console.log("gridIds | proxy.ts l244", gridIds)
-    console.log("property | proxy.ts l247", property)
 
     const hasCellIndexes = cellIndexes.length > 0
     const hasCellIndex = cellIndex !== null && !Number.isNaN(cellIndex)

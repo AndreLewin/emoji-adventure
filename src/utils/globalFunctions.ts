@@ -173,8 +173,6 @@ export const movement = async ({
 
     // first move
     if (lastCell === null) {
-      console.log("cellIndex | globalFunctions.ts l157", cellIndex)
-
       lastCell = move({ gridId, cellIndex, direction, isRound, moveColor, keepOriginalContent })
     } else {
       lastCell = move({ gridId: lastCell._gridId, cellIndex: lastCell._cellIndex, direction, isRound, moveColor, keepOriginalContent })
