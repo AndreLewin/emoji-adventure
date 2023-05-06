@@ -39,7 +39,12 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 
       zip.file('index.html', newIndexHtmlString);
 
-      const data = await zip.generateAsync({ type: 'nodebuffer' });
+      const data = await zip.generateAsync({
+        type: 'nodebuffer', compression: "DEFLATE",
+        compressionOptions: {
+          level: 9
+        }
+      });
       res.setHeader('Content-Disposition', 'attachment; filename="export.zip"');
       res.setHeader('Content-Type', 'application/zip');
       res.send(data);
