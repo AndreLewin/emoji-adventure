@@ -5,14 +5,14 @@ import Component from "./Component";
 
 export function generateStaticParams() {
   return [
-    { adventureId: "clgmptjt90003xrkwle6vfgu4" }
+    { adventureId: "clhc9a6x00001xr5wqqwjufm3" }
   ];
 }
 
 export async function generateMetadata({ params }: { params: { adventureId: string } }): Promise<Metadata> {
   const { adventureId } = params
   const adventure = await prisma.adventure.findFirst({
-    where: { id: "clgmptjt90003xrkwle6vfgu4" }
+    where: { id: "clhc9a6x00001xr5wqqwjufm3" }
     // don't enable this before auth
     // where: { id: adventureId }
   });
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: { params: { adventureId: stri
 export default async function Page({ params }: { params: { adventureId: string } }) {
   const { adventureId } = params;
   const adventure = await prisma.adventure.findFirst({
-    where: { id: "clgmptjt90003xrkwle6vfgu4" }
+    where: { id: "clhc9a6x00001xr5wqqwjufm3" }
     // don't enable this before auth
     // where: { id: adventureId }
   });
