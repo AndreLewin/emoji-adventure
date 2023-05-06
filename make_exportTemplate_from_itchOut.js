@@ -3,7 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const JSZip = require("jszip");
+const archiver = require('archiver');
 
 // remove the directory `public\exportTemp\_next\static\chunks\pages`
 
@@ -208,34 +208,25 @@ files2.forEach((file) => {
 // zip "public/exportTemp" into "public/exportTemplate.zip"
 // save in a zip because Vercel hides subdirectory of public/
 
-const zip = new JSZip();
-const folder = zip.folder('exportTemplate');
+const output = fs.createWriteStream('./public/exportTemplate.zip');
+const archive = archiver('zip', {
+  zlib: { level: 9 } // Sets the compression level.
+});
 
-// put all files from public/exportTemplate inside it (except index.html, because we will change it)
-const addFile = (filePath) => {
-  const stats = fs.statSync(filePath);
-
-  if (stats.isFile()) {
-    const data = fs.readFileSync(filePath);
-    const relativePath = path.relative('./public/exportTemp', filePath);
-
-    folder.file(relativePath, data);
-  } else if (stats.isDirectory()) {
-    const relativePath = path.relative('./public/exportTemp', filePath);
-
-    const subFolder = folder.folder(relativePath);
-    const subFiles = fs.readdirSync(filePath);
-
-    for (const file of subFiles) {
-      addFile(path.join(filePath, file));
-    }
+archive.on('warning', function (err) {
+  if (err.code === 'ENOENT') {
+    console.log(err);
+  } else {
+    throw err;
   }
-};
-addFile('./public/exportTemp');
+});
 
-const af = async () => {
-  const buffer = await folder.generateAsync({ type: 'nodebuffer' });
-  fs.writeFileSync('./public/exportTemplate.zip', buffer);
-  console.log('./public/exportTemplate.zip has been saved!');
-}
-af()
+archive.on('error', function (err) {
+  throw err;
+});
+
+archive.pipe(output);
+
+archive.directory("./public/exportTemp", false);
+
+archive.finalize();

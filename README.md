@@ -9,7 +9,7 @@ The script `makeexporttemplate` has to be run and `/public/exportTemplate` has t
 
 ## Export the game and deploy it on itch.io
 
-- create a new project on itch.io and upload the `out.zip` there
+- create a new project on itch.io and upload the `export.zip` there
 - in the itch.io config, choose a width of 400px and a height of 500px (or more) 
 
 
