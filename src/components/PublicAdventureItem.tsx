@@ -7,7 +7,7 @@ const PublicAdventureItem: React.FC<{ adventure: AdventurePartial }> = ({ advent
   return (
     <>
       <div className='container'>
-        <Link href={location?.hostname === "localhost" ? `/${adventure.id}` : `https://emoji-adventure.vercel.app/${adventure.id}`}>
+        <Link href={location?.hostname === "localhost" ? `/${adventure.id}` : `https://emoji-adventure-retejo.vercel.app/${adventure.id}`}>
           <span className='link'>
             {adventure.name === "" ? "Unnamed adventure" : adventure.name}
           </span>

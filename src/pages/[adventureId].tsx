@@ -71,8 +71,8 @@ export default function AdventurePage() {
     af()
   }, [router.query])
 
-  // you should not be able to play on emoji-adventure-retejo.vercel.app because of your login credentials
-  if (location?.hostname === "emoji-adventure-retejo.vercel.app") {
+  // you should be able to play on emoji-adventure-retejo.vercel.app BUT NOT emoji-adventure so adventures can't steal your credentials
+  if (location?.hostname === "emoji-adventure.vercel.app") {
     router.push("/")
     return <div />
   }

@@ -26,16 +26,21 @@ const Home: NextPage = () => {
         </Button>
       }
 
-      <div>Public adventures:</div>
-      <div>
-        {allAdventuresQuery.isLoading && "Loading adventures..."}
-      </div>
-      <div>
-        {publishedAdventures.map(pA => <PublicAdventureItem adventure={pA} key={`/pb-adventure-${pA.id}`} />)}
-      </div>
+      <div>Emoji Adventure is in alpha test. Your adventures may break at any moment, so export them regularly if you care about them.</div>
 
-      {/* Users are not able to connect to emoji-adventure.vercel.app in order to not share cookies */}
-      {location?.host !== "emoji-adventure.vercel.app" && sessionData !== undefined &&
+      {
+        /*
+        <div>
+          {allAdventuresQuery.isLoading && "Loading adventures..."}
+        </div>
+        <div>
+          {publishedAdventures.map(pA => <PublicAdventureItem adventure={pA} key={`/pb-adventure-${pA.id}`} />)}
+        </div>
+        */
+      }
+
+      {/* Users are not able to connect to emoji-adventure-retejo.vercel.app in order to not share cookies */}
+      {location?.host !== "emoji-adventure-retejo.vercel.app" && sessionData !== undefined &&
         <Button onClick={sessionData ? () => signOut() : () => signIn()}>
           {sessionData ? "Sign out" : "Sign in"}
         </Button>
