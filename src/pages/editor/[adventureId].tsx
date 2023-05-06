@@ -19,6 +19,7 @@ import { Button } from "@mantine/core";
 import GridScripts from "../../components/GridScripts";
 import AdventureScript from "../../components/AdventureScript";
 import DisplayText from "../../components/DisplayText";
+import UploadTips from "../../components/UploadTips";
 
 const EditorAdventureId: NextPage = () => {
   const { data: sessionData } = useSession()
@@ -127,6 +128,7 @@ const EditorAdventureId: NextPage = () => {
           {`Export (save first!)`}
         </Button>
       </a>
+      <UploadTips />
       <hr />
       <Button onClick={() => router.push("/editor")}>
         {`Go to your Adventures (make sure to save your changes before leaving)`}

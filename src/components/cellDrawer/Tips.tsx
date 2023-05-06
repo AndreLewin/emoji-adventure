@@ -19,7 +19,6 @@ const Tips: React.FC<{}> = ({ }) => {
           <div>In the grid, you can CTRL+RIGHTCLICK to place a message script.</div>
           <div>In the grid, you can ALT+RIGHTCLICK to place a move script.</div>
           <div>In the grid, you can ALT+LEFTCLICK to execute the script of the cell.</div>
-          <div>In the drawer, you can use TAB and ENTER to quickly select a preset.</div>
           <div>In the preset modals, when the textarea is active, you can press CTRL+ENTER to confirm.</div>
           <div>In the drawer, when the code textarea is active, you can press CTRL+ENTER to save the script and close the drawer.</div>
           <div> </div>

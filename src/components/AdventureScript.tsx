@@ -15,7 +15,7 @@ const Scripts: React.FC<{}> = ({ }) => {
   const set = store(state => state.set)
 
   const setExampleScript = useCallback<any>(() => {
-    const scriptToAppend = `#ms("hp", 10)\n#msb("hp", value => value <= 0 && #(dead))\n\n#.takeDamages = (damages) => {\n  const hp = #mg("hp")\n  #ms("hp", hp - damages)\n}\n\n// then use #.takeDamages elsewhere`
+    const scriptToAppend = `// define an adventure variable "hp" with value 10\n#.hp = 10\n// make the variable visible as "Health points"\n%#.hp = "Health points"\n// if it reaches 0 (or less) display a sad message\n$#.hp = value => (value <= 0 && #a("nooo, you are dead :("))\n\n// make an adventure function to take damages\n#.takeDamages = (damages) => {\n  #.hp = #.hp - damages\n}\n// you can now use #.takeDamages in any script\n#.takeDamages(20)`
     const script = `${onInitAScript}${onInitAScript === "" ? "" : "\n"}${scriptToAppend}`
     set({ onInitAScript: script })
   }, [onInitAScript, set])
