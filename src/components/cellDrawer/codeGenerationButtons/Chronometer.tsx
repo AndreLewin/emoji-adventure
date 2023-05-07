@@ -8,11 +8,11 @@ const Chronometer: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
 
   const handleClick = useCallback<any>(() => {
     const script = `// adventure chronometer
-%#.chronometer = "Time playing the adventure (s)"
+#%.chronometer = "Time playing the adventure (s)"
 setInterval(() => #.chronometer++, 1000)
 
 // grid chronometer
-%@.chronometer = "Time in this grid (s)"
+@%.chronometer = "Time in this grid (s)"
 _i(() => @.chronometer++)`
     updateCellWithAppend({
       gridId,

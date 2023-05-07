@@ -7,7 +7,7 @@ const VisibleVariables: React.FC<{ gridId: number, cellIndex: number }> = ({ gri
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `// Make the following variable visible\n%@.cats = "🐈 found here"\n// Make it invisible again\n%@.cats = ""\n`
+    const script = `// Make the variable @.cats visible\n@%.cats = "🐈 found here"\n// Make it invisible again\n@%.cats = ""\n`
     updateCellWithAppend({
       gridId,
       cellIndex,

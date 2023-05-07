@@ -39,12 +39,12 @@ export const getRegexes = (
       "Adventure data"
     ],
     [
-      "$#.",
+      "#$.",
       `window._subscriberProxy.`,
-      "Add a subscriber to a global (adventure) variable. (e.g. $#.score = v => console.log(`score: ${v}`))"
+      "Add a subscriber to a global (adventure) variable. (e.g. #$.score = v => console.log(`score: ${v}`))"
     ],
     [
-      "%#.",
+      "#%.",
       `window._visibleVariablesProxy.`,
       "Config global (adventure) variable (such for displaying or display name)"
     ],
@@ -54,12 +54,12 @@ export const getRegexes = (
       "Global (adventure) variable"
     ],
     [
-      "$@.",
+      "@$.",
       `window._subscriberProxy.${gridId === null ? `` : `gridId${gridId}`}`,
-      "Add a subscriber to a grid variable. (e.g. $@.count = v => v > 10 && #m(2))"
+      "Add a subscriber to a grid variable. (e.g. @$.count = v => v > 10 && #m(2))"
     ],
     [
-      "%@.",
+      "@%.",
       `window._visibleVariablesProxy.${gridId === null ? `` : `gridId${gridId}`}`,
       "Config grid variable (use only in a Grid or Cell)"
     ],
@@ -69,12 +69,12 @@ export const getRegexes = (
       "Grid variable (use only in a Grid or Cell)"
     ],
     [
-      "$^.",
+      "^$.",
       `window._subscriberProxy.${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
-      "Add a subscriber to a cell variable. (e.g. $^.life = v => v <= 0 && ^d)"
+      "Add a subscriber to a cell variable. (e.g. ^$.life = v => v <= 0 && ^d)"
     ],
     [
-      "%^.",
+      "^%.",
       `window._visibleVariablesProxy.${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
       "Config cell variable (use only in a Cell)"
     ],
