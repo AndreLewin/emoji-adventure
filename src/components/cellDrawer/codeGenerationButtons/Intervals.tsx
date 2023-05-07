@@ -10,7 +10,7 @@ const Intervals: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, ce
     const script = `// you can use intervals for code that needs to be executed every x milliseconds
 // for example, this code will alternate the emoji of the current cell every second
 
-const alternateEmoji = () => ^$e = (^$e === "🦊" ? "🧡" : "🦊")
+const alternateEmoji = () => ^:e = (^:e === "🦊" ? "🧡" : "🦊")
 // setInterval(alternateEmoji, 1000)
 
 // however, if you run the code like this (with setInterval(alternateEmoji, 1000) uncommented),
@@ -27,7 +27,7 @@ _i(alternateEmoji)
 // the default duration is 1000 ms, you can change it by providing a second parameter
 
 // you can then do oneliners like this one
-// _i(() => ^$e = (^$e === "🦊" ? "🧡" : "🦊"))
+// _i(() => ^:e = (^:e === "🦊" ? "🧡" : "🦊"))
 
 // by the way, if you want the emoji to start alternating again when the player goes back to this grid, make sure to place this script in the On View tab!`
     updateCellWithAppend({

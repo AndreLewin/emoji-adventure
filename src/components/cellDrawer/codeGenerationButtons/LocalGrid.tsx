@@ -8,34 +8,34 @@ const LocalGrid: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, ce
 
   const handleClick = useCallback<any>(() => {
     const script = `// Get local grid data
-console.log(@$)
+console.log(@:)
 // Get cells
-console.log(@$cells)
+console.log(@:cells)
 // Get text/title of the grid
-console.log(@$text)
+console.log(@:text)
 // Update the text/title of the grid
-@$text = "The forest"
+@:text = "The forest"
 // Update view script of the grid
-@$vs = "#a('Welcome in our forest')"
+@:vs = "#a('Welcome in our forest')"
 // Get local gridId
 console.log(@gi)
 
 // Get cell at cellIndex 3
-console.log(@$3)
+console.log(@:3)
 // Update emoji at cellIndex 3
-@$3e = "🦊"
+@:3e = "🦊"
 // Update color at cellIndex 65
-@$65c = "brown"
+@:65c = "brown"
 // Copy the content of the cell 65 to cell 66
-@$66 = @$65
+@:66 = @:65
 // Get all cells from cellIndex 0 to cellIndex 99
-console.log(@$0t99)
+console.log(@:0t99)
 // Update the color of all cells from cellIndex 0 to cellIndex 99
-@$0t99c = "green"
+@:0t99c = "green"
 // Update the emoji of cells 9, 21, 33, 81
-@$9a21a33a81e = "🦊"
+@:9a21a33a81e = "🦊"
 // Update the color of the rectangle from cellIndex 51 to cellIndex 63
-@$51x63c = "blue"
+@:51x63c = "blue"
 `
     updateCellWithAppend({
       gridId,

@@ -18,8 +18,8 @@ const pokemon = await response.json()
 const name = pokemon?.name ?? ""
 const sprite = pokemon?.sprites?.front_default ?? ""
 
-@$text = name
-@$backgroundImage = sprite
+@:text = name
+@:backgroundImage = sprite
 `
     updateCellWithAppend({
       gridId,

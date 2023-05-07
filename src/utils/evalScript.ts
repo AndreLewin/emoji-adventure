@@ -6,35 +6,35 @@ export const getRegexes = (
 ): ([string | RegExp, string, string?, string?])[] => {
   return [
     [
-      /\^\$\[(.*?)\]/g,
+      /\^\:\[(.*?)\]/g,
       `window._dataProxy[\`_${gridId ?? "???"}_${cellIndex ?? "???"}\`+$1]`,
       "Local cell data",
-      "^$[$1]"
+      "^:[$1]"
     ],
     [
-      "^$",
+      "^:",
       `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}`,
       "Local cell data"
     ],
     [
-      /@\$\[(.*?)\]/g,
+      /\@\:\[(.*?)\]/g,
       `window._dataProxy[\`_${gridId ?? "???"}_\`+$1]`,
       "Local grid data",
-      "@$[$1]"
+      "@:[$1]"
     ],
     [
-      "@$",
+      "@:",
       `window._dataProxy._${gridId ?? "???"}_`,
       "Local grid data"
     ],
     [
-      /\#\$\[(.*?)\]/g,
+      /\#\:\[(.*?)\]/g,
       `window._dataProxy[\`_\`+$1]`,
       "Adventure data",
-      "#$[$1]"
+      "#:[$1]"
     ],
     [
-      "#$",
+      "#:",
       `window._dataProxy._`,
       "Adventure data"
     ],
@@ -116,12 +116,12 @@ export const getRegexes = (
     [
       "^dd",
       `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}e = ""; window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}c = ""; window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}cs = ""; window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}vs = "";`,
-      "Delete emoji, click script and view script of the cell (equivalent to ^$e = '', ^$c = '', ^$cs = '' and ^$vs = '')"
+      "Delete emoji, click script and view script of the cell (equivalent to ^:e = '', ^:c = '', ^:cs = '' and ^:vs = '')"
     ],
     [
       "^d",
       `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}e = ""; window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}cs = ""; window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}vs = "";`,
-      "Delete emoji, click script and view script of the cell (equivalent to ^$e = '', ^$cs = '' and ^$vs = '')"
+      "Delete emoji, click script and view script of the cell (equivalent to ^:e = '', ^:cs = '' and ^:vs = '')"
     ],
     [
       /\#tt\((.*?)\)/g,

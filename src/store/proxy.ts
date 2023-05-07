@@ -307,7 +307,7 @@ const handler5 = {
       }
     }
 
-    throw "Unexpected way of using #$, @$ or ^$. Please check the documentation."
+    throw "Unexpected way of using #:, @: or ^:. Please check the documentation."
   },
   set(_target: any, variable: string, value: any) {
     const regex = /(?:_)([\datx]*\d)?(?:_)?([\datx]*\d)?(.*)/

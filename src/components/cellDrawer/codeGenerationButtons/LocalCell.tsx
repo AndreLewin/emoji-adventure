@@ -7,7 +7,7 @@ const LocalCell: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, ce
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `// Update emoji\n^$e = "🦊"\n// Update color\n^$c = "brown"\n// Update click script\n^$cs = "#a('yip')"\n// Delete emoji\n^$e = ""\n// Delete color\n^$c = ""\n// Delete click script\n^$cs = ""\n// Delete click script, view script and emoji\n^d\n// Delete click script, view script, emoji and color\n^dd\n// Return cellIndex (between 0 and 99)\n^ci\n`
+    const script = `// Update emoji\n^:e = "🦊"\n// Update color\n^:c = "brown"\n// Update click script\n^:cs = "#a('yip')"\n// Delete emoji\n^:e = ""\n// Delete color\n^:c = ""\n// Delete click script\n^:cs = ""\n// Delete click script, view script and emoji\n^d\n// Delete click script, view script, emoji and color\n^dd\n// Return cellIndex (between 0 and 99)\n^ci\n`
     updateCellWithAppend({
       gridId,
       cellIndex,
