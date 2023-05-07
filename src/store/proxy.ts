@@ -42,11 +42,25 @@ const proxyTarget2 = {};
 const subscriberHandler = {
   get(_target: any, variable: string) {
     // @ts-ignore
-    const subscribers = window._store.getState().subs
-    return subscribers?.[variable] ?? []
-  },
-  set(_object: any, variable: string, unparsedCallback: (newValue?: any) => {}) {
+    let subscribersOfTheVariable = window._store.getState().subscribers?.[variable]
+    // if the subscriber array does not exist for the variable, create it
+    if (!Array.isArray(subscribersOfTheVariable)) {
+      // @ts-ignore
+      const oldSubscribers = window._store.getState().subscribers
+      const subscribers = {
+        ...oldSubscribers,
+        [variable]: []
+      }
+      // @ts-ignore
+      window._store.setState({ subscribers })
+      // @ts-ignore
+      subscribersOfTheVariable = window._store.getState().subscribers?.[variable]
+    }
 
+    return subscribersOfTheVariable
+  },
+  set(_object: any, variable: string, subscribersOfTheVariable: Function[]) {
+    console.log(`Subscriber added to variable: ${variable}`)
 
     /*
     // parse the callback for shorthands
@@ -66,12 +80,10 @@ const subscriberHandler = {
 
     // @ts-ignore
     const oldSubscribers = window._store.getState().subscribers
-    const subscribersForVariable = (oldSubscribers?.[variable] ?? [])
-    subscribersForVariable.push(unparsedCallback)
 
     const subscribers = {
       ...oldSubscribers,
-      [variable]: subscribersForVariable
+      [variable]: subscribersOfTheVariable ?? []
     }
 
     // @ts-ignore
@@ -209,7 +221,9 @@ const getIndexesFromString = (string: string, indexOfLastGrid: number): number[]
 const proxyTarget5 = {};
 const handler5 = {
   get(_target: any, variable: string) {
-    console.log(`data proxy get handler got variable: ${variable}`)
+    // react thing that triggers the proxy for some reason
+    if (variable === "$$typeof") return "react"
+    console.log(`data proxy (get handler) got variable: ${variable}`)
 
     const regex = /(?:_)([\datx]*\d)?(?:_)?([\datx]*\d)?(.*)/
     const match = regex.exec(variable)
@@ -240,9 +254,6 @@ const handler5 = {
     }
 
     const property = match?.[3] ?? ""
-
-    // react thing that triggers the proxy for some reason
-    if (property === "$$typeof") return "react"
 
     const hasCellIndexes = cellIndexes.length > 0
     const hasCellIndex = cellIndex !== null && !Number.isNaN(cellIndex)
@@ -312,7 +323,9 @@ const handler5 = {
     throw "Unexpected way of using #:, @: or ^:. Please check the documentation."
   },
   set(_target: any, variable: string, value: any) {
-    console.log(`data proxy set handler got variable: ${variable}`)
+    // react thing that triggers the proxy for some reason
+    if (variable === "$$typeof") return true
+    console.log(`data proxy (set handler) got variable: ${variable}`)
 
     const regex = /(?:_)([\datx]*\d)?(?:_)?([\datx]*\d)?(.*)/
     const match = regex.exec(variable)

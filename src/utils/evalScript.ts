@@ -41,7 +41,7 @@ export const getRegexes = (
     [
       "#$.",
       `window._subscriberProxy.`,
-      "Add a subscriber to a global (adventure) variable. (e.g. #$.score = v => console.log(`score: ${v}`))"
+      "Add a subscriber to a global (adventure) variable. (example: #$.score.push(v => console.log(`score: ${v}`)))"
     ],
     [
       "#%.",

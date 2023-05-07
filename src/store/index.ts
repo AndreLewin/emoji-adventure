@@ -461,6 +461,9 @@ if (typeof window !== 'undefined') {
       window[`_${name}`] = value
     }
   })
+  // to quickly get the updated store state
+  // @ts-ignore
+  window._ss = () => store.getState()
   // for global variables
   // @ts-ignore
   window._g = {}
