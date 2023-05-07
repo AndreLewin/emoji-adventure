@@ -23,6 +23,33 @@ const colors: string[] = [
   "rgb(200,191,231)"
 ]
 
+// not sure if they will be used, they are or too strong or too light, and the light ones have bad contrast...
+// but they have names easy to remember/recognize for scripting...
+/*
+const HTMLPalette: string[] = [
+  "black",
+  "gray",
+  "maroon",
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "cyan",
+  "blue",
+  "purple",
+  "white",
+  "lightgray",
+  "tan",
+  "pink",
+  "gold",
+  "lightyellow",
+  "lightgreen",
+  "lightcyan",
+  "lightblue",
+  "lavender"
+]
+*/
+
 const ColorSelector: React.FC<{}> = ({ }) => {
 
   return (
