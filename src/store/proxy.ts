@@ -209,6 +209,8 @@ const getIndexesFromString = (string: string, indexOfLastGrid: number): number[]
 const proxyTarget5 = {};
 const handler5 = {
   get(_target: any, variable: string) {
+    console.log(`data proxy get handler got variable: ${variable}`)
+
     const regex = /(?:_)([\datx]*\d)?(?:_)?([\datx]*\d)?(.*)/
     const match = regex.exec(variable)
 
@@ -310,6 +312,8 @@ const handler5 = {
     throw "Unexpected way of using #:, @: or ^:. Please check the documentation."
   },
   set(_target: any, variable: string, value: any) {
+    console.log(`data proxy set handler got variable: ${variable}`)
+
     const regex = /(?:_)([\datx]*\d)?(?:_)?([\datx]*\d)?(.*)/
     const match = regex.exec(variable)
 
