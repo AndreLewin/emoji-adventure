@@ -27,7 +27,7 @@ const ShorthandsInfo: React.FC<{}> = ({ }) => {
             <div> </div>
             {`Shorthands that are placed in the wrong context won't be replaced. This might result in invalid JS code. (But you might want that if your goal is to programmatically place scripts in cells via a Grid or Adventure script.`}
             <div> </div>
-            {`WIP: examples showing how to use store state function directly (_getCell instead of _store.getState().getCell), updateCell, getGrid, floodFill, createGrid...`}
+            {`WIP: examples showing how to use store state function directly (_getCell instead of _store.getState().getCell), updateCell, getGrid, floodFill, createGrid. Global functions: getRelativeCellIndex, getCellIndexFromCellPosition, getCellPositionFromCellIndex...`}
             <div> </div>
           </div>
 
