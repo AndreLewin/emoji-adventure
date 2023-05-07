@@ -7,7 +7,26 @@ const Subscribers: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `// A subscriber is a function that is executed when the value of a variable is changed.\n// You just have to put $ before the adventure, grid or cell variable and to assign the subscriber function.\n// The first argument of the function is the new value.\n// Example: add a subscriber to the variable #.score, display "you won" if the value is >= 3.\n\n#$.score.push(v => v >= 3 && #a("you won"))\n\n// Try it by running #.score++ several times in an other script.`
+    const script = `// A variable subscriber is a function that is executed when the value of a variable is changed.
+// To add a subscriber to a variable, you have to put $ after the context selector (#, @ or ^) and the dot, and then push to the array.
+// Example: add a subscriber to the variable #.score, display "you won" if the value is >= 3.
+
+#$.score.push(v => v >= 3 && #a("you won"))
+
+// Try it by running #.score++ several times in an other script.
+
+// You can get the old value by pushing a function with two parameters:
+#$.score.push((newValue, oldValue) => {
+  console.log("The score was ", oldValue)
+  console.log("The score is now ", newValue)
+})
+
+// See the list of subscribers
+console.log(#$.score)
+
+// Remove the last subscriber added
+#$.score.pop()
+`
     updateCellWithAppend({
       gridId,
       cellIndex,

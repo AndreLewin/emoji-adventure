@@ -14,6 +14,8 @@ const handler = {
   set(_target: any, variable: string, value: any) {
     // @ts-ignore
     const { variables: oldVariables, subscribers } = window._store.getState()
+    let oldValue = oldVariables[variable]
+    oldValue = oldValue === undefined ? 0 : oldValue
 
     const variables = {
       ...oldVariables,
@@ -26,7 +28,7 @@ const handler = {
     // trigger subscribers
     const subscribersForVariable = subscribers?.[variable] ?? []
 
-    subscribersForVariable.forEach((subscriber: any) => subscriber(value))
+    subscribersForVariable.forEach((subscriber: any) => subscriber(value, oldValue))
     return true
   },
 };
