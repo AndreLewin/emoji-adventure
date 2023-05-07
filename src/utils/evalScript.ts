@@ -225,6 +225,11 @@ export const evalScript = (
 
   let newScript = script
   regexes.forEach(regex => {
+    // don't replace shorthands that are called in the wrong context
+    const shorthandLetter = regex[0] instanceof RegExp ? regex[0].toString()[2] : regex[0][0]
+    if (shorthandLetter === "^" && (typeof gridId === "undefined" || typeof cellIndex === "undefined")) return
+    if (shorthandLetter === "@" && (typeof gridId === "undefined")) return
+
     newScript = newScript.replaceAll(regex[0], regex[1])
   })
 

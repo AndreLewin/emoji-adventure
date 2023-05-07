@@ -19,9 +19,13 @@ const ShorthandsInfo: React.FC<{}> = ({ }) => {
           styles={{ header: { position: "absolute", top: 0, right: 0, margin: "5px" } }}
         >
           <div style={{ marginBottom: "10px" }}>
-            {`Variables starting with #, @ or ^ are called Shorthands. They are shortcuts to real javascript variables and calls. Shortcuts are converted to javascript just before execution.`}
+            {`Variables starting with #, @ or ^ are called Shorthands. They are shortcuts to real javascript variables and calls. Shortcuts are converted to javascript when the script is evaluated (for example when the button Try Script is clicked or a cell is clicked).`}
             <div> </div>
             {`# are adventure shorthands, they have the same effect wherever they are used. @ are grid shorthands, their value or effect is local to the grid or cell where there are used. ^ are cell shorthands, their value is only for a specific cell in one grid.`}
+            <div> </div>
+            {`In the Cell context (the scripts on the right panel), you can use all shorthands. In the Grid context, you can use only adventure and grid shorthands. In the Adventure context, you can use only adventure shorthands.`}
+            <div> </div>
+            {`Shorthands that are placed in the wrong context won't be replaced. This might result in invalid JS code. (But you might want that if your goal is to programmatically place scripts in cells via a Grid or Adventure script.`}
             <div> </div>
           </div>
 
