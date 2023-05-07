@@ -4,6 +4,7 @@ import { getIndexesToFloodFill, twoIndexesIntoIndexesOfSquare } from '../utils/m
 import { variableProxy, subscriberProxy, visibleVariablesProxy, dataProxy } from './proxy'
 import { addToGridIntervals, clearGridIntervals, move, getMovePrefilled, movement, sleep, getMovementPrefilled, random } from '../utils/globalFunctions'
 import { evalScript } from '../utils/evalScript'
+import { showNotification } from '@mantine/notifications'
 
 export type Cell = {
   color?: string
@@ -498,4 +499,7 @@ if (typeof window !== 'undefined') {
   window._sleep = sleep
   window._evalScript = evalScript
   window._random = random
+  // https://v5.mantine.dev/others/notifications/
+  // @ts-ignore
+  window._showNotification = showNotification
 }
