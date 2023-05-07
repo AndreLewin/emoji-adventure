@@ -22,7 +22,7 @@ export const move = ({
   keepOriginalContent = true
 }: MoveProperties) => {
   // @ts-ignore
-  const cell = (window._ss().grids?.[gridId]?.cells?.[cellIndex] ?? null) as Cell | null
+  const cell = (window._store.getState().grids?.[gridId]?.cells?.[cellIndex] ?? null) as Cell | null
   if (cell === null) throw new Error(`No cell found for gridId ${gridId} cellIndex ${cellIndex}`)
   if (!["up", "right", "down", "left"].includes(direction)) throw new Error(`Invalid direction value`)
 
@@ -35,14 +35,14 @@ export const move = ({
 
   // place everything in the destination cell
   // @ts-ignore
-  const destinationCell = (window._ss().grids?.[gridId]?.cells?.[cellIndexToMoveTo]) as Cell
+  const destinationCell = (window._store.getState().grids?.[gridId]?.cells?.[cellIndexToMoveTo]) as Cell
   const { color, ...rest } = cell
   if (cellIndexToMoveTo !== null) {
     const cellReplacement = moveColor ? {} : { color: destinationCell.color, ...rest }
     // @ts-ignore
     if (keepOriginalContent) cellReplacement.original = JSON.parse(JSON.stringify(destinationCell))
     // @ts-ignore
-    window._ss().updateCell({
+    window._store.getState().updateCell({
       gridId,
       cellIndex: cellIndexToMoveTo,
       cellReplacement
@@ -54,7 +54,7 @@ export const move = ({
   // @ts-ignore
   if (keepOriginalContent && typeof cell.original === "object") cellReplacement = { ...cellReplacement, ...cell.original }
   // @ts-ignore
-  window._ss().updateCell({
+  window._store.getState().updateCell({
     gridId,
     cellIndex,
     cellReplacement
@@ -129,7 +129,7 @@ export const movement = async ({
     //// probably not worth the complications of resetting the cell position
     // if the grid where the movement takes place is not visible, stop!
     // @ts-ignore
-    const activeGridId = window._ss().activeGridId as number
+    const activeGridId = window._store.getState().activeGridId as number
     if (activeGridId !== gridId) {
       break;
     }
@@ -145,12 +145,12 @@ export const movement = async ({
       const realGridId = lastCell._gridId ?? gridId
       const realCellIndex = lastCell._cellIndex ?? cellIndex
       // @ts-ignore
-      const cell = (window._ss().grids?.[realGridId]?.cells?.[realCellIndex] ?? null) as Cell
+      const cell = (window._store.getState().grids?.[realGridId]?.cells?.[realCellIndex] ?? null) as Cell
       let cellReplacement = moveColor ? {} : { color: cell.color }
       // @ts-ignore
       if (keepOriginalContent && typeof cell.original === "object") cellReplacement = { ...cellReplacement, ...cell.original }
       // @ts-ignore
-      window._ss().updateCell({
+      window._store.getState().updateCell({
         gridId: realGridId,
         cellIndex: realCellIndex,
         cellReplacement

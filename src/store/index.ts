@@ -452,9 +452,15 @@ if (typeof window !== 'undefined') {
   // @ts-ignore
   window._h = () => gridHistory
   // @ts-ignore
-  window._s = store
-  // @ts-ignore
-  window._ss = () => store.getState()
+  window._store = store
+  // place all store functions in the window so they can be accessed more quickly from the scripts
+  const entries = Object.entries(store.getState())
+  entries.forEach(([name, value]) => {
+    if (typeof value === "function") {
+      // @ts-ignore
+      window[`_${name}`] = value
+    }
+  })
   // for global variables
   // @ts-ignore
   window._g = {}
@@ -473,7 +479,7 @@ if (typeof window !== 'undefined') {
   // ask for confirmation when closing tab if there is an unsaved change
   window.addEventListener('beforeunload', (e) => {
     // @ts-ignore
-    const isChanged = window._ss().isChanged
+    const isChanged = window._store.getState().isChanged
     if (isChanged) {
       e.preventDefault();
       e.returnValue = '';

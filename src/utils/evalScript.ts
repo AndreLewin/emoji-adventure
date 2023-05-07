@@ -125,36 +125,31 @@ export const getRegexes = (
     ],
     [
       /\#tt\((.*?)\)/g,
-      `window._s.setState({ text2: $1 })`,
+      `window._store.setState({ text2: $1 })`,
       "Display text under the grid (second position)",
       "#tt($1)"
     ],
     [
       /\#t\((.*?)\)/g,
-      `window._s.setState({ text1: $1 })`,
+      `window._store.setState({ text1: $1 })`,
       "Display text under the grid",
       "#t($1)"
     ],
     [
       /\#\((.*?)\)/g,
-      `window._s.setState({ text1: \`$1\` })`,
+      `window._store.setState({ text1: \`$1\` })`,
       "Display text under the grid (no quotes needed)",
       "#($1)"
     ],
     [
       "#g(",
-      `window._s.getState(`,
+      `window._store.getState(`,
       "Get the state of the Zustand store (all data used by the adventure)"
     ],
     [
       "#s(",
-      `window._s.setState(`,
+      `window._store.setState(`,
       "Set the state of the Zustand store (you can reactively change everything)"
-    ],
-    [
-      "#u(",
-      `window._ss().updateCell(`,
-      "Update cell (you have to provide gridId, cellId, and the update object)"
     ],
     [
       /\#\#a\((.*?)\)/g,
@@ -179,7 +174,7 @@ export const getRegexes = (
     ],
     [
       /\#m\((.*?)\)/g,
-      `window._clearGridIntervals(); window._s.setState({ activeGridId: $1 })`,
+      `window._clearGridIntervals(); window._store.setState({ activeGridId: $1 })`,
       "Move to specified gridId",
       "#m($1)"
     ],

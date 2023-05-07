@@ -92,7 +92,7 @@ const MoveShortcutModal: React.FC<{
       //   if (shouldCreateSameColumnSymmetricEvent) symmetricalCellIndex = getSameColumnSymmetricalCellIndex(symmetricalCellIndex, 10)
       //   if (shouldCreateSameLineSymmetricEvent) symmetricalCellIndex = getSameLineSymmetricalCellIndex(symmetricalCellIndex, 10)
       //   let newScript = grid.cells[symmetricalCellIndex]?.script ?? ""
-      //   newScript = `${newScript}${newScript === "" ? "" : "\n"}window._s.setState({ activeGridId: ${activeGridId} }) `
+      //   newScript = `${newScript}${newScript === "" ? "" : "\n"}window._store.setState({ activeGridId: ${activeGridId} }) `
       //   updateCell({
       //     gridId: grid.id,
       //     cellIndex: symmetricalCellIndex,

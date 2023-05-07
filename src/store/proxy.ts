@@ -7,13 +7,13 @@ const proxyTarget = {};
 const handler = {
   get(_target: any, variable: string) {
     // @ts-ignore
-    const variables = window._s.getState().variables
+    const variables = window._store.getState().variables
     const value = variables[variable]
     return value === undefined ? 0 : value
   },
   set(_target: any, variable: string, value: any) {
     // @ts-ignore
-    const { variables: oldVariables, subscribers } = window._s.getState()
+    const { variables: oldVariables, subscribers } = window._store.getState()
 
     const variables = {
       ...oldVariables,
@@ -21,7 +21,7 @@ const handler = {
     }
 
     // @ts-ignore
-    window._s.setState({ variables })
+    window._store.setState({ variables })
 
     // trigger subscribers
     const subscribersForVariable = subscribers?.[variable] ?? []
@@ -42,7 +42,7 @@ const proxyTarget2 = {};
 const subscriberHandler = {
   get(_target: any, variable: string) {
     // @ts-ignore
-    const subscribers = window._s.getState().subs
+    const subscribers = window._store.getState().subs
     return subscribers?.[variable] ?? []
   },
   set(_object: any, variable: string, unparsedCallback: (newValue?: any) => {}) {
@@ -65,7 +65,7 @@ const subscriberHandler = {
     */
 
     // @ts-ignore
-    const oldSubscribers = window._s.getState().subscribers
+    const oldSubscribers = window._store.getState().subscribers
     const subscribersForVariable = (oldSubscribers?.[variable] ?? [])
     subscribersForVariable.push(unparsedCallback)
 
@@ -75,7 +75,7 @@ const subscriberHandler = {
     }
 
     // @ts-ignore
-    window._s.setState({ subscribers })
+    window._store.setState({ subscribers })
     return true
   },
 };
@@ -89,19 +89,19 @@ const proxyTarget3 = {};
 const handler3 = {
   get(_target: any, variable: string) {
     // @ts-ignore
-    const visibleVariables = window._s.getState().visibleVariables
+    const visibleVariables = window._store.getState().visibleVariables
     return visibleVariables?.[variable] ?? ""
   },
   set(_target: any, variable: string, name: string) {
     // @ts-ignore
-    const oldVisibleVariables = window._s.getState().visibleVariables
+    const oldVisibleVariables = window._store.getState().visibleVariables
     const visibleVariables = {
       ...oldVisibleVariables,
       [variable]: name
     }
 
     // @ts-ignore
-    window._s.setState({ visibleVariables })
+    window._store.setState({ visibleVariables })
     return true
   }
 };
@@ -216,7 +216,7 @@ const handler5 = {
     let cellIndexes: number[] = []
 
     // @ts-ignore
-    const indexOfLastGrid = window._ss().grids.length - 1
+    const indexOfLastGrid = window._store.getState().grids.length - 1
 
     const cellIndexString = match?.[2] ?? ""
     const hasCellIdStringALetter = /[atx]/.test(cellIndexString)
@@ -250,7 +250,7 @@ const handler5 = {
     const getAdventureData = () => {
       // return only adventure data
       // @ts-ignore
-      const adventure = window._s.getState()
+      const adventure = window._store.getState()
       const { onInitAScript: is } = adventure
       const gridWithShortNames: { [key: string]: any } = {
         is,
@@ -263,7 +263,7 @@ const handler5 = {
     const getGridData = (gridId: number) => {
       // return only grid data
       // @ts-ignore
-      const grid = window._s.getState().getGrid({ gridId }) as Grid
+      const grid = window._store.getState().getGrid({ gridId }) as Grid
       // grid can be null if the grid was deleted
       if (grid === null) return null
       const { onViewGScript: vs, onInitGScript: is } = grid
@@ -278,7 +278,7 @@ const handler5 = {
     const getCellData = (gridId: number, cellIndex: number) => {
       // return only cell data
       // @ts-ignore
-      const cell = window._s.getState().getCell({ gridId, cellIndex }) as Cell
+      const cell = window._store.getState().getCell({ gridId, cellIndex }) as Cell
       const { color: c, emoji: e, onClickCScript: cs, onInitCScript: is, onViewCScript: vs } = cell
       const cellWithShortNames: { [key: string]: any } = {
         c,
@@ -317,7 +317,7 @@ const handler5 = {
     let cellIndexes: number[] = []
 
     // @ts-ignore
-    const indexOfLastGrid = window._ss().grids.length - 1
+    const indexOfLastGrid = window._store.getState().grids.length - 1
 
     const cellIndexString = match?.[2] ?? ""
     const hasCellIdStringALetter = /[atx]/.test(cellIndexString)
@@ -357,7 +357,7 @@ const handler5 = {
         adventureUpdate[shorthenAdventurePropertyName(property)] = value
       }
       // @ts-ignore
-      window._s.setState(adventureUpdate)
+      window._store.setState(adventureUpdate)
     }
 
     const setGridData = (gridId: number) => {
@@ -374,7 +374,7 @@ const handler5 = {
         gridUpdate[shorthenGridPropertyName(property)] = value
       }
       // @ts-ignore
-      window._s.getState().updateGrid({ gridId, gridUpdate })
+      window._store.getState().updateGrid({ gridId, gridUpdate })
     }
 
     const setCellData = (gridId: number, cellIndex: number) => {
@@ -394,7 +394,7 @@ const handler5 = {
         cellUpdate[shorthenCellPropertyName(property)] = value
       }
       // @ts-ignore
-      window._s.getState().updateCell({ gridId, cellIndex, cellUpdate })
+      window._store.getState().updateCell({ gridId, cellIndex, cellUpdate })
     }
 
     if (!hasGridId && !hasGridIds) setAdventureData()
