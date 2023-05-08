@@ -101,7 +101,13 @@ type MovementProperties = {
   delay?: number,
   isRound?: boolean,
   moveColor?: boolean,
-  keepOriginalContent?: boolean
+  keepOriginalContent?: boolean,
+  controller?: {
+    // stop the animation
+    stop?: boolean
+    pause?: boolean,
+    delay?: number,
+  }
 }
 
 export const movement = async ({
@@ -111,8 +117,10 @@ export const movement = async ({
   delay = 500,
   isRound = false,
   moveColor = false,
-  keepOriginalContent = true
+  keepOriginalContent = true,
+  controller = {}
 }: MovementProperties) => {
+
   const shouldLoop = code[code.length - 1] === "*"
   let partToLoop = ""
   if (shouldLoop) {
@@ -123,7 +131,7 @@ export const movement = async ({
   let lastCell: any = null
 
   while (code.length > 0) {
-    await sleep(delay)
+    await sleep(controller.delay ?? delay)
 
     /*
     //// probably not worth the complications of resetting the cell position
@@ -135,7 +143,11 @@ export const movement = async ({
     }
     */
 
-    const firstLetter = code[0]
+    if (controller.pause) {
+      continue;
+    }
+
+    const firstLetter = code[0]!
     code = code.slice(1)
 
     // wait
@@ -169,6 +181,15 @@ export const movement = async ({
       direction = "left"
     } else {
       throw new Error(`Direction of ${firstLetter} unknown`)
+    }
+
+    // extra check just before the movement
+    if (controller.pause) {
+      continue;
+    }
+
+    if (controller.stop) {
+      break;
     }
 
     // first move

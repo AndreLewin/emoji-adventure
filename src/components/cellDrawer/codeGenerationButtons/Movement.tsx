@@ -29,12 +29,26 @@ const Movement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cel
 // _movement({ gridId: @gi, cellIndex: ^ci, code: "RRR", moveColor: true })
 
 // by default, _movement does not block the execution of the rest of the script
-// if you want to execute code only when a movement is finish, you have to await it
+// if you want to execute code only when a movement is finished, you have to await it
 // await _movement({ gridId: @gi, cellIndex: ^ci, code: "RRDDLLUU" })
 // #a("I finished the movement. After one second, I will reverse it.")
 // await _sleep(1000)
 // _movement({ gridId: @gi, cellIndex: ^ci, code: "DDRRUULL" })
 // #t("I'm doing the reversed movement")
+
+// you can provide a "controller" so you can change the animation after it has started
+// const controller = {}
+// _movement({ gridId: @gi, cellIndex: ^ci, code: "R*", isRound: true, controller })
+// change the speed (delay between each move is shorter than default 500, so faster)
+// controller.delay = 250
+// pause then unpause the animation
+// controller.pause = true
+// await _sleep(1000)
+// controller.pause = false
+// stop the animation (for good)
+// controller.stop = true
+// note: if you want to be able to control the animation from an other script, place the controller in a cell, grid or adventure variable
+// #.controller = controller
 
 // you can use shorthands to automatically target the current cell or grid
 // ^mm({ code: "R" })
