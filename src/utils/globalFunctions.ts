@@ -102,36 +102,24 @@ type MovementProperties = {
   isRound?: boolean,
   moveColor?: boolean,
   keepOriginalContent?: boolean,
-  controller?: {
-    // stop the animation
-    stop?: boolean
-    pause?: boolean,
-    delay?: number,
-  }
+  pause?: boolean,
+  stop?: boolean
 }
 
-export const movement = async ({
-  gridId,
-  cellIndex,
-  code,
-  delay = 500,
-  isRound = false,
-  moveColor = false,
-  keepOriginalContent = true,
-  controller = {}
-}: MovementProperties) => {
+export const movement = async (options: MovementProperties) => {
+  // options is not destructered here because the values can change dynamicly
 
-  const shouldLoop = code[code.length - 1] === "*"
+  const shouldLoop = options.code[options.code.length - 1] === "*"
   let partToLoop = ""
   if (shouldLoop) {
-    code = code.slice(0, -1)
-    partToLoop = code
+    options.code = options.code.slice(0, -1)
+    partToLoop = options.code
   }
 
   let lastCell: any = null
 
-  while (code.length > 0) {
-    await sleep(controller.delay ?? delay)
+  while (options.code.length > 0) {
+    await sleep(options.delay ?? 500)
 
     /*
     //// probably not worth the complications of resetting the cell position
@@ -143,22 +131,22 @@ export const movement = async ({
     }
     */
 
-    if (controller.pause) {
+    if (options.pause) {
       continue;
     }
 
-    const firstLetter = code[0]!
-    code = code.slice(1)
+    const firstLetter = options.code[0]!
+    options.code = options.code.slice(1)
 
     // wait
     if (firstLetter === "W") continue
     // disappear
     if (firstLetter === "X") {
-      const realGridId = lastCell._gridId ?? gridId
-      const realCellIndex = lastCell._cellIndex ?? cellIndex
+      const realGridId = lastCell._gridId ?? options.gridId
+      const realCellIndex = lastCell._cellIndex ?? options.cellIndex
       // @ts-ignore
       const cell = (window._store.getState().grids?.[realGridId]?.cells?.[realCellIndex] ?? null) as Cell
-      let cellReplacement = moveColor ? {} : { color: cell.color }
+      let cellReplacement = options.moveColor ? {} : { color: cell.color }
       // @ts-ignore
       if (keepOriginalContent && typeof cell.original === "object") cellReplacement = { ...cellReplacement, ...cell.original }
       // @ts-ignore
@@ -184,27 +172,27 @@ export const movement = async ({
     }
 
     // extra check just before the movement
-    if (controller.pause) {
+    if (options.pause) {
       continue;
     }
 
-    if (controller.stop) {
+    if (options.stop) {
       break;
     }
 
     // first move
     if (lastCell === null) {
-      lastCell = move({ gridId, cellIndex, direction, isRound, moveColor, keepOriginalContent })
+      lastCell = move({ gridId: options.gridId, cellIndex: options.cellIndex, direction, isRound: options.isRound, moveColor: options.moveColor, keepOriginalContent: options.keepOriginalContent })
     } else {
-      lastCell = move({ gridId: lastCell._gridId, cellIndex: lastCell._cellIndex, direction, isRound, moveColor, keepOriginalContent })
+      lastCell = move({ gridId: lastCell._gridId, cellIndex: lastCell._cellIndex, direction, isRound: options.isRound, moveColor: options.moveColor, keepOriginalContent: options.keepOriginalContent })
     }
 
     // no need to move anymore if the cell is not more visible
     if (lastCell === null) break
 
     if (shouldLoop) {
-      if (code.length === 0) {
-        code = partToLoop
+      if (options.code.length === 0) {
+        options.code = partToLoop
       }
     }
   }

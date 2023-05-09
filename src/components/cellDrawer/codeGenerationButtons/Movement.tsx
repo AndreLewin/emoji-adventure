@@ -36,19 +36,19 @@ const Movement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cel
 // _movement({ gridId: @gi, cellIndex: ^ci, code: "DDRRUULL" })
 // #t("I'm doing the reversed movement")
 
-// you can provide a "controller" so you can change the animation after it has started
-// const controller = {}
-// _movement({ gridId: @gi, cellIndex: ^ci, code: "R*", isRound: true, controller })
+// you can change the movement after it has started by changing its options object
+// const mvtOptions = { gridId: @gi, cellIndex: ^ci, code: "R*", isRound: true }
+// _movement(mvtOptions)
 // change the speed (delay between each move is shorter than default 500, so faster)
-// controller.delay = 250
+// mvtOptions.delay = 250
 // pause then unpause the animation
-// controller.pause = true
+// mvtOptions.pause = true
 // await _sleep(1000)
-// controller.pause = false
+// mvtOptions.pause = false
 // stop the animation (for good)
-// controller.stop = true
+// mvtOptions.stop = true
 // note: if you want to be able to control the animation from an other script, place the controller in a cell, grid or adventure variable
-// #.controller = controller
+// @.mvtOptions = mvtOptions
 
 // you can use shorthands to automatically target the current cell or grid
 // ^mm({ code: "R" })
