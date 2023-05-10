@@ -56,6 +56,15 @@ const Movement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cel
 
 // if you use ^mm, you can also directly type the code (but then you can't change the other properties)
 // ^mm("R")
+
+/*
+// use options.content to change the content in movement
+^:e = "🦊"
+const options = { gridId: 0, cellIndex: 0, code: "R*"}
+_movement(options)
+await _sleep(2000)
+options.content.emoji = "😺"
+*/
 `
     updateCellWithAppend({
       gridId,

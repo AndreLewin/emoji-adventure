@@ -4,12 +4,14 @@ import { getRelativeCellIndex } from "./math"
 type MoveProperties = {
   gridId: number
   cellIndex: number,
-  direction: "up" | "right" | "down" | "left",
+  direction: "up" | "right" | "down" | "left" | "void",
   distance?: number,
   isRound?: boolean,
   moveColor?: boolean,
-  // the original content of the cell will reappear if moved out of it
-  keepOriginalContent?: boolean
+  // the content to moved. if undefined, the content of the cell at gridId cellIndex (outside of underlayers) will be used
+  // this can be problematic if the content has been covered by an other moving object
+  content?: any,
+  movementId?: number
 }
 
 export const move = ({
@@ -19,12 +21,24 @@ export const move = ({
   distance = 1,
   isRound = false,
   moveColor = false,
-  keepOriginalContent = true
+  content,
+  movementId
 }: MoveProperties) => {
+  if (!["up", "right", "down", "left", "void"].includes(direction)) throw new Error(`Invalid direction value`)
+
   // @ts-ignore
-  const cell = (window._store.getState().grids?.[gridId]?.cells?.[cellIndex] ?? null) as Cell | null
-  if (cell === null) throw new Error(`No cell found for gridId ${gridId} cellIndex ${cellIndex}`)
-  if (!["up", "right", "down", "left"].includes(direction)) throw new Error(`Invalid direction value`)
+  const originCell = (window._store.getState().grids?.[gridId]?.cells?.[cellIndex] ?? null) as Cell | null
+  if (originCell === null) throw new Error(`No cell found for gridId ${gridId} cellIndex ${cellIndex}`)
+
+  const getContentOfCell = (cell: Cell) => {
+    const { color, underlayers, ...cellContent } = cell
+    return {
+      ...cellContent,
+      ...(moveColor ? { color } : {})
+    }
+  }
+
+  const contentToMove = content ? content : getContentOfCell(originCell)
 
   const cellIndexToMoveTo = getRelativeCellIndex({
     cellIndex,
@@ -33,14 +47,19 @@ export const move = ({
     isRound
   })
 
-  // place everything in the destination cell
+
+  // place in the destination cell
   // @ts-ignore
   const destinationCell = (window._store.getState().grids?.[gridId]?.cells?.[cellIndexToMoveTo]) as Cell
-  const { color, ...rest } = cell
   if (cellIndexToMoveTo !== null) {
-    const cellReplacement = moveColor ? {} : { color: destinationCell.color, ...rest }
-    // @ts-ignore
-    if (keepOriginalContent) cellReplacement.original = JSON.parse(JSON.stringify(destinationCell))
+    const destinationCellContent = getContentOfCell(destinationCell)
+    const cellReplacement = {
+      ...contentToMove,
+      ...(movementId !== undefined ? { _movementId: movementId } : {}),
+      ...(moveColor ? {} : { color: destinationCell.color }),
+      underlayers: [...(destinationCell.underlayers ?? []), destinationCellContent]
+    }
+
     // @ts-ignore
     window._store.getState().updateCell({
       gridId,
@@ -49,10 +68,30 @@ export const move = ({
     })
   }
 
-  // remove everything from the origin cell
-  let cellReplacement = moveColor ? {} : { color: cell.color }
-  // @ts-ignore
-  if (keepOriginalContent && typeof cell.original === "object") cellReplacement = { ...cellReplacement, ...cell.original }
+
+  // remove from the origin cell
+  let cellReplacement: any;
+  const underlayers = [...(originCell.underlayers ?? [])]
+
+  // by default, we remove the "top" content
+  const uppermostUnderlayer = underlayers[underlayers.length - 1] ?? {}
+  cellReplacement = {
+    ...uppermostUnderlayer,
+    ...(moveColor ? {} : { color: originCell.color }),
+    underlayers: underlayers.slice(0, -1)
+  }
+
+  // unless the move is part of a movement, and the content of that movement was
+  // shoved in an underlayer because of an other movement that is now covering the cell
+  // then we don't have to update the display, just to remove from the underlayers
+  const indexInUnderlayers = underlayers.findIndex(underlayer => underlayer._movementId === movementId ?? -1)
+  if (indexInUnderlayers > -1) {
+    cellReplacement = {
+      ...originCell,
+      underlayers: [...underlayers.slice(0, indexInUnderlayers), ...underlayers.slice(indexInUnderlayers + 1)]
+    }
+  }
+
   // @ts-ignore
   window._store.getState().updateCell({
     gridId,
@@ -62,7 +101,6 @@ export const move = ({
 
   // return destination cell (useful if we want to do something after moving)
   if (cellIndexToMoveTo === null) return null
-
   return {
     ...destinationCell,
     _gridId: gridId,
@@ -101,13 +139,26 @@ type MovementProperties = {
   delay?: number,
   isRound?: boolean,
   moveColor?: boolean,
-  keepOriginalContent?: boolean,
   pause?: boolean,
-  stop?: boolean
+  stop?: boolean,
+  // to dynamically change the content of a moving thing
+  content?: Omit<Cell, "underlayers">,
+  // used to keep track "which content comes from which movement"
+  movementId?: number
 }
+
+let movementCount = 0
 
 export const movement = async (options: MovementProperties) => {
   // options is not destructered here because the values can change dynamicly
+
+  options.movementId = movementCount
+  movementCount++
+
+  // @ts-ignore
+  const cell = (window._store.getState().grids?.[options.gridId]?.cells?.[options.cellIndex] ?? null) as Cell
+  const { underlayers, ...initialContent } = cell
+  options.content = initialContent
 
   const shouldLoop = options.code[options.code.length - 1] === "*"
   let partToLoop = ""
@@ -116,7 +167,7 @@ export const movement = async (options: MovementProperties) => {
     partToLoop = options.code
   }
 
-  let lastCell: any = null
+  let previousCell: any = null
 
   while (options.code.length > 0) {
     await sleep(options.delay ?? 500)
@@ -138,27 +189,10 @@ export const movement = async (options: MovementProperties) => {
     const firstLetter = options.code[0]!
     options.code = options.code.slice(1)
 
-    // wait
+    // W = "wait"
     if (firstLetter === "W") continue
-    // disappear
-    if (firstLetter === "X") {
-      const realGridId = lastCell._gridId ?? options.gridId
-      const realCellIndex = lastCell._cellIndex ?? options.cellIndex
-      // @ts-ignore
-      const cell = (window._store.getState().grids?.[realGridId]?.cells?.[realCellIndex] ?? null) as Cell
-      let cellReplacement = options.moveColor ? {} : { color: cell.color }
-      // @ts-ignore
-      if (keepOriginalContent && typeof cell.original === "object") cellReplacement = { ...cellReplacement, ...cell.original }
-      // @ts-ignore
-      window._store.getState().updateCell({
-        gridId: realGridId,
-        cellIndex: realCellIndex,
-        cellReplacement
-      })
-      break
-    }
 
-    let direction: "up" | "right" | "down" | "left" = "right"
+    let direction: "up" | "right" | "down" | "left" | "void" = "right"
     if (firstLetter === "U") {
       direction = "up"
     } else if (firstLetter === "R") {
@@ -167,6 +201,8 @@ export const movement = async (options: MovementProperties) => {
       direction = "down"
     } else if (firstLetter === "L") {
       direction = "left"
+    } else if (firstLetter === "X") {
+      direction = "void"
     } else {
       throw new Error(`Direction of ${firstLetter} unknown`)
     }
@@ -180,15 +216,19 @@ export const movement = async (options: MovementProperties) => {
       break;
     }
 
-    // first move
-    if (lastCell === null) {
-      lastCell = move({ gridId: options.gridId, cellIndex: options.cellIndex, direction, isRound: options.isRound, moveColor: options.moveColor, keepOriginalContent: options.keepOriginalContent })
-    } else {
-      lastCell = move({ gridId: lastCell._gridId, cellIndex: lastCell._cellIndex, direction, isRound: options.isRound, moveColor: options.moveColor, keepOriginalContent: options.keepOriginalContent })
-    }
+    previousCell = move({
+      // previousCell === null means it's the first cell of the movement
+      gridId: previousCell === null ? options.gridId : previousCell._gridId,
+      cellIndex: previousCell === null ? options.cellIndex : previousCell._cellIndex,
+      direction,
+      isRound: options.isRound,
+      moveColor: options.moveColor,
+      content: options.content,
+      movementId: options.movementId
+    })
 
     // no need to move anymore if the cell is not more visible
-    if (lastCell === null) break
+    if (previousCell === null) break
 
     if (shouldLoop) {
       if (options.code.length === 0) {

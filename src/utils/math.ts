@@ -60,10 +60,14 @@ export const getRelativeCellIndex = ({
   isRound = false
 }: {
   cellIndex: number,
-  direction: "up" | "right" | "down" | "left",
+  direction: "up" | "right" | "down" | "left" | "void",
   distance?: number,
   isRound?: boolean
 }): number | null => {
+  if (direction === "void") {
+    return null
+  }
+
   let { line, column } = getCellPositionFromCellIndex(cellIndex)
 
   if (direction === "up") {

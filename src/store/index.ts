@@ -11,6 +11,10 @@ export type Cell = {
   onClickCScript?: string
   onViewCScript?: string
   onInitCScript?: string
+  // when a cell moves to a cell, the original cell is pushed in underlayers
+  underlayers?: Omit<Cell, "underlayers">[]
+  // keep track if the content comes from a movement
+  _movementId?: number
 }
 
 export type Grid = {
