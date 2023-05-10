@@ -10,6 +10,7 @@ import "../styles/globals.css";
 import { useEffect, useState } from "react";
 import store, { pushToGridHistory } from "../store";
 import { NotificationsProvider } from "@mantine/notifications";
+import "animate.css";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

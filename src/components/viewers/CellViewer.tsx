@@ -30,8 +30,11 @@ const CellViewer: React.FC<{
           "cursor": (cell?.onClickCScript ?? "") !== "" ? "pointer" : "default"
         }}
         onMouseDown={(e) => handleMouseDown(e)}
+        id={`c${cellIndex}`}
       >
-        {cell?.emoji ?? ""}
+        <span id={`e${cellIndex}`}>
+          {cell?.emoji ?? ""}
+        </span>
       </div>
       <style jsx>
         {`

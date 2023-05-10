@@ -284,3 +284,9 @@ export const moveToGrid = (gridId: number) => {
   // @ts-ignore
   window._store.setState({ activeGridId: gridId })
 }
+
+export const setText = (field: "text1" | "text2" | "text3", text: string) => {
+  // @ts-ignore
+  window._store.setState({ [field]: text })
+  window._animate(`#${field}`, "fadeIn", ["faster"])
+}

@@ -17,6 +17,7 @@ import MoveCell from "./codeGenerationButtons/MoveCell";
 import Movement from "./codeGenerationButtons/Movement";
 import Intervals from "./codeGenerationButtons/Intervals";
 import Chronometer from "./codeGenerationButtons/Chronometer";
+import Animations from "./codeGenerationButtons/Animations";
 
 const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
 
@@ -27,9 +28,9 @@ const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = (
         <Confirm gridId={gridId} cellIndex={cellIndex} />
         <Prompt gridId={gridId} cellIndex={cellIndex} />
         <Text gridId={gridId} cellIndex={cellIndex} />
-        <div />
         <MoveToGrid gridId={gridId} cellIndex={cellIndex} />
-        <AskForName gridId={gridId} cellIndex={cellIndex} />
+        <div />
+        {/* <AskForName gridId={gridId} cellIndex={cellIndex} /> */}
         <div />
         <GlobalVariable gridId={gridId} cellIndex={cellIndex} />
         <VisibleVariables gridId={gridId} cellIndex={cellIndex} />
@@ -47,6 +48,8 @@ const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = (
         <Movement gridId={gridId} cellIndex={cellIndex} />
         <Intervals gridId={gridId} cellIndex={cellIndex} />
         <Chronometer gridId={gridId} cellIndex={cellIndex} />
+        <div />
+        <Animations gridId={gridId} cellIndex={cellIndex} />
       </div>
       <style jsx>
         {`

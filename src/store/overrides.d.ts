@@ -11,6 +11,9 @@ interface Window {
   _random: Function
   _activeMovements: Omit<Cell, "underlayers">[]
   _moveToGrid: Function
+  _animate: Function
+  _setText: Function
+  // math
   _getCellPositionFromCellIndex: Function
   _getCellIndexFromCellPosition: Function
   _getRelativeCellIndex: Function

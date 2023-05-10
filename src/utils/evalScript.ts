@@ -125,19 +125,19 @@ export const getRegexes = (
     ],
     [
       /\#tt\((.*?)\)/g,
-      `window._store.setState({ text2: $1 })`,
+      `window._setText("text2", $1 )`,
       "Display text under the grid (second position)",
       "#tt($1)"
     ],
     [
       /\#t\((.*?)\)/g,
-      `window._store.setState({ text1: $1 })`,
+      `window._setText("text1", $1 )`,
       "Display text under the grid",
       "#t($1)"
     ],
     [
       /\#\((.*?)\)/g,
-      `window._store.setState({ text1: \`$1\` })`,
+      `window._setText("text1", \`$1\` )`,
       "Display text under the grid (no quotes needed)",
       "#($1)"
     ],

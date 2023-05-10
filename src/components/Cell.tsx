@@ -171,10 +171,11 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
         onMouseDown={(e) => handleMouseDown(e)}
         onMouseUp={(e) => handleMouseUp(e)}
         onContextMenu={(e) => setIsDrawerOpened(true)}
+        id={`c${cellIndex}`}
       >
         <div className={`full ${hasAViewScript ? "view-script-style" : ""}`}>
           <div className={`full ${hasAClickScript ? "click-script-style" : ""}`}>
-            <span className="emoji-wrapper">
+            <span className="emoji-wrapper" id={`e${cellIndex}`}>
               {cell?.emoji ?? ""}
             </span>
           </div>
