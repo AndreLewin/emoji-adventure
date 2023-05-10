@@ -36,20 +36,6 @@ const Movement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cel
 // _movement({ gridId: @gi, cellIndex: ^ci, code: "DDRRUULL" })
 // #t("I'm doing the reversed movement")
 
-// you can change the movement after it has started by changing its options object
-// const mvtOptions = { gridId: @gi, cellIndex: ^ci, code: "R*", isRound: true }
-// _movement(mvtOptions)
-// change the speed (delay between each move is shorter than default 500, so faster)
-// mvtOptions.delay = 250
-// pause then unpause the animation
-// mvtOptions.pause = true
-// await _sleep(1000)
-// mvtOptions.pause = false
-// stop the animation (for good)
-// mvtOptions.stop = true
-// note: if you want to be able to control the animation from an other script, place the controller in a cell, grid or adventure variable
-// @.mvtOptions = mvtOptions
-
 // you can use shorthands to automatically target the current cell or grid
 // ^mm({ code: "R" })
 // @mm({ cellIndex: ^ci, code: "R" })
@@ -58,13 +44,33 @@ const Movement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cel
 // ^mm("R")
 
 /*
-// use options.content to change the content in movement
-^:e = "🦊"
-const options = { gridId: 0, cellIndex: 0, code: "R*"}
-_movement(options)
-await _sleep(2000)
-options.content.emoji = "😺"
+// you can change a movement after it has started by putting its options object into a variable
+const mvtOptions = {code: "R*", isRound: true }
+^mm(mvtOptions)
+
+// change the speed (delay between each move is shorter than default 500, so faster)
+// mvtOptions.delay = 250
+
+// change the content of the movement
+mvtOptions.content.emoji = "😺"
+
+// pause then unpause the movement
+mvtOptions.pause = true
+await _sleep(1000)
+mvtOptions.pause = false
+
+// stop the movement (the content will stay where it already is)
+// mvtOptions.stop = true
+
+// remove the movement (the content will disappear)
+// mvtOptions.remove = true
+
+// note: if you want to be able to control the movement from an other script, place the controller in a cell, grid or adventure variable
+#.mvtOptions = mvtOptions
 */
+
+// note: all active movements (not finished, stopped or removed) have their options in the window._activeMovements array
+// tip: use the browser console to quickly change the values of the options object and see what the effects are
 `
     updateCellWithAppend({
       gridId,

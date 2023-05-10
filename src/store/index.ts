@@ -506,4 +506,5 @@ if (typeof window !== 'undefined') {
   window._getCellPositionFromCellIndex = getCellPositionFromCellIndex
   window._getCellIndexFromCellPosition = getCellIndexFromCellPosition
   window._getRelativeCellIndex = getRelativeCellIndex
+  window._activeMovements = []
 }

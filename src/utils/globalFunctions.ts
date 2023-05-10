@@ -141,6 +141,7 @@ type MovementProperties = {
   moveColor?: boolean,
   pause?: boolean,
   stop?: boolean,
+  remove?: boolean,
   // to dynamically change the content of a moving thing
   content?: Omit<Cell, "underlayers">,
   // used to keep track "which content comes from which movement"
@@ -149,7 +150,13 @@ type MovementProperties = {
 
 let movementCount = 0
 
+export const removeFromActiveMovements = (movementId: number) => {
+  const indexOfActiveMovement = window._activeMovements.findIndex(aM => aM.movementId === movementId)
+  if (indexOfActiveMovement !== -1) window._activeMovements.splice(indexOfActiveMovement, 1)
+}
+
 export const movement = async (options: MovementProperties) => {
+  window._activeMovements.push(options)
   // options is not destructered here because the values can change dynamicly
 
   options.movementId = movementCount
@@ -186,7 +193,7 @@ export const movement = async (options: MovementProperties) => {
       continue;
     }
 
-    const firstLetter = options.code[0]!
+    let firstLetter = options.code[0]!
     options.code = options.code.slice(1)
 
     // W = "wait"
@@ -207,14 +214,9 @@ export const movement = async (options: MovementProperties) => {
       throw new Error(`Direction of ${firstLetter} unknown`)
     }
 
-    // extra check just before the movement
-    if (options.pause) {
-      continue;
-    }
-
-    if (options.stop) {
-      break;
-    }
+    if (options.stop || options.remove) removeFromActiveMovements(options.movementId)
+    if (options.stop) break
+    if (options.remove) direction = "void"
 
     previousCell = move({
       // previousCell === null means it's the first cell of the movement
@@ -227,6 +229,8 @@ export const movement = async (options: MovementProperties) => {
       movementId: options.movementId
     })
 
+    if (options.remove) break
+
     // no need to move anymore if the cell is not more visible
     if (previousCell === null) break
 
@@ -236,6 +240,7 @@ export const movement = async (options: MovementProperties) => {
       }
     }
   }
+  removeFromActiveMovements(options.movementId)
   // gives time for the cell to be updated before the rest of a script is executed (after await _movement)
   await sleep(10)
 }

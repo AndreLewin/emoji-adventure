@@ -12,4 +12,5 @@ interface Window {
   _getCellPositionFromCellIndex: Function
   _getCellIndexFromCellPosition: Function
   _getRelativeCellIndex: Function
+  _activeMovements: Omit<Cell, "underlayers">[]
 }
