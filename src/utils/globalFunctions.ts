@@ -196,7 +196,7 @@ export const movement = async (options: MovementProperties) => {
       continue;
     }
 
-    let firstLetter = options.code[0]!
+    const firstLetter = options.code[0]!
     options.code = options.code.slice(1)
 
     // W = "wait"

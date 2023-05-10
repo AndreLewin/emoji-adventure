@@ -8,7 +8,7 @@ const getNumberOfAnswersToPregenerate = (str: string): number => {
   const regex = /(\d+)[\)\:]/g
   let match
   while ((match = regex.exec(str))) {
-    const number = parseInt(match[0])
+    const number = parseInt(match[0]!)
     if (number > highestNumber) {
       highestNumber = number
     }
