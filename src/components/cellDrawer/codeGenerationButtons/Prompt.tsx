@@ -1,7 +1,54 @@
 import { Button, Checkbox, Modal, Textarea } from "@mantine/core"
-import { useCallback, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { getHotkeyHandler } from '@mantine/hooks'
 import store from "../../../store"
+
+const getNumberOfAnswersToPregenerate = (str: string): number => {
+  let highestNumber = -Infinity
+  const regex = /(\d+)[\)\:]/g
+  let match
+  while ((match = regex.exec(str))) {
+    const number = parseInt(match[0])
+    if (number > highestNumber) {
+      highestNumber = number
+    }
+    if (number > 5) {
+      highestNumber = 5
+      break
+    }
+  }
+  if (highestNumber < 3) return 2
+  console.log("highestNumber | Prompt.tsx l21", highestNumber)
+
+  return highestNumber
+}
+
+const getScript = (textToDisplay: string, shouldForceValidAnswer: boolean): string => {
+  let script = shouldForceValidAnswer ?
+    `while (true) {
+const answer = #p(\`${textToDisplay}\`)
+` :
+    `const answer = #p(\`${textToDisplay}\`)
+`
+
+  const numberOfAnswersToPregenerate = getNumberOfAnswersToPregenerate(textToDisplay)
+
+  for (let i = 0; i < numberOfAnswersToPregenerate; i++) {
+    script += shouldForceValidAnswer ?
+      `  if (answer === "${i + 1}") {
+    
+  break
+  }
+` :
+      `if (answer === "${i + 1}") {
+  
+}
+`
+  }
+
+  script += shouldForceValidAnswer ? "}" : ""
+  return script
+}
 
 const Prompt: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
 
@@ -12,30 +59,11 @@ const Prompt: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellI
   const [shouldForceValidAnswer, setShouldForceValidAnswer] = useState<boolean>(!!(localStorage.getItem("shouldForceValidAnswer")))
 
   const handlePrompt = useCallback<any>(() => {
-    const scriptNotForced = `const answer = #p(\`${textToDisplay}\`)
-if (answer === "1") {
-  
-}
-if (answer === "2") {
-  
-}
-`
-    const scriptForced = `while (true) {
-  const answer = #p(\`${textToDisplay}\`)
-  if (answer === "1") {
-    
-    break
-  }
-  if (answer === "2") {
-    
-    break
-  }
-}`
     updateCellWithAppend({
       gridId,
       cellIndex,
       cellUpdate: {
-        [activeCScriptTab]: shouldForceValidAnswer ? scriptForced : scriptNotForced
+        [activeCScriptTab]: getScript(textToDisplay, shouldForceValidAnswer)
       }
     })
     setIsModalOpened(false)
