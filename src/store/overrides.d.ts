@@ -9,8 +9,9 @@ interface Window {
   _getMovementPrefilled: Function
   _evalScript: Function
   _random: Function
+  _activeMovements: Omit<Cell, "underlayers">[]
+  _moveToGrid: Function
   _getCellPositionFromCellIndex: Function
   _getCellIndexFromCellPosition: Function
   _getRelativeCellIndex: Function
-  _activeMovements: Omit<Cell, "underlayers">[]
 }

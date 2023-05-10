@@ -174,7 +174,7 @@ export const getRegexes = (
     ],
     [
       /\#m\((.*?)\)/g,
-      `window._clearGridIntervals(); window._store.setState({ activeGridId: $1 })`,
+      `window._moveToGrid($1)`,
       "Move to specified gridId",
       "#m($1)"
     ],

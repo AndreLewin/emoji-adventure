@@ -146,6 +146,9 @@ type MovementProperties = {
   content?: Omit<Cell, "underlayers">,
   // used to keep track "which content comes from which movement"
   movementId?: number
+  pauseIfGridLeft?: boolean
+  stopIfGridLeft?: boolean
+  removeIfGridLeft?: boolean
 }
 
 let movementCount = 0
@@ -264,4 +267,20 @@ export const getMovementPrefilled = (partialMovementObject1: Partial<MovementPro
 
 export const random = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+export const moveToGrid = (gridId: number) => {
+  window._clearGridIntervals()
+  const activeMovements = window._activeMovements
+  // movements
+  const movementsToPause = activeMovements.filter(aM => aM.pauseIfGridLeft && aM.gridId !== gridId)
+  movementsToPause.forEach(m => { m.pause = true })
+  const movementsToUnpause = activeMovements.filter(aM => aM.pauseIfGridLeft && aM.gridId === gridId && aM.pause)
+  movementsToUnpause.forEach(m => { m.pause = false })
+  const movementsToStop = activeMovements.filter(aM => aM.stopIfGridLeft && aM.gridId !== gridId)
+  movementsToStop.forEach(m => { m.stop = true })
+  const movementsToRemove = activeMovements.filter(aM => aM.removeIfGridLeft && aM.gridId !== gridId)
+  movementsToRemove.forEach(m => { m.remove = true })
+  // @ts-ignore
+  window._store.setState({ activeGridId: gridId })
 }

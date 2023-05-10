@@ -2,7 +2,7 @@ import { Adventure } from '.prisma/client'
 import create, { GetState, SetState } from 'zustand'
 import { getCellIndexFromCellPosition, getCellPositionFromCellIndex, getIndexesToFloodFill, getRelativeCellIndex, twoIndexesIntoIndexesOfSquare } from '../utils/math'
 import { variableProxy, subscriberProxy, visibleVariablesProxy, dataProxy } from './proxy'
-import { addToGridIntervals, clearGridIntervals, move, getMovePrefilled, movement, sleep, getMovementPrefilled, random } from '../utils/globalFunctions'
+import { addToGridIntervals, clearGridIntervals, move, getMovePrefilled, movement, sleep, getMovementPrefilled, random, moveToGrid } from '../utils/globalFunctions'
 import { evalScript } from '../utils/evalScript'
 
 export type Cell = {
@@ -502,9 +502,10 @@ if (typeof window !== 'undefined') {
   window._sleep = sleep
   window._evalScript = evalScript
   window._random = random
+  window._activeMovements = []
+  window._moveToGrid = moveToGrid
   // math.ts
   window._getCellPositionFromCellIndex = getCellPositionFromCellIndex
   window._getCellIndexFromCellPosition = getCellIndexFromCellPosition
   window._getRelativeCellIndex = getRelativeCellIndex
-  window._activeMovements = []
 }

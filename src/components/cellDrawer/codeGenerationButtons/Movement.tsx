@@ -65,6 +65,13 @@ mvtOptions.pause = false
 // remove the movement (the content will disappear)
 // mvtOptions.remove = true
 
+// pause the movement if the grid where the movement is active is left
+// it will automatically be unpaused when the player returns on the grid
+// mvtOptions.pauseIfGridLeft = true
+// stop (or remove) the movement if the grid where the movement is active is left
+// mvtOptions.stopIfGridLeft = true
+// mvtOptions.removeIfGridLeft = true
+
 // note: if you want to be able to control the movement from an other script, place the controller in a cell, grid or adventure variable
 #.mvtOptions = mvtOptions
 */
