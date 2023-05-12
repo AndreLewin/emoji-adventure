@@ -506,6 +506,7 @@ if (typeof window !== 'undefined') {
   window._activeMovements = []
   window._moveToGrid = moveToGrid
   window._animate = animate
+  window._a = animate
   window._setText = setText
   // math.ts
   window._getCellPositionFromCellIndex = getCellPositionFromCellIndex

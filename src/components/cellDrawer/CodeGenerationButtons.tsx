@@ -18,6 +18,7 @@ import Movement from "./codeGenerationButtons/Movement";
 import Intervals from "./codeGenerationButtons/Intervals";
 import Chronometer from "./codeGenerationButtons/Chronometer";
 import Animations from "./codeGenerationButtons/Animations";
+import GlobalFunctions from "./codeGenerationButtons/GlobalFunctions";
 
 const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
 
@@ -50,6 +51,7 @@ const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = (
         <Chronometer gridId={gridId} cellIndex={cellIndex} />
         <div />
         <Animations gridId={gridId} cellIndex={cellIndex} />
+        <GlobalFunctions gridId={gridId} cellIndex={cellIndex} />
       </div>
       <style jsx>
         {`

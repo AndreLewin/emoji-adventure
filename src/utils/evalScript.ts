@@ -152,10 +152,10 @@ export const getRegexes = (
       "Set the state of the Zustand store (you can reactively change everything)"
     ],
     [
-      /\#\#a\((.*?)\)/g,
-      `setTimeout(() => { window.alert($1) }, 10)`,
-      "Display alert dialog, delayed after the grid is visually loaded",
-      "##a($1)"
+      /\#ad\((.*?)\)/g,
+      `await _sleep(10); window.alert($1)`,
+      "Alert delayed. Allow to alert after the destination grid is visually loaded",
+      "#ad($1)"
     ],
     [
       "#a(",
@@ -171,6 +171,11 @@ export const getRegexes = (
       "#c(",
       `window.confirm(`,
       "Display confirm dialog"
+    ],
+    [
+      "#l(",
+      `window.console.log(`,
+      "Disply info in the browser console"
     ],
     [
       /\#m\((.*?)\)/g,
