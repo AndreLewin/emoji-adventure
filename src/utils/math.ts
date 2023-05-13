@@ -99,6 +99,38 @@ export const getRelativeCellIndex = ({
   return getCellIndexFromCellPosition({ line, column })
 }
 
+export const computePath = (origin: number, destination: number): string => {
+  let path = ""
+
+  let originCellPosition = getCellPositionFromCellIndex(origin)
+  let destinationCellPosition = getCellPositionFromCellIndex(destination)
+
+  while ((originCellPosition.line !== destinationCellPosition.line) || (originCellPosition.column !== destinationCellPosition.column)) {
+    const lineDistance = destinationCellPosition.line - originCellPosition.line
+    const columnDistance = destinationCellPosition.column - originCellPosition.column
+
+    if (Math.abs(lineDistance) >= Math.abs(columnDistance)) {
+      if (lineDistance >= 0) {
+        path += "D"
+        originCellPosition.line += 1
+      } else {
+        path += "U"
+        originCellPosition.line -= 1
+      }
+    } else {
+      if (columnDistance >= 0) {
+        path += "R"
+        originCellPosition.column += 1
+      } else {
+        path += "L"
+        originCellPosition.column -= 1
+      }
+    }
+  }
+
+  return path
+}
+
 // https://en.wikipedia.org/wiki/Flood_fill
 export const getIndexesToFloodFill = (targetIndex: number, gridValues: string[]) => {
   const targetValue = gridValues[targetIndex]

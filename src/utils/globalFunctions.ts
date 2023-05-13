@@ -1,5 +1,5 @@
 import { Cell } from "../store"
-import { getRelativeCellIndex } from "./math"
+import { computePath, getRelativeCellIndex } from "./math"
 
 type MoveProperties = {
   gridId: number
@@ -135,7 +135,9 @@ export const sleep = (delay: number): Promise<void> => {
 type MovementProperties = {
   gridId: number
   cellIndex: number,
-  code: string,
+  // must provide or a code, or a target
+  code?: string,
+  target?: number,
   delay?: number,
   isRound?: boolean,
   moveColor?: boolean,
@@ -159,6 +161,14 @@ export const removeFromActiveMovements = (movementId: number) => {
 }
 
 export const movement = async (options: MovementProperties) => {
+  if (options?.code === undefined && options?.target === undefined) return console.error("A movement should get or a code (string), or a target (cellIndex number)")
+  if (options?.target !== undefined) {
+    const pathString = computePath(options.cellIndex, options.target)
+    if (pathString === null) return console.error("Invalid target for the movement. You must pass a number between 0 and 99.")
+    options.code = pathString
+  }
+  if (options.code === undefined) return console.error("Could not find a code for the movement")
+
   window._activeMovements.push(options)
   // options is not destructered here because the values can change dynamicly
 
