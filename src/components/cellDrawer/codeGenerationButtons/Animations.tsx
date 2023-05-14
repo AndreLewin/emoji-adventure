@@ -34,7 +34,7 @@ _animate("#e2", "wobble", ["fast"])
 @:3e = "👋"
 _animate("#e3", "wobble", ["repeat-2"])
 
-// you can use _a instead of _animate. Faster to type :)`
+// you can use _a instead of _animate. (the shorthand #a is already used for alerts)`
     updateCellWithAppend({
       gridId,
       cellIndex,

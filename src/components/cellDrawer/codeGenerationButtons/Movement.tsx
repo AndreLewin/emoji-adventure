@@ -10,6 +10,9 @@ const Movement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cel
     const script = `// move the content of the first cell of the grid three cells to the right
 // _movement({ gridId: 0, cellIndex: 0, code: "RRR"})
 
+// move the content of the first cell to the fourth cell (cellIndex 3)
+// _movement({ gridId: 0, cellIndex: 0, target: 3})
+
 // move the content of the current cell down, then left, then up
 // _movement({ gridId: @gi, cellIndex: ^ci, code: "DLU"})
 
@@ -37,16 +40,17 @@ const Movement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cel
 // #t("I'm doing the reversed movement")
 
 // you can use shorthands to automatically target the current cell or grid
-// ^mm({ code: "R" })
-// @mm({ cellIndex: ^ci, code: "R" })
+// ^m({ code: "R" })
+// @m({ cellIndex: ^ci, code: "R" })
 
-// if you use ^mm, you can also directly type the code (but then you can't change the other properties)
-// ^mm("R")
+// if you use ^m, instead of an object, you can pass a code string or a target cellIndex directly (but then you can't use the other options)
+// ^m("R")
+// ^m(81)
 
 /*
 // you can change a movement after it has started by putting its options object into a variable
 const mvtOptions = {code: "R*", isRound: true }
-^mm(mvtOptions)
+^m(mvtOptions)
 
 // change the speed (delay between each move is shorter than default 500, so faster)
 // mvtOptions.delay = 250

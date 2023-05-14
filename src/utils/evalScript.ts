@@ -56,7 +56,7 @@ export const getRegexes = (
     [
       "@$.",
       `window._subscriberProxy.${gridId === null ? `` : `gridId${gridId}`}`,
-      "Add a subscriber to a grid variable. (e.g. @$.count = v => v > 10 && #m(2))"
+      "Add a subscriber to a grid variable. (e.g. @$.count = v => v > 10 && #g(2))"
     ],
     [
       "@%.",
@@ -142,12 +142,12 @@ export const getRegexes = (
       "#($1)"
     ],
     [
-      "#g(",
+      "#gs(",
       `window._store.getState(`,
       "Get the state of the Zustand store (all data used by the adventure)"
     ],
     [
-      "#s(",
+      "#ss(",
       `window._store.setState(`,
       "Set the state of the Zustand store (you can reactively change everything)"
     ],
@@ -178,28 +178,33 @@ export const getRegexes = (
       "Disply info in the browser console"
     ],
     [
-      /\#m\((.*?)\)/g,
+      /\#g\((.*?)\)/g,
       `window._moveToGrid($1)`,
       "Move to specified gridId",
-      "#m($1)"
+      "#g($1)"
     ],
     [
-      "@mm(",
+      "#m(",
+      `window._movement(`,
+      "Movement (shortcut for _movement)"
+    ],
+    [
+      "@m(",
       `window._getMovementPrefilled({ gridId: ${gridId} })(`,
       "Movement prefilled with gridId"
     ],
     [
-      "^mm(",
+      "^m(",
       `window._getMovementPrefilled({ gridId: ${gridId}, cellIndex: ${cellIndex} })(`,
       "Movement prefilled with gridId and cellIndex"
     ],
     [
-      "@m(",
+      "@move(",
       `window._getMovePrefilled({ gridId: ${gridId} })(`,
       "Move prefilled with gridId"
     ],
     [
-      "^m(",
+      "^move(",
       `window._getMovePrefilled({ gridId: ${gridId}, cellIndex: ${cellIndex} })(`,
       "Move prefilled with gridId and cellIndex"
     ],

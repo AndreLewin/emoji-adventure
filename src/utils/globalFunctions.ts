@@ -268,6 +268,14 @@ export const getMovementPrefilled = (partialMovementObject1: Partial<MovementPro
       } as MovementProperties)
     }
 
+    // shortcut for target cell number
+    if (typeof partialMovementObject2 === "number") {
+      return movement({
+        ...partialMovementObject1,
+        target: partialMovementObject2
+      } as MovementProperties)
+    }
+
     return movement({
       ...partialMovementObject1,
       ...partialMovementObject2
