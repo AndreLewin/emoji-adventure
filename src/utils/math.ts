@@ -102,8 +102,8 @@ export const getRelativeCellIndex = ({
 export const computePath = (origin: number, destination: number): string => {
   let path = ""
 
-  let originCellPosition = getCellPositionFromCellIndex(origin)
-  let destinationCellPosition = getCellPositionFromCellIndex(destination)
+  const originCellPosition = getCellPositionFromCellIndex(origin)
+  const destinationCellPosition = getCellPositionFromCellIndex(destination)
 
   while ((originCellPosition.line !== destinationCellPosition.line) || (originCellPosition.column !== destinationCellPosition.column)) {
     const lineDistance = destinationCellPosition.line - originCellPosition.line
