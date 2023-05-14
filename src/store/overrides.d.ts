@@ -18,4 +18,15 @@ interface Window {
   _getCellPositionFromCellIndex: Function
   _getCellIndexFromCellPosition: Function
   _getRelativeCellIndex: Function
-}
+  _tt: Function
+  _tt: Function
+  _t: Function
+  _gs: Function
+  _ss: Function
+  _a: Function
+  _ad: Function
+  _p: Function
+  _c: Function
+  _l: Function
+  _g: Function
+} 

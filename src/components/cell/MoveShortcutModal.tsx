@@ -63,7 +63,7 @@ const MoveShortcutModal: React.FC<{
         gridId,
         cellIndex,
         cellUpdate: {
-          onClickCScript: `#g(${targetGrid}) `
+          onClickCScript: `_g(${targetGrid}) `
         }
       })
 
@@ -80,7 +80,7 @@ const MoveShortcutModal: React.FC<{
           gridId: parseInt(targetGrid, 10),
           cellIndex: symmetricalCellIndex,
           cellUpdate: {
-            onClickCScript: `#g(${activeGridId}) `
+            onClickCScript: `_g(${activeGridId}) `
           }
         })
       }

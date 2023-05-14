@@ -7,7 +7,16 @@ const DisplayOnCondition: React.FC<{ gridId: number, cellIndex: number }> = ({ g
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `// put the following line in On Init\n@$.showFox = v => v && (^:e = "🦊", ^:cs = "#(Yip yap!)")\n\n// try the following line in an other cell of the same grid\n@.showFox = true\n`
+    const script = `// put the following line in On Init
+@$.showFox.push((v) => {
+  if (v) {
+    ^:e = "🦊"
+    ^:cs = "_a('Yip yap!')"
+  }
+})
+
+// try the following line in an other cell of the same grid
+@.showFox = true`
     updateCellWithAppend({
       gridId,
       cellIndex,

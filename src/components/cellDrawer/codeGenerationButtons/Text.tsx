@@ -7,7 +7,7 @@ const Text: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellInd
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `#t("First text field")\n#(First text field with short syntax)\n#tt("Second text field")\n`
+    const script = `_t("First text field")\n#(First text field with short syntax)\n_tt("Second text field")\n`
     updateCellWithAppend({
       gridId,
       cellIndex,

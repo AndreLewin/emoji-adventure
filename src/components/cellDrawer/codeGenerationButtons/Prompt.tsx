@@ -26,9 +26,9 @@ const getNumberOfAnswersToPregenerate = (str: string): number => {
 const getScript = (textToDisplay: string, shouldForceValidAnswer: boolean): string => {
   let script = shouldForceValidAnswer ?
     `while (true) {
-const answer = #p(\`${textToDisplay}\`)
+const answer = _p(\`${textToDisplay}\`)
 ` :
-    `const answer = #p(\`${textToDisplay}\`)
+    `const answer = _p(\`${textToDisplay}\`)
 `
 
   const numberOfAnswersToPregenerate = getNumberOfAnswersToPregenerate(textToDisplay)

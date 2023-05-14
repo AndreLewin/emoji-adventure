@@ -20,7 +20,7 @@ const alternateEmoji = () => ^:e = (^:e === "🦊" ? "🧡" : "🦊")
 // _gridIntervals.push(setInterval(alternateEmoji, 1000))
 
 // window._gridIntervals is a global array for intervals
-// when #g (the command for going to an other grid) is used, all "gridIntervals" will be cleared (deleted)
+// when _g (the command for going to an other grid) is used, all "gridIntervals" will be cleared (deleted)
 
 // a shortcut for "_gridIntervals.push(setInterval(alternateEmoji, 1000))" is the following:
 _i(alternateEmoji)

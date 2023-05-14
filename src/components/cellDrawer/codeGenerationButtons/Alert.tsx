@@ -11,7 +11,7 @@ const Alert: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIn
   const activeCScriptTab = store(state => state.activeCScriptTab)
 
   const handleConfirm = useCallback<any>(() => {
-    const script = `#a(\`${textToDisplay}\`)`
+    const script = `_a(\`${textToDisplay}\`)`
     updateCellWithAppend({
       gridId,
       cellIndex,

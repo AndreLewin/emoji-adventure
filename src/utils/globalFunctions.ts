@@ -308,3 +308,20 @@ export const setText = (field: "text1" | "text2" | "text3", text: string) => {
   window._store.setState({ [field]: text })
   window._animate(`#${field}`, "fadeIn", ["faster"])
 }
+
+export const setText1 = (text: string) => {
+  window._setText("text1", text)
+}
+
+export const setText2 = (text: string) => {
+  window._setText("text2", text)
+}
+
+export const setText3 = (text: string) => {
+  window._setText("text3", text)
+}
+
+export const alertDelayed = async (text: string) => {
+  await sleep(10)
+  window.alert(text)
+}

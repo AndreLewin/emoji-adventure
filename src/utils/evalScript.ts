@@ -56,7 +56,7 @@ export const getRegexes = (
     [
       "@$.",
       `window._subscriberProxy.${gridId === null ? `` : `gridId${gridId}`}`,
-      "Add a subscriber to a grid variable. (e.g. @$.count = v => v > 10 && #g(2))"
+      "Add a subscriber to a grid variable. (e.g. @$.count = v => v > 10 && _g(2))"
     ],
     [
       "@%.",
@@ -124,64 +124,15 @@ export const getRegexes = (
       "Delete emoji, click script and view script of the cell (equivalent to ^:e = '', ^:cs = '' and ^:vs = '')"
     ],
     [
-      /\#tt\((.*?)\)/g,
-      `window._setText("text2", $1 )`,
-      "Display text under the grid (second position)",
-      "#tt($1)"
-    ],
-    [
-      /\#t\((.*?)\)/g,
-      `window._setText("text1", $1 )`,
-      "Display text under the grid",
-      "#t($1)"
-    ],
-    [
       /\#\((.*?)\)/g,
       `window._setText("text1", \`$1\` )`,
       "Display text under the grid (no quotes needed)",
       "#($1)"
     ],
     [
-      "#gs(",
-      `window._store.getState(`,
-      "Get the state of the Zustand store (all data used by the adventure)"
-    ],
-    [
-      "#ss(",
-      `window._store.setState(`,
-      "Set the state of the Zustand store (you can reactively change everything)"
-    ],
-    [
-      /\#ad\((.*?)\)/g,
-      `await _sleep(10); window.alert($1)`,
-      "Alert delayed. Allow to alert after the destination grid is visually loaded",
-      "#ad($1)"
-    ],
-    [
-      "#a(",
-      `window.alert(`,
-      "Display alert dialog (compatible with variables and string interpolation)"
-    ],
-    [
-      "#p(",
-      `window.prompt(`,
-      "Display prompt dialog"
-    ],
-    [
-      "#c(",
-      `window.confirm(`,
-      "Display confirm dialog"
-    ],
-    [
-      "#l(",
-      `window.console.log(`,
-      "Disply info in the browser console"
-    ],
-    [
-      /\#g\((.*?)\)/g,
-      `window._moveToGrid($1)`,
-      "Move to specified gridId",
-      "#g($1)"
+      "#a",
+      `window._animate`,
+      "Animate (shortcut for _animate)"
     ],
     [
       "#m(",

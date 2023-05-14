@@ -2,7 +2,7 @@ import { Adventure } from '.prisma/client'
 import create, { GetState, SetState } from 'zustand'
 import { getCellIndexFromCellPosition, getCellPositionFromCellIndex, getIndexesToFloodFill, getRelativeCellIndex, twoIndexesIntoIndexesOfSquare } from '../utils/math'
 import { variableProxy, subscriberProxy, visibleVariablesProxy, dataProxy } from './proxy'
-import { addToGridIntervals, clearGridIntervals, move, getMovePrefilled, movement, sleep, getMovementPrefilled, random, moveToGrid, setText } from '../utils/globalFunctions'
+import { addToGridIntervals, clearGridIntervals, move, getMovePrefilled, movement, sleep, getMovementPrefilled, random, moveToGrid, setText, setText3, setText2, setText1, alertDelayed } from '../utils/globalFunctions'
 import { animate } from '../utils/animate'
 import { evalScript } from '../utils/evalScript'
 
@@ -504,7 +504,6 @@ if (typeof window !== 'undefined') {
   window._evalScript = evalScript
   window._random = random
   window._activeMovements = []
-  window._moveToGrid = moveToGrid
   window._animate = animate
   window._a = animate
   window._setText = setText
@@ -512,4 +511,16 @@ if (typeof window !== 'undefined') {
   window._getCellPositionFromCellIndex = getCellPositionFromCellIndex
   window._getCellIndexFromCellPosition = getCellIndexFromCellPosition
   window._getRelativeCellIndex = getRelativeCellIndex
+  //
+  window._tt = setText3
+  window._tt = setText2
+  window._t = setText1
+  window._gs = store.getState
+  window._ss = store.setState
+  window._a = window.alert
+  window._ad = alertDelayed
+  window._p = window.prompt
+  window._c = window.confirm
+  window._l = window.console.log
+  window._g = moveToGrid
 }

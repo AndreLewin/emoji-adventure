@@ -34,10 +34,10 @@ const Movement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cel
 // by default, _movement does not block the execution of the rest of the script
 // if you want to execute code only when a movement is finished, you have to await it
 // await _movement({ gridId: @gi, cellIndex: ^ci, code: "RRDDLLUU" })
-// #a("I finished the movement. After one second, I will reverse it.")
+// _a("I finished the movement. After one second, I will reverse it.")
 // await _sleep(1000)
 // _movement({ gridId: @gi, cellIndex: ^ci, code: "DDRRUULL" })
-// #t("I'm doing the reversed movement")
+// _t("I'm doing the reversed movement")
 
 // you can use shorthands to automatically target the current cell or grid
 // ^m({ code: "R" })

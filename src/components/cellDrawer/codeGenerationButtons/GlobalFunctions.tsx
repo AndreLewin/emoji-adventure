@@ -33,6 +33,29 @@ const GlobalFunctions: React.FC<{ gridId: number, cellIndex: number }> = ({ grid
 // const index = _getRelativeCellIndex({ cellIndex: 23, direction: "left", distance: 3 }) // null (out of grid)
 // const index = _getRelativeCellIndex({ cellIndex: 23, direction: "up", distance: 4, isRound: true}) // 83
 
+//// display text at the first position
+// _t("Text position 1")
+//// display text at the second position
+// _tt("Text position 2")
+//// display text at the third position
+// _ttt("Text position 3)
+//// get from the zustand store (equivalent to window._store.getState)
+// _gs()
+//// set to the zustand store (equivalent to window._store.setState)
+// _ss({ text1: "kat" })
+//// alert (equivalent to window.alert)
+// _a("hello world")
+//// alert delayed (so it appears after the grid is loaded for example) (equivalent to await _sleep(10); window.alert)
+// _ad("saluton mondo")
+//// prompt (equivalent to window.prompt)
+// _p("Do you like foxes?")
+//// confirm (equivalent to window.confirm)
+// _c("Are you sure you want to become a fox? This is irreversible!")
+//// log (equivalent to window.console.log)
+// _l(^:)
+//// move to grid
+// _g(0)
+
 // All functions from the Zustand store were also added to the window as global functions
 // They are functions like _createGrid, _floodFill, _getCell, _updateCell and the mighty _set that can change almost any data in the application
 // since there is still no documentation, you should look at the code source on Github to see what kind of property they take and what they do
