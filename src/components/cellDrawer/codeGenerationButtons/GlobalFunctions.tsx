@@ -35,6 +35,7 @@ const GlobalFunctions: React.FC<{ gridId: number, cellIndex: number }> = ({ grid
 
 //// display text at the first position
 // _t("Text position 1")
+// _t("Text with an other animation from Animate.css", "shakeY")
 //// display text at the second position
 // _tt("Text position 2")
 //// display text at the third position

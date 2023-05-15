@@ -303,22 +303,22 @@ export const moveToGrid = (gridId: number) => {
   window._store.setState({ activeGridId: gridId })
 }
 
-export const setText = (field: "text1" | "text2" | "text3", text: string) => {
+export const setText = (field: "text1" | "text2" | "text3", text: string, animation = "fadeIn", extraClasses = ["faster"]) => {
   // @ts-ignore
   window._store.setState({ [field]: text })
-  window._animate(`#${field}`, "fadeIn", ["faster"])
+  window._animate(`#${field}`, animation, extraClasses)
 }
 
-export const setText1 = (text: string) => {
-  window._setText("text1", text)
+export const setText1 = (text: string, animation?: string, extraClasses?: string[]) => {
+  window._setText("text1", text, animation, extraClasses)
 }
 
-export const setText2 = (text: string) => {
-  window._setText("text2", text)
+export const setText2 = (text: string, animation?: string, extraClasses?: string[]) => {
+  window._setText("text2", text, animation, extraClasses)
 }
 
-export const setText3 = (text: string) => {
-  window._setText("text3", text)
+export const setText3 = (text: string, animation?: string, extraClasses?: string[]) => {
+  window._setText("text3", text, animation, extraClasses)
 }
 
 export const alertDelayed = async (text: string) => {
