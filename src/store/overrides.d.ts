@@ -12,6 +12,7 @@ interface Window {
   _activeMovements: Omit<Cell, "underlayers">[]
   _moveToGrid: Function
   _animate: Function
+  _getAnimatePrefilled: Function
   _a: Function
   _setText: Function
   // math

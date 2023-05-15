@@ -34,7 +34,12 @@ _animate("#e2", "wobble", ["fast"])
 @:3e = "👋"
 _animate("#e3", "wobble", ["repeat-2"])
 
-// you can use #a instead of _animate. (the shorthand _a is already used for alerts)`
+// you can use #a instead of _animate. (the shorthand _a is already used for alerts)
+
+// you can use ^a to automatically target the emoji element of the current cell
+^:e = "😺"
+^a("tada")
+`
     updateCellWithAppend({
       gridId,
       cellIndex,

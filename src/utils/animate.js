@@ -1,5 +1,5 @@
 // https://animate.style/
-export const animate = (element, animation, extraClasses = []) =>
+export const animate = (element, animation, extraClasses = []) => {
   // We create a Promise and return it
   new Promise((resolve, reject) => {
     const animationName = `animate__${animation}`;
@@ -22,3 +22,10 @@ export const animate = (element, animation, extraClasses = []) =>
 
     node.addEventListener('animationend', handleAnimationEnd, { once: true });
   });
+}
+
+export const getAnimatePrefilled = ({ cellIndex }) => {
+  return (animation, extraClasses = []) => {
+    return animate(`#e${cellIndex}`, animation, extraClasses)
+  }
+}

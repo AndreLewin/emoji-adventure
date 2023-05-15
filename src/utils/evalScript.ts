@@ -130,6 +130,11 @@ export const getRegexes = (
       "#($1)"
     ],
     [
+      "^a(",
+      `window._getAnimatePrefilled({ cellIndex: ${cellIndex} })(`,
+      "Animate prefilled with the current cell"
+    ],
+    [
       "#a",
       `window._animate`,
       "Animate (shortcut for _animate)"

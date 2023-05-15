@@ -3,7 +3,7 @@ import create, { GetState, SetState } from 'zustand'
 import { getCellIndexFromCellPosition, getCellPositionFromCellIndex, getIndexesToFloodFill, getRelativeCellIndex, twoIndexesIntoIndexesOfSquare } from '../utils/math'
 import { variableProxy, subscriberProxy, visibleVariablesProxy, dataProxy } from './proxy'
 import { addToGridIntervals, clearGridIntervals, move, getMovePrefilled, movement, sleep, getMovementPrefilled, random, moveToGrid, setText, setText3, setText2, setText1, alertDelayed } from '../utils/globalFunctions'
-import { animate } from '../utils/animate'
+import { animate, getAnimatePrefilled } from '../utils/animate'
 import { evalScript } from '../utils/evalScript'
 
 export type Cell = {
@@ -505,6 +505,7 @@ if (typeof window !== 'undefined') {
   window._random = random
   window._activeMovements = []
   window._animate = animate
+  window._getAnimatePrefilled = getAnimatePrefilled
   window._a = animate
   window._setText = setText
   // math.ts
