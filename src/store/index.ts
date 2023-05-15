@@ -16,6 +16,7 @@ export type Cell = {
   underlayers?: Omit<Cell, "underlayers">[]
   // keep track if the content comes from a movement
   _movementId?: number
+  backgroundImage?: string
 }
 
 export type Grid = {

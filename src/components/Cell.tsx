@@ -157,6 +157,9 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
   const hasAnInitScript = useMemo<boolean>(() => {
     return (cell?.onInitCScript ?? "") !== ""
   }, [cell])
+  const hasBackgroundImage = useMemo<boolean>(() => {
+    return (cell?.backgroundImage ?? "") !== ""
+  }, [cell])
 
   const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(false)
   const [isTextShortcutOpen, setIsTextShortcutOpen] = useState<boolean>(false)
@@ -166,7 +169,11 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
     <>
       <div
         className={`container ${hasAnInitScript ? "init-script-style" : ""} ${isDrawerOpened ? "selected-border" : ""}`}
-        style={{ "backgroundColor": cell.color }}
+        style={{
+          "backgroundColor": cell.color,
+          "backgroundSize": hasBackgroundImage ? "cover" : "initial",
+          "backgroundImage": hasBackgroundImage ? `url("${cell.backgroundImage}")` : "none"
+        }}
         onMouseOver={(e) => handleMouseOver(e)}
         onMouseDown={(e) => handleMouseDown(e)}
         onMouseUp={(e) => handleMouseUp(e)}

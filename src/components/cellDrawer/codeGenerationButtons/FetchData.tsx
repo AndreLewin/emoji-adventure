@@ -20,6 +20,7 @@ const sprite = pokemon?.sprites?.front_default ?? ""
 
 @:text = name
 @:backgroundImage = sprite
+^:backgroundImage = sprite
 `
     updateCellWithAppend({
       gridId,
