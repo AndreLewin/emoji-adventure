@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import "animate.css";
 
 export const metadata = {
   title: 'Loading...',
