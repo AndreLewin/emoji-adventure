@@ -2,7 +2,7 @@ import { Button } from "@mantine/core"
 import { useCallback } from "react"
 import store from "../../../store"
 
-const PlaySound: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
+const Music: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
   const activeCScriptTab = store(state => state.activeCScriptTab)
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
@@ -20,7 +20,7 @@ const PlaySound: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, ce
   return (
     <>
       <span className='container'>
-        <Button onClick={handleClick}>Audio</Button>
+        <Button onClick={handleClick}>Music</Button>
       </span>
       <style jsx>
         {`
@@ -33,4 +33,4 @@ const PlaySound: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, ce
   )
 }
 
-export default PlaySound
+export default Music

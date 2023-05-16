@@ -19,6 +19,13 @@ interface Window {
   _getCellPositionFromCellIndex: Function
   _getCellIndexFromCellPosition: Function
   _getRelativeCellIndex: Function
+  // music
+  _playMusic: Function
+  _pauseMusic: Function
+  _resumeMusic: Function
+  _stopMusic: Function
+  _activeMusic: Object
+  //
   _tt: Function
   _tt: Function
   _t: Function

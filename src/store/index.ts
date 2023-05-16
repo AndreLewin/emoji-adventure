@@ -5,6 +5,7 @@ import { variableProxy, subscriberProxy, visibleVariablesProxy, dataProxy } from
 import { addToGridIntervals, clearGridIntervals, move, getMovePrefilled, movement, sleep, getMovementPrefilled, random, moveToGrid, setText, setText3, setText2, setText1, alertDelayed } from '../utils/globalFunctions'
 import { animate, getAnimatePrefilled } from '../utils/animate'
 import { evalScript } from '../utils/evalScript'
+import { activeMusic, pauseMusic, playMusic, resumeMusic, stopMusic } from '../utils/music'
 
 export type Cell = {
   color?: string
@@ -513,6 +514,12 @@ if (typeof window !== 'undefined') {
   window._getCellPositionFromCellIndex = getCellPositionFromCellIndex
   window._getCellIndexFromCellPosition = getCellIndexFromCellPosition
   window._getRelativeCellIndex = getRelativeCellIndex
+  // music.ts
+  window._playMusic = playMusic
+  window._pauseMusic = pauseMusic
+  window._resumeMusic = resumeMusic
+  window._stopMusic = stopMusic
+  window._activeMusic = activeMusic
   //
   window._tt = setText3
   window._tt = setText2
