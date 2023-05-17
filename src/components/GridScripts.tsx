@@ -20,7 +20,7 @@ const GridScripts: React.FC<{}> = ({ }) => {
     return grids.find(g => g.id === activeGridId)!
   }, [activeGridId, grids])
 
-  const [activeGScriptTab, setActiveGScriptTab] = useState<"onViewGScript" | "onInitGScript">("onViewGScript")
+  const [activeGScriptTab, setActiveGScriptTab] = useState<"onViewGScript" | "onLeaveGScript" | "onInitGScript">("onViewGScript")
 
   const gridScript = useMemo<string>(() => {
     return grid[activeGScriptTab] ?? ""
@@ -38,6 +38,9 @@ const GridScripts: React.FC<{}> = ({ }) => {
   const hasViewScript = useMemo<boolean>(() => {
     return (grid?.onViewGScript ?? "") !== ""
   }, [grid])
+  const hasLeaveScript = useMemo<boolean>(() => {
+    return (grid?.onLeaveGScript ?? "") !== ""
+  }, [grid])
   const hasInitScript = useMemo<boolean>(() => {
     return (grid?.onInitGScript ?? "") !== ""
   }, [grid])
@@ -52,8 +55,8 @@ const GridScripts: React.FC<{}> = ({ }) => {
           <Tabs.List>
             <Tabs.Tab
               style={{
-                "background": hasViewScript ? "linear-gradient(to bottom, #42892975, #b3a05875)" : "",
-                "opacity": (activeGScriptTab === "onViewGScript") ? 1 : 0.7
+                "background": hasViewScript ? "linear-gradient(to top right, #f0f28f, #ff3beb)" : "",
+                "opacity": (activeGScriptTab === "onViewGScript") ? 1 : 0.5
               }}
               value="onViewGScript"
             >
@@ -61,8 +64,17 @@ const GridScripts: React.FC<{}> = ({ }) => {
             </Tabs.Tab>
             <Tabs.Tab
               style={{
-                "background": hasInitScript ? "linear-gradient(to bottom left, #ffffff75, #32328775)" : "",
-                "opacity": (activeGScriptTab === "onInitGScript") ? 1 : 0.7
+                "background": hasLeaveScript ? "linear-gradient(to bottom right, #0bb500, #a74f2a)" : "",
+                "opacity": (activeGScriptTab === "onLeaveGScript") ? 1 : 0.5
+              }}
+              value="onLeaveGScript"
+            >
+              On Leave
+            </Tabs.Tab>
+            <Tabs.Tab
+              style={{
+                "background": hasInitScript ? "linear-gradient(to bottom, #00b5a9, #bcf2ef)" : "",
+                "opacity": (activeGScriptTab === "onInitGScript") ? 1 : 0.5
               }}
               value="onInitGScript"
             >

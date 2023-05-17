@@ -22,7 +22,9 @@ const Tips: React.FC<{}> = ({ }) => {
           <div>In the preset modals, when the textarea is active, you can press CTRL+ENTER to confirm.</div>
           <div>In the drawer, when the code textarea is active, you can press CTRL+ENTER to save the script and close the drawer.</div>
           <div> </div>
-          <div>{`Order of execution of scripts (lifecycle): Adventure On Init > Grids On Init > Cells On Init > Grid on View > Cells on View`}</div>
+          <div>{`Order of execution of scripts (lifecycle) when starting an adventure: Adventure On Init > Grids On Init > Cells On Init > Grid On View > Cells On View`}</div>
+          <div> </div>
+          <div>{`Order of execution of scripts when moving to an other grid (_g): Cells On Leave > Grid On Leave > Grid On View > Cells On View`}</div>
           <div> </div>
           <div>{`You have access to "window" inside the scripts. So basically you can do anything a website can do. With the exception of Shorthands, everything is pure real Javascript in the browser context.`}</div>
           <div> </div>

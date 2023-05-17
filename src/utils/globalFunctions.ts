@@ -1,4 +1,5 @@
-import { Cell } from "../store"
+import { Cell, Grid } from "../store"
+import { evalScript } from "./evalScript"
 import { computePath, getRelativeCellIndex } from "./math"
 
 type MoveProperties = {
@@ -288,9 +289,9 @@ export const random = (min: number, max: number) => {
 }
 
 export const moveToGrid = (gridId: number) => {
-  window._clearGridIntervals()
-  const activeMovements = window._activeMovements
+  clearGridIntervals()
   // movements
+  const activeMovements = window._activeMovements
   const movementsToPause = activeMovements.filter(aM => aM.pauseIfGridLeft && aM.gridId !== gridId)
   movementsToPause.forEach(m => { m.pause = true })
   const movementsToUnpause = activeMovements.filter(aM => aM.pauseIfGridLeft && aM.gridId === gridId && aM.pause)
@@ -299,6 +300,15 @@ export const moveToGrid = (gridId: number) => {
   movementsToStop.forEach(m => { m.stop = true })
   const movementsToRemove = activeMovements.filter(aM => aM.removeIfGridLeft && aM.gridId !== gridId)
   movementsToRemove.forEach(m => { m.remove = true })
+
+  // execute leave scripts
+  const activeGridId = window._gs().activeGridId as number
+  const grid = (window._gs().grids as Grid[]).find(g => g.id === activeGridId) as Grid
+  // cells
+  grid.cells.forEach((c, index) => evalScript(c.onLeaveCScript, { gridId: grid.id, cellIndex: index }))
+  // grid
+  evalScript(grid?.onLeaveGScript ?? "", { gridId: grid.id })
+
   // @ts-ignore
   window._store.setState({ activeGridId: gridId })
 }

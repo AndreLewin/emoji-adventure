@@ -154,6 +154,9 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
   const hasAViewScript = useMemo<boolean>(() => {
     return (cell?.onViewCScript ?? "") !== ""
   }, [cell])
+  const hasALeaveScript = useMemo<boolean>(() => {
+    return (cell?.onLeaveCScript ?? "") !== ""
+  }, [cell])
   const hasAnInitScript = useMemo<boolean>(() => {
     return (cell?.onInitCScript ?? "") !== ""
   }, [cell])
@@ -180,11 +183,13 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
         onContextMenu={(e) => setIsDrawerOpened(true)}
         id={`c${cellIndex}`}
       >
-        <div className={`full ${hasAViewScript ? "view-script-style" : ""}`}>
-          <div className={`full ${hasAClickScript ? "click-script-style" : ""}`}>
-            <span className="emoji-wrapper" id={`e${cellIndex}`}>
-              {cell?.emoji ?? ""}
-            </span>
+        <div className={`full ${hasALeaveScript ? "leave-script-style" : ""}`}>
+          <div className={`full ${hasAViewScript ? "view-script-style" : ""}`}>
+            <div className={`full ${hasAClickScript ? "click-script-style" : ""}`}>
+              <span className="emoji-wrapper" id={`e${cellIndex}`}>
+                {cell?.emoji ?? ""}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -232,19 +237,25 @@ const CellComponent: React.FC<{ cell: Cell, cellIndex: number, gridId: number }>
             border: 3px dashed;
             border-image-slice: 1;
             border-width: 3px;
-            border-image-source: linear-gradient(to right, #d53a9d, #3593f7);
+            border-image-source: linear-gradient(to right, #b50000, #0686ff);
           }
           .view-script-style {
             border: 3px dashed;
             border-image-slice: 1;
             border-width: 3px;
-            border-image-source: linear-gradient(to bottom, #428929, #b3a058);
+            border-image-source: linear-gradient(to top right, #f0f28f, #ff3beb);
+          }
+          .leave-script-style {
+            border: 3px dashed;
+            border-image-slice: 1;
+            border-width: 3px;
+            border-image-source: linear-gradient(to bottom right, #0bb500, #a74f2a);
           }
           .init-script-style {
             border: 3px dashed;
             border-image-slice: 1;
             border-width: 3px;
-            border-image-source: linear-gradient(to bottom left, #ffffff, #323287);
+            border-image-source: linear-gradient(to bottom, #00b5a9, #bcf2ef);
           }
 
           .full {

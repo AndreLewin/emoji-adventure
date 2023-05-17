@@ -51,6 +51,9 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
   const hasViewScript = useMemo<boolean>(() => {
     return (cell?.onViewCScript ?? "") !== ""
   }, [cell])
+  const hasLeaveScript = useMemo<boolean>(() => {
+    return (cell?.onLeaveCScript ?? "") !== ""
+  }, [cell])
   const hasInitScript = useMemo<boolean>(() => {
     return (cell?.onInitCScript ?? "") !== ""
   }, [cell])
@@ -74,8 +77,8 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
           <Tabs.List>
             <Tabs.Tab
               style={{
-                "background": hasClickScript ? "linear-gradient(to right, #d53a9d75, #3593f775)" : "",
-                "opacity": (activeCScriptTab === "onClickCScript") ? 1 : 0.7
+                "background": hasClickScript ? "linear-gradient(to right, #b50000, #0686ff)" : "",
+                "opacity": (activeCScriptTab === "onClickCScript") ? 1 : 0.5
               }}
               value="onClickCScript"
             >
@@ -83,8 +86,8 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
             </Tabs.Tab>
             <Tabs.Tab
               style={{
-                "background": hasViewScript ? "linear-gradient(to bottom, #42892975, #b3a05875)" : "",
-                "opacity": (activeCScriptTab === "onViewCScript") ? 1 : 0.7
+                "background": hasViewScript ? "linear-gradient(to top right, #f0f28f, #ff3beb)" : "",
+                "opacity": (activeCScriptTab === "onViewCScript") ? 1 : 0.5
               }}
               value="onViewCScript"
             >
@@ -92,8 +95,17 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
             </Tabs.Tab>
             <Tabs.Tab
               style={{
-                "background": hasInitScript ? "linear-gradient(to bottom left, #ffffff75, #32328775)" : "",
-                "opacity": (activeCScriptTab === "onInitCScript") ? 1 : 0.7
+                "background": hasLeaveScript ? "linear-gradient(to bottom right, #0bb500, #a74f2a)" : "",
+                "opacity": (activeCScriptTab === "onLeaveCScript") ? 1 : 0.5
+              }}
+              value="onLeaveCScript"
+            >
+              On Leave
+            </Tabs.Tab>
+            <Tabs.Tab
+              style={{
+                "background": hasInitScript ? "linear-gradient(to bottom, #00b5a9, #bcf2ef)" : "",
+                "opacity": (activeCScriptTab === "onInitCScript") ? 1 : 0.5
               }}
               value="onInitCScript"
             >
