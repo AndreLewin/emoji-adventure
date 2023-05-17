@@ -39,24 +39,9 @@ export const getRegexes = (
       "Adventure data"
     ],
     [
-      "#$.",
-      `window._subscriberProxy.`,
-      "Add a subscriber to a global (adventure) variable. (example: #$.score.push(v => console.log(`score: ${v}`)))"
-    ],
-    [
-      "#%.",
-      `window._visibleVariablesProxy.`,
-      "Config global (adventure) variable (such for displaying or display name)"
-    ],
-    [
-      "#.",
-      `window._variableProxy.`,
-      "Global (adventure) variable"
-    ],
-    [
-      "@$.",
-      `window._subscriberProxy.${gridId === null ? `` : `gridId${gridId}`}`,
-      "Add a subscriber to a grid variable. (e.g. @$.count = v => v > 10 && _g(2))"
+      "^%.",
+      `window._visibleVariablesProxy.${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
+      "Config cell variable (use only in a Cell)"
     ],
     [
       "@%.",
@@ -64,9 +49,9 @@ export const getRegexes = (
       "Config grid variable (use only in a Grid or Cell)"
     ],
     [
-      "@.",
-      `window._variableProxy.${gridId === null ? `` : `gridId${gridId}`}`,
-      "Grid variable (use only in a Grid or Cell)"
+      "#%.",
+      `window._visibleVariablesProxy.`,
+      "Config global (adventure) variable (such for displaying or display name)"
     ],
     [
       "^$.",
@@ -74,9 +59,14 @@ export const getRegexes = (
       "Add a subscriber to a cell variable. (e.g. ^$.life = v => v <= 0 && ^d)"
     ],
     [
-      "^%.",
-      `window._visibleVariablesProxy.${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
-      "Config cell variable (use only in a Cell)"
+      "@$.",
+      `window._subscriberProxy.${gridId === null ? `` : `gridId${gridId}`}`,
+      "Add a subscriber to a grid variable. (e.g. @$.count = v => v > 10 && _g(2))"
+    ],
+    [
+      "#$.",
+      `window._subscriberProxy.`,
+      "Add a subscriber to a global (adventure) variable. (example: #$.score.push(v => console.log(`score: ${v}`)))"
     ],
     [
       "^.",
@@ -84,14 +74,24 @@ export const getRegexes = (
       "Cell variable (use only in a Cell)"
     ],
     [
-      "@gi",
-      `${gridId}`,
-      "Get gridId (in a Grid or Cell)"
+      "@.",
+      `window._variableProxy.${gridId === null ? `` : `gridId${gridId}`}`,
+      "Grid variable (use only in a Grid or Cell)"
+    ],
+    [
+      "#.",
+      `window._variableProxy.`,
+      "Global (adventure) variable"
     ],
     [
       "^ci",
       `${cellIndex}`,
       "Get cellId (in a Cell)"
+    ],
+    [
+      "@gi",
+      `${gridId}`,
+      "Get gridId (in a Grid or Cell)"
     ],
     [
       "^dcs",
@@ -140,9 +140,9 @@ export const getRegexes = (
       "Animate (shortcut for _animate)"
     ],
     [
-      "#m(",
-      `window._movement(`,
-      "Movement (shortcut for _movement)"
+      "^m(",
+      `window._getMovementPrefilled({ gridId: ${gridId}, cellIndex: ${cellIndex} })(`,
+      "Movement prefilled with gridId and cellIndex"
     ],
     [
       "@m(",
@@ -150,19 +150,19 @@ export const getRegexes = (
       "Movement prefilled with gridId"
     ],
     [
-      "^m(",
-      `window._getMovementPrefilled({ gridId: ${gridId}, cellIndex: ${cellIndex} })(`,
-      "Movement prefilled with gridId and cellIndex"
-    ],
-    [
-      "@move(",
-      `window._getMovePrefilled({ gridId: ${gridId} })(`,
-      "Move prefilled with gridId"
+      "#m(",
+      `window._movement(`,
+      "Movement (shortcut for _movement)"
     ],
     [
       "^move(",
       `window._getMovePrefilled({ gridId: ${gridId}, cellIndex: ${cellIndex} })(`,
       "Move prefilled with gridId and cellIndex"
+    ],
+    [
+      "@move(",
+      `window._getMovePrefilled({ gridId: ${gridId} })(`,
+      "Move prefilled with gridId"
     ],
   ]
 }
