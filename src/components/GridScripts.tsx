@@ -86,8 +86,10 @@ const GridScripts: React.FC<{}> = ({ }) => {
           value={gridScript ?? ""}
           placeholder={
             activeGScriptTab === "onViewGScript" ?
-              "Script to execute when the grid comes into view" :
-              "Script to execute when the adventure is loaded (shorthands use grid context) (good place for grid subscribers)"
+              "Execute when the grid comes into view" :
+              activeGScriptTab === "onLeaveGScript" ?
+                "Execute when the grid is left (_g)" :
+                "Execute when the adventure is loaded"
           }
           onValueChange={script => setScript(script)}
           highlight={script => highlight(script, languages.js)}

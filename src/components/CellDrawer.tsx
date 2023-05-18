@@ -118,10 +118,12 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
           value={script ?? ""}
           placeholder={
             activeCScriptTab === "onClickCScript" ?
-              "Script to execute when the cell is clicked" :
+              "Execute when the cell is clicked" :
               activeCScriptTab === "onViewCScript" ?
-                "Script to execute when the grid containing the cell comes into view" :
-                "Script to execute when the adventure is loaded (shorthands use cell context) (good place for cell subscribers)"
+                "Execute when the grid containing the cell comes into view" :
+                activeCScriptTab === "onLeaveCScript" ?
+                  "Execute when the grid containing the cell is left (_g)" :
+                  "Execute when the adventure is loaded"
           }
           onValueChange={script => setScript(script)}
           highlight={script => highlight(script, languages.js)}
