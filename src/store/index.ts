@@ -1,7 +1,7 @@
 import { Adventure } from '.prisma/client'
 import create, { GetState, SetState } from 'zustand'
 import { getCellIndexFromCellPosition, getCellPositionFromCellIndex, getIndexesToFloodFill, getRelativeCellIndex, twoIndexesIntoIndexesOfSquare } from '../utils/math'
-import { variableProxy, subscriberProxy, visibleVariablesProxy, dataProxy } from './proxy'
+import { variableProxy, subscriberProxy, visibleVariablesProxy, dataProxy, cellSubscriberProxy } from './proxy'
 import { addToGridIntervals, clearGridIntervals, move, getMovePrefilled, movement, sleep, getMovementPrefilled, random, moveToGrid, setText, setText3, setText2, setText1, alertDelayed } from '../utils/globalFunctions'
 import { animate, getAnimatePrefilled } from '../utils/animate'
 import { evalScript } from '../utils/evalScript'
@@ -81,7 +81,8 @@ const getDefaultStoreValues: () => any = (): Partial<Store> => ({
   text3: "",
   variables: {},
   subscribers: {},
-  visibleVariables: {}
+  visibleVariables: {},
+  cellSubscribers: {}
 })
 
 export type Store = {
@@ -181,8 +182,9 @@ export type Store = {
   text2: string
   text3: string
   variables: { [key: string]: any }
-  subscribers: { [key: string]: ((v: any) => any)[] }
+  subscribers: { [key: string]: Function[] }
   visibleVariables: { [key: string]: string }
+  cellSubscribers: { [key: string]: Function[] }
 }
 
 export let gridHistory: Pick<Store, "activeGridId" | "grids">[] = []
@@ -241,19 +243,37 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     if (typeof grid === "undefined") return console.error(`grid ${gridId} not found in the store`)
     if (cellIndex >= 100) return console.error(`cellIndex ${cellIndex} does not exist (must be 0-100)`)
 
-    if (typeof cellReplacement !== "undefined") {
-      grid.cells[cellIndex]! = JSON.parse(JSON.stringify(cellReplacement))
+    const oldCell = JSON.parse(JSON.stringify(grid.cells[cellIndex]!)) as Cell
+    let newCell: Cell | null = null
+
+    if (cellReplacement === undefined && cellUpdate === undefined) {
+      throw new Error("Property cellUpdate or cellReplacement must be provided to updateCell")
     }
 
-    if (typeof cellUpdate !== "undefined") {
-      grid.cells[cellIndex]! = {
+    if (cellReplacement !== undefined) {
+      newCell = JSON.parse(JSON.stringify(cellReplacement))
+    }
+
+    if (cellUpdate !== undefined) {
+      newCell = JSON.parse(JSON.stringify({
         ...grid.cells[cellIndex]!,
         ...cellUpdate
-      }
+      }))
     }
 
+    grid.cells[cellIndex]! = newCell!
     get().set({ grids: [...grids] })
+
     pushToGridHistory(get())
+
+    // trigger cell subscribers
+    // ??? do it also in updateCellWithAppend, updateSquare and floodFill?
+    // I expect most users to use the quick #: or @: instead (so only updateCell)
+    const { cellSubscribers } = get()
+    const cellSubscribersForThisCell = cellSubscribers[`_${gridId}_${cellIndex}`] ?? []
+
+    ///TODO handle async subscribers (respect the order of subscribers?)
+    cellSubscribersForThisCell.forEach(cellSubscriber => cellSubscriber(newCell!, oldCell))
   },
   updateCellWithAppend({
     gridId,
@@ -479,7 +499,7 @@ if (typeof window !== 'undefined') {
   // for proxy (variables)
   // @ts-ignore
   window._variableProxy = variableProxy
-  // for assigning new subscribers easily
+  // for assigning new variable subscribers easily
   // @ts-ignore
   window._subscriberProxy = subscriberProxy
   // for assigning new config for variable easily
@@ -488,6 +508,9 @@ if (typeof window !== 'undefined') {
   // for changing data (of cell, grid or adventure)
   // @ts-ignore
   window._dataProxy = dataProxy
+  // for assigning new variable subscribers easily
+  // @ts-ignore
+  window._cellSubscriberProxy = cellSubscriberProxy
   // ask for confirmation when closing tab if there is an unsaved change
   window.addEventListener('beforeunload', (e) => {
     // @ts-ignore

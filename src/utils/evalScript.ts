@@ -6,6 +6,21 @@ export const getRegexes = (
 ): ([string | RegExp, string, string?, string?])[] => {
   return [
     [
+      "^$$",
+      `window._cellSubscriberProxy._${gridId}_${cellIndex}`,
+      "Get list of cell subscribers to the current cell (example: use ^$$)"
+    ],
+    [
+      "@$$",
+      `window._cellSubscriberProxy._${gridId}_`,
+      "Get list of cell subscribers in the current grid (example: use @$$0 for the first cell of current grid)"
+    ],
+    [
+      "#$$",
+      `window._cellSubscriberProxy._`,
+      "Get list of cell subscribers in the adventure (example: use #$$0_2 for the third cell of the first grid) (equivalent of window._cellSubscriberProxy._)"
+    ],
+    [
       /\^\:\[(.*?)\]/g,
       `window._dataProxy[\`_${gridId ?? "???"}_${cellIndex ?? "???"}\`+$1]`,
       "Local cell data",

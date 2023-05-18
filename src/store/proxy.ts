@@ -28,6 +28,7 @@ const handler = {
     // trigger subscribers
     const subscribersForVariable = subscribers?.[variable] ?? []
 
+    ///TODO handle async subscribers (respect the order of subscribers?)
     subscribersForVariable.forEach((subscriber: any) => subscriber(value, oldValue))
     return true
   },
@@ -36,10 +37,7 @@ const handler = {
 export const variableProxy = new Proxy(proxyTarget, handler);
 
 
-// subscriber proxy
-// used to simplify shorthands
-// window._subscriberProxy.xxx = yyy will be translated to subscribers.push({ variable: x, callback: y })
-
+// variable subscriber proxy
 const proxyTarget2 = {};
 const subscriberHandler = {
   get(_target: any, variable: string) {
@@ -129,8 +127,9 @@ const shorthenCellPropertyName = (n: string): string => {
   if (n === "c") return "color"
   if (n === "e") return "emoji"
   if (n === "cs") return "onClickCScript"
-  if (n === "is") return "onInitCScript"
   if (n === "vs") return "onViewCScript"
+  if (n === "ls") return "onLeaveCScript"
+  if (n === "is") return "onInitCScript"
   return n
 }
 
@@ -138,19 +137,22 @@ const lengthenCellPropertyName = (n: string): string => {
   if (n === "color") return "c"
   if (n === "emoji") return "e"
   if (n === "onClickCScript") return "cs"
-  if (n === "onInitCScript") return "is"
   if (n === "onViewCScript") return "vs"
+  if (n === "onLeaveCScript") return "ls"
+  if (n === "onInitCScript") return "is"
   return n
 }
 
 const shorthenGridPropertyName = (n: string): string => {
   if (n === "vs") return "onViewGScript"
+  if (n === "ls") return "onLeaveGScript"
   if (n === "is") return "onInitGScript"
   return n
 }
 
 const lengthenGridPropertyName = (n: string): string => {
   if (n === "onViewGScript") return "vs"
+  if (n === "onLeaveGScript") return "ls"
   if (n === "onInitGScript") return "is"
   return n
 }
@@ -281,10 +283,11 @@ const handler5 = {
       const grid = window._store.getState().getGrid({ gridId }) as Grid
       // grid can be null if the grid was deleted
       if (grid === null) return null
-      const { onViewGScript: vs, onInitGScript: is } = grid
+      const { onViewGScript: vs, onLeaveGScript: ls, onInitGScript: is } = grid
       const gridWithShortNames: { [key: string]: any } = {
-        is,
         vs,
+        ls,
+        is,
         ...grid
       }
       return property === "" ? gridWithShortNames : gridWithShortNames[property]
@@ -294,13 +297,14 @@ const handler5 = {
       // return only cell data
       // @ts-ignore
       const cell = window._store.getState().getCell({ gridId, cellIndex }) as Cell
-      const { color: c, emoji: e, onClickCScript: cs, onInitCScript: is, onViewCScript: vs } = cell
+      const { color: c, emoji: e, onClickCScript: cs, onViewCScript: vs, onLeaveCScript: ls, onInitCScript: is } = cell
       const cellWithShortNames: { [key: string]: any } = {
         c,
         e,
         cs,
-        is,
         vs,
+        ls,
+        is,
         ...cell
       }
       return property === "" ? cellWithShortNames : cellWithShortNames[property]
@@ -383,9 +387,10 @@ const handler5 = {
       let gridUpdate: { [key: string]: any } = {}
 
       if (property === "") {
-        const { vs: onViewGScript, is: onInitGScript, ...rest } = value
+        const { vs: onViewGScript, ls: onLeaveGScript, is: onInitGScript, ...rest } = value
         gridUpdate = {
           onViewGScript,
+          onLeaveGScript,
           onInitGScript,
           ...rest
         }
@@ -400,13 +405,14 @@ const handler5 = {
       let cellUpdate: { [key: string]: any } = {}
 
       if (property === "") {
-        const { c: color, e: emoji, cs: onClickCScript, is: onInitCScript, vs: onViewCScript, ...rest } = value
+        const { c: color, e: emoji, cs: onClickCScript, vs: onViewCScript, ls: onLeaveCScript, is: onInitCScript, ...rest } = value
         cellUpdate = {
           color,
           emoji,
           onClickCScript,
-          onInitCScript,
           onViewCScript,
+          onLeaveCScript,
+          onInitCScript,
           ...rest
         }
       } else {
@@ -435,3 +441,42 @@ const handler5 = {
 };
 
 export const dataProxy = new Proxy(proxyTarget5, handler5);
+
+// variable subscriber proxy
+const proxyTarget6 = {};
+const cellSubscriberHandler = {
+  get(_target: any, variable: string) {
+    // @ts-ignore
+    let subscribersOfTheCell = window._store.getState().cellSubscribers?.[variable]
+    // if the subscriber array does not exist for the variable, create it
+    if (!Array.isArray(subscribersOfTheCell)) {
+      // @ts-ignore
+      const oldCellSubscribers = window._store.getState().cellSubscribers
+      const cellSubscribers = {
+        ...oldCellSubscribers,
+        [variable]: []
+      }
+      // @ts-ignore
+      window._store.setState({ cellSubscribers })
+      // @ts-ignore
+      subscribersOfTheCell = window._store.getState().cellSubscribers?.[variable]
+    }
+
+    return subscribersOfTheCell
+  },
+  set(_object: any, variable: string, subscribersOfTheCell: Function[]) {
+    // @ts-ignore
+    const oldCellSubscribers = window._store.getState().cellSubscribers
+
+    const cellSubscribers = {
+      ...oldCellSubscribers,
+      [variable]: subscribersOfTheCell ?? []
+    }
+
+    // @ts-ignore
+    window._store.setState({ cellSubscribers })
+    return true
+  },
+};
+
+export const cellSubscriberProxy = new Proxy(proxyTarget6, cellSubscriberHandler)
