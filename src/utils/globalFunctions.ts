@@ -171,7 +171,7 @@ export const movement = async (options: MovementProperties) => {
   if (options.code === undefined) return console.error("Could not find a code for the movement")
 
   window._activeMovements.push(options)
-  // options is not destructered here because the values can change dynamicly
+  // options is not destructered here because the values can change dynamically
 
   options.movementId = movementCount
   movementCount++
@@ -192,16 +192,6 @@ export const movement = async (options: MovementProperties) => {
 
   while (options.code.length > 0) {
     await sleep(options.delay ?? 500)
-
-    /*
-    //// probably not worth the complications of resetting the cell position
-    // if the grid where the movement takes place is not visible, stop!
-    // @ts-ignore
-    const activeGridId = window._store.getState().activeGridId as number
-    if (activeGridId !== gridId) {
-      break;
-    }
-    */
 
     if (options.pause) {
       continue;
@@ -259,28 +249,28 @@ export const movement = async (options: MovementProperties) => {
   await sleep(10)
 }
 
-export const getMovementPrefilled = (partialMovementObject1: Partial<MovementProperties>) => {
-  return (partialMovementObject2: Partial<MovementProperties> | string) => {
-    // shortcut for strings codes
-    if (typeof partialMovementObject2 === "string") {
-      return movement({
-        ...partialMovementObject1,
-        code: partialMovementObject2
-      } as MovementProperties)
-    }
+export const getMovementPrefilled = (gridIdCellIndexOptions: Partial<MovementProperties>) => {
+  return (otherOptions: Partial<MovementProperties> | string | number) => {
 
-    // shortcut for target cell number
-    if (typeof partialMovementObject2 === "number") {
+    if (typeof otherOptions === "string") {
+      // shortcut for strings codes
       return movement({
-        ...partialMovementObject1,
-        target: partialMovementObject2
+        ...gridIdCellIndexOptions,
+        code: otherOptions
       } as MovementProperties)
+    } else if (typeof otherOptions === "number") {
+      // shortcut for target cell number
+      return movement({
+        ...gridIdCellIndexOptions,
+        target: otherOptions
+      } as MovementProperties)
+    } else {
+      // put properties of the first object into the second object
+      // so the user can change the inner values from the script
+      Object.assign(otherOptions, gridIdCellIndexOptions)
+      const options = otherOptions
+      return movement(options as MovementProperties)
     }
-
-    return movement({
-      ...partialMovementObject1,
-      ...partialMovementObject2
-    } as MovementProperties)
   }
 }
 
