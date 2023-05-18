@@ -22,24 +22,24 @@ export const getRegexes = (
     ],
     [
       /\^\:\[(.*?)\]/g,
-      `window._dataProxy[\`_${gridId ?? "???"}_${cellIndex ?? "???"}\`+$1]`,
+      `window._dataProxy[\`_${gridId}_${cellIndex}\`+$1]`,
       "Local cell data",
       "^:[$1]"
     ],
     [
       "^:",
-      `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}`,
+      `window._dataProxy._${gridId}_${cellIndex}`,
       "Local cell data"
     ],
     [
       /\@\:\[(.*?)\]/g,
-      `window._dataProxy[\`_${gridId ?? "???"}_\`+$1]`,
+      `window._dataProxy[\`_${gridId}_\`+$1]`,
       "Local grid data",
       "@:[$1]"
     ],
     [
       "@:",
-      `window._dataProxy._${gridId ?? "???"}_`,
+      `window._dataProxy._${gridId}_`,
       "Local grid data"
     ],
     [
@@ -55,47 +55,47 @@ export const getRegexes = (
     ],
     [
       "^%.",
-      `window._visibleVariablesProxy.${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
+      `window._visibleVariablesProxy._${gridId}_${cellIndex}`,
       "Config cell variable (use only in a Cell)"
     ],
     [
       "@%.",
-      `window._visibleVariablesProxy.${gridId === null ? `` : `gridId${gridId}`}`,
+      `window._visibleVariablesProxy._${gridId}`,
       "Config grid variable (use only in a Grid or Cell)"
     ],
     [
       "#%.",
-      `window._visibleVariablesProxy.`,
+      `window._visibleVariablesProxy._`,
       "Config global (adventure) variable (such for displaying or display name)"
     ],
     [
       "^$.",
-      `window._subscriberProxy.${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
+      `window._subscriberProxy._${gridId}_${cellIndex}`,
       "Add a subscriber to a cell variable. (e.g. ^$.life = v => v <= 0 && ^d)"
     ],
     [
       "@$.",
-      `window._subscriberProxy.${gridId === null ? `` : `gridId${gridId}`}`,
+      `window._subscriberProxy._${gridId}`,
       "Add a subscriber to a grid variable. (e.g. @$.count = v => v > 10 && _g(2))"
     ],
     [
       "#$.",
-      `window._subscriberProxy.`,
+      `window._subscriberProxy._`,
       "Add a subscriber to a global (adventure) variable. (example: #$.score.push(v => console.log(`score: ${v}`)))"
     ],
     [
       "^.",
-      `window._variableProxy.${gridId === null ? `` : `gridId${gridId}`}${cellIndex === null ? `` : `cellIndex${cellIndex}`}`,
+      `window._variableProxy._${gridId}_${cellIndex}`,
       "Cell variable (use only in a Cell)"
     ],
     [
       "@.",
-      `window._variableProxy.${gridId === null ? `` : `gridId${gridId}`}`,
+      `window._variableProxy._${gridId}`,
       "Grid variable (use only in a Grid or Cell)"
     ],
     [
       "#.",
-      `window._variableProxy.`,
+      `window._variableProxy._`,
       "Global (adventure) variable"
     ],
     [
@@ -109,34 +109,9 @@ export const getRegexes = (
       "Get gridId (in a Grid or Cell)"
     ],
     [
-      "^dcs",
-      `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}cs = ""`,
-      "Delete click script of the cell (no () needed)"
-    ],
-    [
-      "^dvs",
-      `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}vs = ""`,
-      "Delete view script of the cell"
-    ],
-    [
-      "^dc",
-      `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}c = ""`,
-      "Delete color of the cell"
-    ],
-    [
-      "^de",
-      `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}e = ""`,
-      "Delete emoji of the cell"
-    ],
-    [
-      "^dd",
-      `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}e = ""; window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}c = ""; window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}cs = ""; window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}vs = "";`,
-      "Delete emoji, click script and view script of the cell (equivalent to ^:e = '', ^:c = '', ^:cs = '' and ^:vs = '')"
-    ],
-    [
       "^d",
-      `window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}e = ""; window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}cs = ""; window._dataProxy._${gridId ?? "???"}_${cellIndex ?? "???"}vs = "";`,
-      "Delete emoji, click script and view script of the cell (equivalent to ^:e = '', ^:cs = '' and ^:vs = '')"
+      `window._dataProxy._${gridId}_${cellIndex}e = ""; window._dataProxy._${gridId}_${cellIndex}cs = ""; window._dataProxy._${gridId}_${cellIndex}vs = ""; window._dataProxy._${gridId}_${cellIndex}ls = ""; window._dataProxy._${gridId}_${cellIndex}is = "";`,
+      "Delete emoji and scripts of the cell"
     ],
     [
       /\#\((.*?)\)/g,
