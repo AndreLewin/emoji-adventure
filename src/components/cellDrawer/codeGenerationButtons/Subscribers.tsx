@@ -26,6 +26,17 @@ console.log(#$.score)
 
 // Remove the last subscriber added
 #$.score.pop()
+
+// Subscribers can also be async functions (so you can use "await" inside them)
+// each subscriber is await-ed before the next one in the array list is executed
+#$.score.push(async () => {
+  await _sleep(2000)
+  console.log("this log will appear 2 seconds after #.score is changed")
+})
+#$.score.push(async () => {
+  await _sleep(3000)
+  console.log("this log will appear 5 seconds (2 + 3 seconds) after #.score is changed")
+})
 `
     updateCellWithAppend({
       gridId,

@@ -271,9 +271,12 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     // I expect most users to use the quick #: or @: instead (so only updateCell)
     const { cellSubscribers } = get()
     const cellSubscribersForThisCell = cellSubscribers[`_${gridId}_${cellIndex}`] ?? []
-
-    ///TODO handle async subscribers (respect the order of subscribers?)
-    cellSubscribersForThisCell.forEach(cellSubscriber => cellSubscriber(newCell!, oldCell))
+    const af = async () => {
+      for (const subscriber of cellSubscribersForThisCell) {
+        await subscriber(newCell, oldCell)
+      }
+    }
+    af()
   },
   updateCellWithAppend({
     gridId,

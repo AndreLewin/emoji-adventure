@@ -27,9 +27,12 @@ const handler = {
 
     // trigger subscribers
     const subscribersForVariable = subscribers?.[variable] ?? []
-
-    ///TODO handle async subscribers (respect the order of subscribers?)
-    subscribersForVariable.forEach((subscriber: any) => subscriber(value, oldValue))
+    const af = async () => {
+      for (const subscriber of subscribersForVariable) {
+        await subscriber(value, oldValue)
+      }
+    }
+    af()
     return true
   },
 };
