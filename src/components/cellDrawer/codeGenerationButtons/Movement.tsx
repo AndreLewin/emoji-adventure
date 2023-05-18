@@ -47,16 +47,20 @@ const Movement: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cel
 // ^m("R")
 // ^m(81)
 
+
 /*
 // you can change a movement after it has started by putting its options object into a variable
 const mvtOptions = {code: "R*", isRound: true }
 ^m(mvtOptions)
 
+// note: if you want to be able to control the movement from an other script, place the controller in a cell, grid or adventure variable
+#.mvtOptions = mvtOptions
+
 // change the speed (delay between each move is shorter than default 500, so faster)
 // mvtOptions.delay = 250
 
 // change the content of the movement
-mvtOptions.content.emoji = "😺"
+mvtOptions.content = {emoji: "😺"}
 
 // pause then unpause the movement
 mvtOptions.pause = true
@@ -75,12 +79,13 @@ mvtOptions.pause = false
 // stop (or remove) the movement if the grid where the movement is active is left
 // mvtOptions.stopIfGridLeft = true
 // mvtOptions.removeIfGridLeft = true
-
-// note: if you want to be able to control the movement from an other script, place the controller in a cell, grid or adventure variable
-#.mvtOptions = mvtOptions
 */
 
+// note: if the original options has a loop (example: { code: "R*" }), changing the code dynamically (example: { code: "DDD" }) will work, but the loop will resume after the dynamic code it. It's an unexpected feature, and it might break in the future. It's better to stop the animation and create a new one.
+// note: it is still NOT possible to set a loop dynamically (don't do options.code = "D*" after the movement has started)
+
 // note: all active movements (not finished, stopped or removed) have their options in the window._activeMovements array
+// you can add a dummy property like { tag: "fox" } in the movement options so you can the movement more easily in the _activeMovements array
 // tip: use the browser console to quickly change the values of the options object and see what the effects are
 `
     updateCellWithAppend({
