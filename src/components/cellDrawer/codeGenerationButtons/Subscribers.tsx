@@ -37,7 +37,22 @@ console.log(#$.score)
   await _sleep(3000)
   console.log("this log will appear 5 seconds (2 + 3 seconds) after #.score is changed")
 })
-`
+
+
+/*
+// Example: display a fox on this cell if variable showFox becomes true
+
+// put the following line in On Init
+#$.showFox.push((value) => {
+  if (value) {
+    ^:e = "🦊"
+    ^:cs = "_a('Yip yap!')"
+  }
+})
+
+// try the following in an other script
+#.showFox = true
+*/`
     updateCellWithAppend({
       gridId,
       cellIndex,
