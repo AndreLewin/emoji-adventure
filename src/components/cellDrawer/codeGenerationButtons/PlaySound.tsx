@@ -7,7 +7,17 @@ const PlaySound: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, ce
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
 
   const handleClick = useCallback<any>(() => {
-    const script = `#.animalAudio = new Audio('https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3')\n\n#.roar = () => {\n  #.animalAudio.play()\n}\n\n// After running the code above (for example in an On Init script), you can use the following line every time you want to play the sound\n#.roar()\n`
+    const script = `// import the audio and create the "audio" object (ideally in a On Init script, or an On View executed only one time)
+const splash = new Audio('https://cdn.pixabay.com/audio/2021/08/04/audio_65623c4693.mp3')
+
+// play it
+splash.play()
+
+// make it available everywhere
+#.splash = splash
+
+// now you can play it from all scripts
+#.splash.play()`
     updateCellWithAppend({
       gridId,
       cellIndex,

@@ -10,7 +10,7 @@ const Viewers: React.FC<{}> = ({ }) => {
       <GridViewer />
       <GridInfoViewer />
       <DisplayText />
-      <div style={{ "position": "absolute", "top": "0px", "left": "0px" }}>
+      <div style={{ "position": "absolute", "top": "0px", "left": "0px", "pointerEvents": "none" }}>
         <HoveringTextSpans />
       </div>
     </div>
