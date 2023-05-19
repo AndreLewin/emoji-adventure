@@ -81,13 +81,22 @@ export const tools: Tool[] = [{
       <path d="M19 20h-10.5l-4.21 -4.3a1 1 0 0 1 0 -1.41l10 -10a1 1 0 0 1 1.41 0l5 5a1 1 0 0 1 0 1.41l-9.2 9.3" />
       <path d="M18 13.3l-6.3 -6.3" />
     </svg>
+}, {
+  toolName: "hoveringText",
+  tooltip: "Hovering text mode",
+  svgIcon:
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 12h4M9 4a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3m6-16a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3"></path></svg>
 }]
 
 const ToolSelector: React.FC<{}> = ({ }) => {
   const undo = store(state => state.undo)
+  const activeTool = store(state => state.selectedTool)
 
   useEffect(() => {
     const listenKeyCode = (event: KeyboardEvent) => {
+      // don't change the tool while typing a hovering text 
+      if (window._gs().selectedTool === "hoveringText") return
+
       const { altKey, code } = event
       // TODO: listen to key only if drawer and modals are closed
       // an altKey check if the previous condition is too hard

@@ -21,6 +21,12 @@ export type Cell = {
   backgroundImage?: string
 }
 
+export type HoveringText = {
+  x: number,
+  y: number,
+  text: string
+}
+
 export type Grid = {
   // an id is necessary so it can be referenced from scripts
   id: number
@@ -32,6 +38,7 @@ export type Grid = {
   backgroundImage?: string
   areClickSquaresHidden?: boolean
   areTitlesHidden?: boolean
+  hoveringTexts?: HoveringText[]
 }
 
 export const defaultCellFactory = (): Cell => { return {} }
@@ -151,9 +158,32 @@ export type Store = {
     idOfGridToCopy?: number
   }) => Grid
   deleteGrid: (gridIdToDelete: number) => void
+  createHoveringText: ({
+    gridId,
+    hoveringText
+  }: {
+    gridId: number,
+    hoveringText: HoveringText
+  }) => number
+  updateHoveringText: ({
+    gridId,
+    hoveringTextIndex,
+    hoveringTextUpdate
+  }: {
+    gridId: number,
+    hoveringTextIndex: number,
+    hoveringTextUpdate: Partial<HoveringText>
+  }) => HoveringText
+  deleteHoveringText: ({
+    gridId,
+    hoveringTextIndex
+  }: {
+    gridId: number,
+    hoveringTextIndex: number
+  }) => boolean
   activeGridId: number
   grids: Grid[]
-  selectedTool: "pencil" | "square" | "bucket" | "colorPicker" | "emojiPicker" | "eraser" | "copyEverything" | "pasteEverything" | "undo" | ""
+  selectedTool: "pencil" | "square" | "bucket" | "colorPicker" | "emojiPicker" | "eraser" | "copyEverything" | "pasteEverything" | "undo" | "hoveringText" | ""
   isToolCursorVisible: boolean
   // "blue": the color is selected with the color blue
   // "": the eraser of color is selected
@@ -474,6 +504,74 @@ const store = create<Store>((set: SetState<Store>, get: GetState<Store>) => ({
     get().set({ firstGridId: isRemovingFirstGridId ? newGrids[newGrids.length - 1]!.id : firstGridId })
     get().set({ grids: newGrids })
     pushToGridHistory(get())
+  },
+  createHoveringText: ({
+    gridId,
+    hoveringText
+  }: {
+    gridId: number,
+    hoveringText: HoveringText
+  }) => {
+    const { grids } = get()
+    const grid = grids.find(g => g.id === gridId)
+    if (grid === undefined) throw new Error(`gridId ${gridId} not found`)
+
+    const hoveringTexts = grid.hoveringTexts ?? []
+    const nextIndex = hoveringTexts.length
+    hoveringTexts[nextIndex] = hoveringText
+    grid.hoveringTexts = hoveringTexts
+
+    get().set({ grids: [...grids] })
+    return nextIndex
+  },
+  updateHoveringText: ({
+    gridId,
+    hoveringTextIndex,
+    hoveringTextUpdate
+  }: {
+    gridId: number,
+    hoveringTextIndex: number,
+    hoveringTextUpdate: Partial<HoveringText>
+  }) => {
+    const { grids } = get()
+    const grid = grids.find(g => g.id === gridId)
+    if (grid === undefined) throw new Error(`gridId ${gridId} not found`)
+
+    const hoveringTexts = grid.hoveringTexts ?? []
+    const oldHoveringText = hoveringTexts[hoveringTextIndex]
+    if (oldHoveringText === undefined) throw new Error(`hovering text at hoveringTextIndex ${hoveringTextIndex} in gridId ${gridId} not found`)
+
+    const newHoveringText = {
+      ...oldHoveringText,
+      ...hoveringTextUpdate
+    }
+
+    hoveringTexts[hoveringTextIndex] = newHoveringText
+    grid.hoveringTexts = hoveringTexts
+
+    get().set({ grids: [...grids] })
+    return newHoveringText
+  },
+  deleteHoveringText: ({
+    gridId,
+    hoveringTextIndex
+  }: {
+    gridId: number,
+    hoveringTextIndex: number
+  }) => {
+    const { grids } = get()
+    const grid = grids.find(g => g.id === gridId)
+    if (grid === undefined) throw new Error(`gridId ${gridId} not found`)
+
+    const oldHoveringTexts = grid.hoveringTexts ?? []
+    const oldHoveringText = oldHoveringTexts[hoveringTextIndex]
+    if (oldHoveringText === undefined) throw new Error(`hovering text at hoveringTextIndex ${hoveringTextIndex} in gridId ${gridId} not found`)
+
+    const newHoveringTexts = [...oldHoveringTexts.slice(0, hoveringTextIndex), ...oldHoveringTexts.slice(hoveringTextIndex + 1)]
+    grid.hoveringTexts = newHoveringTexts
+
+    get().set({ grids: [...grids] })
+    return true
   }
 }))
 

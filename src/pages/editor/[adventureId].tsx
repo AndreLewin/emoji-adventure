@@ -15,6 +15,8 @@ import { Adventure } from ".prisma/client";
 import store, { emptyHistory, gridHistory, pushToGridHistory } from "../../store";
 import SaveAdventure from "../../components/SaveAdventure";
 import Cursor from "../../components/Cursor";
+import HoveringTextInputs from "../../components/HoveringTextInputs";
+import HoveringTextSpans from "../../components/HoveringTextSpans";
 import { Button } from "@mantine/core";
 import GridScripts from "../../components/GridScripts";
 import AdventureScript from "../../components/AdventureScript";
@@ -27,6 +29,7 @@ const EditorAdventureId: NextPage = () => {
   const router = useRouter()
 
   const [adventureId, setAdventureId] = useState<string | null>(null)
+  const selectedTool = store(state => state.selectedTool)
 
   const reset = store(state => state.reset)
   useEffect(() => {
@@ -133,6 +136,12 @@ const EditorAdventureId: NextPage = () => {
       <Button onClick={() => router.push("/editor")}>
         {`Go to your Adventures (make sure to save your changes before leaving)`}
       </Button>
+      <div style={{ "position": "absolute", "top": "96px", "left": "0px", display: selectedTool === "hoveringText" ? "initial" : "none" }}>
+        <HoveringTextInputs />
+      </div>
+      <div style={{ "position": "absolute", "top": "96px", "left": "0px", display: selectedTool === "hoveringText" ? "none" : "initial", pointerEvents: "none" }}>
+        <HoveringTextSpans />
+      </div>
       <div style={{ "position": "absolute", "top": "30px", "left": "20px" }}>
         <Cursor />
       </div>
