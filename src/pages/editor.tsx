@@ -81,9 +81,21 @@ const Editor: NextPage = () => {
           />
           <Button onClick={() => createAdventureMutation.mutate({
             name,
-            description
+            description,
+            areTitlesHiddenByDefault,
+            areClickSquaresHiddenByDefault
           })}>
             Create Adventure
+          </Button>
+          <hr />
+          <Button onClick={() => createAdventureMutation.mutate({
+            name,
+            description,
+            areTitlesHiddenByDefault,
+            areClickSquaresHiddenByDefault,
+            templateAdventureId: "clhuvfd5j0000xrogiehitdxe"
+          })}>
+            Start from template (The life of foxes)
           </Button>
         </Modal>
       )}

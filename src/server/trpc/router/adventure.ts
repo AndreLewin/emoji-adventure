@@ -34,7 +34,8 @@ export const adventureRouter = router({
         description: z.string().optional(),
         emojiFavicon: z.string().optional(),
         areTitlesHiddenByDefault: z.boolean().optional(),
-        areClickSquaresHiddenByDefault: z.boolean().optional()
+        areClickSquaresHiddenByDefault: z.boolean().optional(),
+        templateAdventureId: z.string().optional()
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -42,10 +43,27 @@ export const adventureRouter = router({
       if (userId === null) {
         return -1
       }
-      const newAdventure: Omit<Adventure, "id" | "createdAt" | "updatedAt"> = {
-        ...defaultAdventureFactory(),
-        ...input,
-        userId
+      const { templateAdventureId, ...inputRest } = input
+      let newAdventure: Omit<Adventure, "id" | "createdAt" | "updatedAt"> | null = null
+      if (templateAdventureId === undefined) {
+        newAdventure = {
+          ...defaultAdventureFactory(),
+          ...inputRest,
+          userId
+        }
+      } else {
+        const adventureToCopy = await ctx.prisma.adventure.findFirstOrThrow({
+          where: {
+            id: templateAdventureId,
+            isPublished: true
+          }
+        })
+        const { id, createdAt, updatedAt, ...restAdventureToCopy } = adventureToCopy
+        newAdventure = {
+          ...restAdventureToCopy,
+          ...inputRest,
+          userId
+        }
       }
       return await ctx.prisma.adventure.create({
         data: newAdventure
