@@ -5,6 +5,8 @@ import store from "../../store"
 const FirstGridSelector: React.FC<{}> = ({ }) => {
   const firstGridId = store(state => state.firstGridId)
   const grids = store(state => state.grids)
+  const set = store(state => state.set)
+
 
   const choices = useMemo<SelectItem[]>(() => {
     return grids.map(g => {
@@ -22,7 +24,7 @@ const FirstGridSelector: React.FC<{}> = ({ }) => {
         <Select
           label={`Grid on which the adventure starts:`}
           value={`${firstGridId}`}
-          onChange={(value) => store.setState({ firstGridId: parseInt(value ?? "0", 10) })}
+          onChange={(value) => set({ firstGridId: parseInt(value ?? "0", 10) })}
           data={choices}
         />
       </div>
