@@ -54,7 +54,7 @@ const GlobalFunctions: React.FC<{ gridId: number, cellIndex: number }> = ({ grid
 // _c("Are you sure you want to become a fox? This is irreversible!")
 //// log (equivalent to window.console.log)
 // _l(^:)
-//// move to grid
+//// go to grid
 // _g(0)
 
 // All functions from the Zustand store were also added to the window as global functions

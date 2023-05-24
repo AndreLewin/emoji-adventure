@@ -62,7 +62,7 @@ const CellDrawer: React.FC<{ isDrawerOpened: boolean, setIsDrawerOpened: Dispatc
     <Drawer
       opened={isDrawerOpened}
       onClose={() => setIsDrawerOpened(false)}
-      position="right" transitionDuration={0} overlayOpacity={0.2} size="xl" styles={{ header: { display: 'none' } }}
+      position="right" transitionDuration={0} overlayOpacity={0.2} size="600px" styles={{ header: { display: 'none' } }}
     >
       <div className="container">
 

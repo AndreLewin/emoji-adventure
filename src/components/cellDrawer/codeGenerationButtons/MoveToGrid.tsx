@@ -80,7 +80,7 @@ const MoveToGrid: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, c
   return (
     <>
       <span className='container'>
-        <Button onClick={() => setIsModalOpened(true)}>{`Move to Grid`}</Button>
+        <Button onClick={() => setIsModalOpened(true)}>{`Go to Grid`}</Button>
         <Modal
           opened={isModalOpened}
           onClose={() => { setIsModalOpened(false) }}

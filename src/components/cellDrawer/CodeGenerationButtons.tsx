@@ -21,6 +21,7 @@ import Chronometer from "./codeGenerationButtons/Chronometer";
 import Animations from "./codeGenerationButtons/Animations";
 import GlobalFunctions from "./codeGenerationButtons/GlobalFunctions";
 import CellSubscribers from "./codeGenerationButtons/CellSubscribers";
+import MultipleChoice from "./codeGenerationButtons/MultipleChoice";
 
 const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
 
@@ -29,6 +30,7 @@ const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = (
       <div className='container'>
         <Alert gridId={gridId} cellIndex={cellIndex} />
         <Confirm gridId={gridId} cellIndex={cellIndex} />
+        <MultipleChoice gridId={gridId} cellIndex={cellIndex} />
         <Prompt gridId={gridId} cellIndex={cellIndex} />
         <Text gridId={gridId} cellIndex={cellIndex} />
         <MoveToGrid gridId={gridId} cellIndex={cellIndex} />

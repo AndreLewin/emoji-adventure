@@ -1,6 +1,6 @@
 import { Button, Modal, Textarea } from "@mantine/core"
-import { useCallback, useState } from "react"
 import { getHotkeyHandler } from '@mantine/hooks'
+import { useCallback, useState } from "react"
 import store from "../../../store"
 
 const Confirm: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
@@ -39,7 +39,7 @@ const Confirm: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cell
           <Textarea
             data-autofocus
             value={textToDisplay}
-            label="Question to display (answer is OK (true) or Cancel (false))"
+            label="Question to display (player can confirm or cancel)"
             autosize
             onChange={(event) => setTextToDisplay(event.currentTarget.value)}
             onKeyDown={getHotkeyHandler([

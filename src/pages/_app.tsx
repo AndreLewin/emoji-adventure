@@ -3,14 +3,18 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
 import { MantineProvider } from '@mantine/core';
-
+import { ModalsProvider } from '@mantine/modals';
+import { NotificationsProvider } from "@mantine/notifications";
 import { trpc } from "../utils/trpc";
 
 import "../styles/globals.css";
 import { useEffect, useState } from "react";
 import store, { pushToGridHistory } from "../store";
-import { NotificationsProvider } from "@mantine/notifications";
 import "animate.css";
+import PromptModal from "../components/modals/PromptModal";
+import AlertModal from "../components/modals/AlertModal";
+import ConfirmModal from "../components/modals/ConfirmModal";
+import MultipleChoiceModal from "../components/modals/MultipleChoiceModal";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -41,9 +45,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
               colorScheme: 'light',
             }}
           >
-            <NotificationsProvider>
-              <Component {...pageProps} />
-            </NotificationsProvider>
+            <ModalsProvider modals={{ alertModal: AlertModal, confirmModal: ConfirmModal, multipleChoiceModal: MultipleChoiceModal, promptModal: PromptModal }}>
+              <NotificationsProvider>
+                <Component {...pageProps} />
+              </NotificationsProvider>
+            </ModalsProvider>
           </MantineProvider>
         </SessionProvider>
       }

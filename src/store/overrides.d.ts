@@ -33,8 +33,13 @@ interface Window {
   _ss: Function
   _a: Function
   _ad: Function
-  _p: Function
   _c: Function
+  _m: Function
+  _p: Function
   _l: Function
   _g: Function
+  // mantine
+  _openConfirmModal: Function
+  _openContextModal: Function
+  _showNotification: Function
 } 

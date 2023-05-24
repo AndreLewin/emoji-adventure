@@ -6,6 +6,9 @@ import { addToGridIntervals, clearGridIntervals, move, getMovePrefilled, movemen
 import { animate, getAnimatePrefilled } from '../utils/animate'
 import { evalScript } from '../utils/evalScript'
 import { activeMusic, pauseMusic, playMusic, resumeMusic, stopMusic } from '../utils/music'
+import { openConfirmModal, openContextModal } from '@mantine/modals'
+import { alertModal, confirmModal, multipleChoiceModal, promptModal, proxyFactory } from '../utils/modals'
+import { showNotification } from '@mantine/notifications'
 
 export type Cell = {
   color?: string
@@ -652,10 +655,15 @@ if (typeof window !== 'undefined') {
   window._t = setText1
   window._gs = store.getState
   window._ss = store.setState
-  window._a = window.alert
+  window._a = alertModal
   window._ad = alertDelayed
-  window._p = window.prompt
-  window._c = window.confirm
+  window._c = confirmModal
+  window._m = multipleChoiceModal
+  window._p = promptModal
   window._l = window.console.log
   window._g = moveToGrid
+  // mantine
+  window._openConfirmModal = openConfirmModal
+  window._openContextModal = openContextModal
+  window._showNotification = showNotification
 }

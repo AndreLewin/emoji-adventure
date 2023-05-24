@@ -3,30 +3,35 @@ import { useCallback, useMemo, useState } from "react"
 import { getHotkeyHandler } from '@mantine/hooks'
 import store from "../../../store"
 
-const Prompt: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
+const MultipleChoice: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellIndex }) => {
 
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false)
   const [textToDisplay, setTextToDisplay] = useState<string>("")
   const updateCellWithAppend = store(state => state.updateCellWithAppend)
   const activeCScriptTab = store(state => state.activeCScriptTab)
 
-  const [specialAnswersString, setSpecialAnswersString] = useState("")
-  const specialAnswersArray = useMemo<string[]>(() => {
-    let choices = specialAnswersString.split(";")
+  const [choicesString, setChoicesString] = useState("")
+  const choicesArray = useMemo<string[]>(() => {
+    let choices = choicesString.split(";")
     choices = choices.map(c => c.trim())
     return choices
-  }, [specialAnswersString])
+  }, [choicesString])
 
-  const handlePrompt = useCallback<any>(() => {
-    let script = `const answer = _p(\`${textToDisplay}\`)\n`
-    for (let i = 0; i < specialAnswersArray.length; i++) {
-      script += `if (answer === \`${specialAnswersArray[i]}\`) {
-  
-} else `
-    }
-    script += `{
+  const handleMultipleChoice = useCallback<any>(() => {
+    let choicesArrayToString = "["
+    choicesArray.forEach((c, index) => {
+      if (index !== 0) choicesArrayToString += ","
+      choicesArrayToString += "`"
+      choicesArrayToString += c
+      choicesArrayToString += "`"
+    })
+    choicesArrayToString += "]"
+    let script = `const answer = _m(\`${textToDisplay}\`, ${choicesArrayToString})`
+    for (let i = 0; i < choicesArray.length; i++) {
+      script += `\nif (answer === \`${choicesArray[i]}\`) {
   
 }`
+    }
 
     updateCellWithAppend({
       gridId,
@@ -41,12 +46,12 @@ const Prompt: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellI
       const codeEditor = window.document.querySelector(".npm__react-simple-code-editor__textarea") as HTMLElement
       codeEditor?.focus()
     }, 50);
-  }, [activeCScriptTab, updateCellWithAppend, textToDisplay, gridId, cellIndex, specialAnswersArray])
+  }, [activeCScriptTab, updateCellWithAppend, textToDisplay, gridId, cellIndex, choicesArray])
 
   return (
     <>
       <span className='container'>
-        <Button onClick={() => setIsModalOpened(true)}>Prompt</Button>
+        <Button onClick={() => setIsModalOpened(true)}>Multiple choice</Button>
         <Modal
           opened={isModalOpened}
           onClose={() => { setIsModalOpened(false), setTextToDisplay("") }}
@@ -55,23 +60,23 @@ const Prompt: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellI
           <Textarea
             data-autofocus
             value={textToDisplay}
-            label="Question to display (free answer)"
+            label="Text to display"
             autosize
             onChange={(event) => setTextToDisplay(event.currentTarget.value)}
             onKeyDown={getHotkeyHandler([
-              ['ctrl+Enter', handlePrompt]
+              ['ctrl+Enter', handleMultipleChoice]
             ])}
           />
           <TextInput
-            label="Special answers (separate them with ; )"
-            value={specialAnswersString}
-            onChange={(e) => setSpecialAnswersString(e.currentTarget.value ?? "")}
+            label="Choices (separate them with ; )"
+            value={choicesString}
+            onChange={(e) => setChoicesString(e.currentTarget.value ?? "")}
             onKeyDown={getHotkeyHandler([
-              ['ctrl+Enter', handlePrompt]
+              ['ctrl+Enter', handleMultipleChoice]
             ])}
           />
           <Button
-            onClick={handlePrompt}
+            onClick={handleMultipleChoice}
             fullWidth
             mt="md"
           >
@@ -90,4 +95,4 @@ const Prompt: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellI
   )
 }
 
-export default Prompt
+export default MultipleChoice
