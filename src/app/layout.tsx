@@ -1,12 +1,5 @@
-import { MantineProvider } from "@mantine/core";
 import "../styles/globals.css";
 import "animate.css";
-import { ModalsProvider } from "@mantine/modals";
-import { NotificationsProvider } from "@mantine/notifications";
-import PromptModal from "../components/modals/PromptModal";
-import AlertModal from "../components/modals/AlertModal";
-import ConfirmModal from "../components/modals/ConfirmModal";
-import MultipleChoiceModal from "../components/modals/MultipleChoiceModal";
 
 export const metadata = {
   title: 'Loading...',
@@ -22,20 +15,7 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        <MantineProvider
-          withGlobalStyles
-          withNormalizeCSS
-          theme={{
-            /** Put your mantine theme override here */
-            colorScheme: 'light',
-          }}
-        >
-          <ModalsProvider modals={{ alertModal: AlertModal, confirmModal: ConfirmModal, multipleChoiceModal: MultipleChoiceModal, promptModal: PromptModal }}>
-            <NotificationsProvider>
-              {children}
-            </NotificationsProvider>
-          </ModalsProvider>
-        </MantineProvider>
+        {children}
       </body>
     </html>
   )

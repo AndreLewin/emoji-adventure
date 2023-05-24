@@ -7,7 +7,7 @@ import { animate, getAnimatePrefilled } from '../utils/animate'
 import { evalScript } from '../utils/evalScript'
 import { activeMusic, pauseMusic, playMusic, resumeMusic, stopMusic } from '../utils/music'
 import { openConfirmModal, openContextModal } from '@mantine/modals'
-import { alertModal, confirmModal, multipleChoiceModal, promptModal, proxyFactory } from '../utils/modals'
+import { alertModal, confirmModal, multipleChoiceModal, promptModal } from '../utils/modals'
 import { showNotification } from '@mantine/notifications'
 
 export type Cell = {

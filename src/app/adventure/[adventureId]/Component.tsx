@@ -7,6 +7,13 @@ import { useEffect, useState } from "react"
 import store, { emptyHistory, Store } from "../../../store"
 import { evalScript } from "../../../utils/evalScript"
 import Viewers from "../../../components/viewers/Viewers";
+import { MantineProvider } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
+import { NotificationsProvider } from "@mantine/notifications";
+import AlertModal from "../../../components/modals/AlertModal";
+import ConfirmModal from "../../../components/modals/ConfirmModal";
+import MultipleChoiceModal from "../../../components/modals/MultipleChoiceModal";
+import PromptModal from "../../../components/modals/PromptModal";
 
 const Counter: React.FC<{ adventure: Adventure }> = ({ adventure }) => {
   const [isReadyToDisplay, setIsReadyToDisplay] = useState<boolean>(false)
@@ -51,7 +58,20 @@ const Counter: React.FC<{ adventure: Adventure }> = ({ adventure }) => {
   if (!isReadyToDisplay) return <div>Loading....</div>
 
   return (
-    <Viewers />
+    <MantineProvider
+      withGlobalStyles
+      withNormalizeCSS
+      theme={{
+        /** Put your mantine theme override here */
+        colorScheme: 'light',
+      }}
+    >
+      <ModalsProvider modals={{ alertModal: AlertModal, confirmModal: ConfirmModal, multipleChoiceModal: MultipleChoiceModal, promptModal: PromptModal }}>
+        <NotificationsProvider>
+          <Viewers />
+        </NotificationsProvider>
+      </ModalsProvider>
+    </MantineProvider>
   )
 }
 
