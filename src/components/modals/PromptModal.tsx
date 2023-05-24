@@ -28,8 +28,8 @@ const PromptModal = ({ context, id, innerProps }: ContextModalProps<{ modalBody:
         />
       </div>
       <div className="buttons-wrapper">
-        <Button style={{ width: "100%" }} variant="outline" color="gray" onClick={() => handleConfirm()}>
-          ✔️
+        <Button style={{ width: "100%" }} variant="outline" onClick={() => handleConfirm()}>
+          OK
         </Button>
       </div>
       <style jsx>

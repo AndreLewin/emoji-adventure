@@ -3,7 +3,7 @@ import { ContextModalProps } from '@mantine/modals';
 import { useCallback } from 'react';
 
 const MultipleChoiceModal = ({ context, id, innerProps }: ContextModalProps<{ modalBody: string, resolve: typeof Promise.resolve, choices: string[] }>) => {
-  const handleChoice = useCallback<any>(async (choice: string) => {
+  const handleChoice = useCallback<any>((choice: string) => {
     innerProps.resolve(choice)
     context.closeModal(id)
   }, [])
@@ -14,7 +14,7 @@ const MultipleChoiceModal = ({ context, id, innerProps }: ContextModalProps<{ mo
       <div className="buttons-wrapper">
         {innerProps.choices.map((choice, index) => {
           return (
-            <Button style={{ width: "100%" }} variant="outline" onClick={() => handleChoice(choice)} key={`modal-${id}-choice-${index}`}>
+            <Button style={{ width: "100%" }} variant="outline" color="violet" onClick={() => handleChoice(choice)} key={`modal-${id}-choice-${index}`}>
               {choice}
             </Button>
           )

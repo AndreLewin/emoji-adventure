@@ -9,11 +9,8 @@ const CellViewer: React.FC<{
   areClickSquaresHidden: boolean
 }> = ({ cell, cellIndex, gridId, areClickSquaresHidden }) => {
   const handleMouseDown = useCallback<any>((event: MouseEvent) => {
-    const { buttons } = event
-    if (buttons === 1) {
-      if ((cell?.onClickCScript ?? "") !== "") {
-        evalScript(cell?.onClickCScript ?? "", { gridId, cellIndex })
-      }
+    if ((cell?.onClickCScript ?? "") !== "") {
+      evalScript(cell?.onClickCScript ?? "", { gridId, cellIndex })
     }
   }, [cell])
 
@@ -29,7 +26,7 @@ const CellViewer: React.FC<{
           "backgroundColor": cell.color,
           "cursor": (cell?.onClickCScript ?? "") !== "" ? "pointer" : "default"
         }}
-        onMouseDown={(e) => handleMouseDown(e)}
+        onPointerUp={(e) => handleMouseDown(e)}
         id={`c${cellIndex}`}
       >
         <span id={`e${cellIndex}`}>

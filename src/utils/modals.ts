@@ -11,6 +11,9 @@ export const alertModal = (htmlContent: string) => {
         modalBody: htmlContent,
       },
       withCloseButton: false,
+      // avoid immediately closing in some browsers (for example when a modal is opened in reaction to a click)
+      // example where it happens: Firefox Desktop Touch Simulation (Mobile Preview   )
+      closeOnClickOutside: false,
       overlayOpacity: OVERLAY_OPACITY,
       onClose: () => resolve(true)
     })
