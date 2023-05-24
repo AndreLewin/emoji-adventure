@@ -18,7 +18,7 @@ const Prompt: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cellI
   }, [specialAnswersString])
 
   const handlePrompt = useCallback<any>(() => {
-    let script = `const answer = _p(\`${textToDisplay}\`)\n`
+    let script = `const answer = __p(\`${textToDisplay}\`)\n`
     for (let i = 0; i < specialAnswersArray.length; i++) {
       script += `if (answer === \`${specialAnswersArray[i]}\`) {
   

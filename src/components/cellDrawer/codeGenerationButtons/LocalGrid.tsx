@@ -16,7 +16,7 @@ console.log(@:text)
 // Update the text/title of the grid
 @:text = "The forest"
 // Update view script of the grid
-@:vs = "_a('Welcome in our forest')"
+@:vs = "__a('Welcome in our forest')"
 // Get local gridId
 console.log(@gi)
 

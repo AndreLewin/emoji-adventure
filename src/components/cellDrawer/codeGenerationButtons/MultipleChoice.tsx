@@ -26,7 +26,7 @@ const MultipleChoice: React.FC<{ gridId: number, cellIndex: number }> = ({ gridI
       choicesArrayToString += "`"
     })
     choicesArrayToString += "]"
-    let script = `const answer = _m(\`${textToDisplay}\`, ${choicesArrayToString})`
+    let script = `const answer = __m(\`${textToDisplay}\`, ${choicesArrayToString})`
     for (let i = 0; i < choicesArray.length; i++) {
       script += `\nif (answer === \`${choicesArray[i]}\`) {
   

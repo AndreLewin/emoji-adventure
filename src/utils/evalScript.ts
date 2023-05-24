@@ -154,6 +154,26 @@ export const getRegexes = (
       `window._getMovePrefilled({ gridId: ${gridId} })(`,
       "Move prefilled with gridId"
     ],
+    [
+      "__a(",
+      `await _a(`,
+      "_a (alert) but you don't have to await (hack)"
+    ],
+    [
+      "__c(",
+      `await _c(`,
+      "_c (confirm) but you don't have to await (hack)"
+    ],
+    [
+      "__m(",
+      `await _m(`,
+      "_m (multiple choice) but you don't have to await (hack)"
+    ],
+    [
+      "__p(",
+      `await _p(`,
+      "_p (prompt) but you don't have to await (hack)"
+    ]
   ]
 }
 

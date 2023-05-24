@@ -11,7 +11,7 @@ const Subscribers: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, 
 // To add a subscriber to a variable, you have to put $ after the context selector (#, @ or ^) and the dot, and then push to the array.
 // Example: add a subscriber to the variable #.score, display "you won" if the value is >= 3.
 
-#$.score.push(v => v >= 3 && _a("you won"))
+#$.score.push(v => v >= 3 && __a("you won"))
 
 // Try it by running #.score++ several times in an other script.
 
@@ -46,7 +46,7 @@ console.log(#$.score)
 #$.showFox.push((value) => {
   if (value) {
     ^:e = "🦊"
-    ^:cs = "_a('Yip yap!')"
+    ^:cs = "__a('Yip yap!')"
   }
 })
 

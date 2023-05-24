@@ -3,7 +3,6 @@ import Confirm from "./codeGenerationButtons/Confirm";
 import Prompt from "./codeGenerationButtons/Prompt";
 import Text from "./codeGenerationButtons/Text";
 import MoveToGrid from "./codeGenerationButtons/MoveToGrid";
-import AskForName from "./codeGenerationButtons/AskForName";
 import GlobalVariable from "./codeGenerationButtons/GlobalVariable";
 import Subscribers from "./codeGenerationButtons/Subscribers";
 import VisibleVariables from "./codeGenerationButtons/VisibleVariables";
@@ -34,8 +33,6 @@ const CodeGenerationButtons: React.FC<{ gridId: number, cellIndex: number }> = (
         <Prompt gridId={gridId} cellIndex={cellIndex} />
         <Text gridId={gridId} cellIndex={cellIndex} />
         <MoveToGrid gridId={gridId} cellIndex={cellIndex} />
-        <div />
-        {/* <AskForName gridId={gridId} cellIndex={cellIndex} /> */}
         <div />
         <GlobalVariable gridId={gridId} cellIndex={cellIndex} />
         <VisibleVariables gridId={gridId} cellIndex={cellIndex} />

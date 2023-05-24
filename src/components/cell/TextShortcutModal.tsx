@@ -23,7 +23,7 @@ const TextShortcutModal: React.FC<{
         gridId,
         cellIndex,
         cellUpdate: {
-          onClickCScript: `_a(\`${shortcutText}\`)`
+          onClickCScript: `__a(\`${shortcutText}\`)`
         }
       })
       setShortcutText("")

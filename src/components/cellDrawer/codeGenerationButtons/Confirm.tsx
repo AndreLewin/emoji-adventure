@@ -11,7 +11,7 @@ const Confirm: React.FC<{ gridId: number, cellIndex: number }> = ({ gridId, cell
   const activeCScriptTab = store(state => state.activeCScriptTab)
 
   const handleConfirm = useCallback<any>(() => {
-    const script = `if (_c(\`${textToDisplay}\`)) {\n  \n} else {\n  \n}`
+    const script = `if (__c(\`${textToDisplay}\`)) {\n  \n} else {\n  \n}`
     updateCellWithAppend({
       gridId,
       cellIndex,
